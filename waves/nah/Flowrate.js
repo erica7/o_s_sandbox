@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-const styles = require('./Style.js');
+const styles = require('./../Style.js');
 const ItemUnit = require('./ItemUnit.js');
 const CalcButtons = require('./CalcButtons.js');
 const LoadVariables = require('./FlowrateVariables.js');
@@ -141,7 +141,10 @@ module.exports = Flowrate;
 //FormulaView class
 //props: items, formulas array
 //render: FormulaItem, two buttons 
-//function: 
+//functions: 
+//  compare(): compare state to formula constraints 
+//  doTheMath(): calculate answer
+//  clearAll(): clear all text inputs 
 
 //formulas = [{constraints:[n length], calculate:function(n params -- entire object or array of objects)}]
 
@@ -150,7 +153,10 @@ module.exports = Flowrate;
 //FormulaItem class
 //props: set of possible units, set of conversion factors
 //state: value, selected unit
-//function: 
+//functions: 
+//  displayValue(): calculate display value to render
+//  updateValue(): update canonical value in state 
+
 //  isFilledIn: has anything been entered (e.g. value not null)
 //  getValue
 //  getUnits

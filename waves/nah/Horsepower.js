@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, StyleSheet, Text, TextInput, View, Button } from 'react-native';
-const styles = require('./Style.js');
+const styles = require('./../Style.js');
 // const Item = require('./Item.js');
 const ItemUnit = require('./ItemUnit.js');
 const CalcButtons = require('./CalcButtons.js');

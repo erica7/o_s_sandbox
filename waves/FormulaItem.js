@@ -5,39 +5,55 @@ const globals = require('./Globals.js');
 
 const TouchableElement = globals.TouchableElement;
 
+sendCanonicalValueToParent = () => {
+
+}
+
 export class FormulaItem extends React.Component {
   constructor(props) {
     super(props);
+    // console.log("FormulaItem this.props", this.props);
     this.state = {
-      canonicalValue: null, //canonical value
-      displayUnit: props.item.getUnits()[0], //display unit
+      canonicalValue: null, 
+      displayUnit: props.item.getUnits()[0], 
       modalVisible: false,
     }
   }
-  
+  getConversionFactor = () => {
+    return this.state.displayUnit[1];
+  }
+  /**
+   * Convert the canonicalValue to displayValue based on the displayUnit
+   */
   displayValue = () => {
-    //convert the canonicalValue to displayValue based on the displayUnit
-    console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
+    // console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
     if (this.state.canonicalValue !== null) {
-      return (this.state.canonicalValue * this.state.displayUnit[1]).toString();  //.getConversionFactor()
+      if (this.state.canonicalValue * this.getConversionFactor() != 0) {
+        return (this.state.canonicalValue * this.getConversionFactor()).toString();  
+      } 
     } else {
       return null;
     }
   }
+  /**
+   * Update this.state.canonicalValue on user input 
+   * FIXME
+   */
   updateValue = (text) => {
-    // this.setState with the new canonical value
-    console.log("updateValue text", text, "displayUnit", this.state.displayUnit);
-    this.setState({canonicalValue: text / this.state.displayUnit[1]});
-    // console.log("text",text);
-    // console.log("divide       ", text / this.state.displayUnit[1]);
-    // console.log("divide better", parseInt(text) / this.state.displayUnit[1]);
-  }
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
+    // console.log("updateValue text", text, "displayUnit", this.state.displayUnit);
+    let newCanonicalValue = text / this.getConversionFactor();
+    this.setState({canonicalValue: newCanonicalValue});
+
+    // send canonical value to parent element 
+
   }
 
   render() {
-    //refactor with const item = this.props.item, etc
+    //TODO refactor with const item = this.props.item, etc
+
+    // console.log("this.props.ref",this.props.ref);
+    // console.log("this.state",this.state);
+
     return(
       <View style={styles.item}>
         <Modal
@@ -48,13 +64,13 @@ export class FormulaItem extends React.Component {
           >
           <View style={styles.modalView}>
             { 
-              (this.props.item.getUnits().length > 1) &&  // don't bother building these components if only one unit is available because modal will never show
-                this.props.item.getUnits().map( (x,i) => (
-                  <TouchableElement style={styles.btn} onPress={() => {this.setState({displayUnit: x, modalVisible: false})}}>
-                    <Text style={styles.btnText}>{ x[0].toUpperCase() }</Text>
-                  </TouchableElement>
-                )
-              )
+              this.props.item.getUnits().map((x,i) => (
+                <TouchableElement style={[styles.btn]} onPress={() => {this.setState({displayUnit: x, modalVisible: false})}}>
+                  <Text style={[styles.btnText, this.state.displayUnit == x && styles.btnTextSelected]}>
+                    { x[0].toUpperCase() } {this.state.displayUnit == x && "\u2713"}
+                  </Text>
+                </TouchableElement>
+              ))
             }
           </View>
         </Modal>
@@ -62,27 +78,26 @@ export class FormulaItem extends React.Component {
         <TextInput
           ref={this.props.reference}
           style={[styles.font, styles.textInput]}
-          // onChangeText={this.props.myFunc}
           onChangeText={this.updateValue}
-          // onFocus={this.props.myFocus}
           autoCorrect={false}
           keyboardType="decimal-pad"  // TODO check docs for android compatibility 
           keyboardAppearance="dark"
-          // value={this.props.variable}
           value={this.displayValue()}
           selectionColor="#f00"
         />
         <TouchableElement 
-          style={styles.unit}
-          onPress={() => { if (this.props.item.getUnits().length > 1) { this.setModalVisible(!this.state.modalVisible) }}} 
+          style={[styles.unit]}
+          underlayColor={this.props.item.getUnits().length > 1 ? "#333" : "none"}
+          activeOpacity={this.props.item.getUnits().length > 1 ? 0.7 : 1}
+          onPress={() => { if (this.props.item.getUnits().length > 1) { this.setState({modalVisible: true}) }}} 
           >
-          <Text style={[styles.font, styles.unitText]}>{this.state.displayUnit[0].toUpperCase()}</Text>
+          <Text style={[styles.font, styles.unitText, this.props.item.getUnits().length > 1 && styles.unitTextClickable]}>
+            {this.state.displayUnit[0].toUpperCase()}
+          </Text>
         </TouchableElement>
       </View>
     );
   }
-
-
 }
 
 module.exports = FormulaItem;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, Text, View } from 'react-native';
-const styles = require('./Style.js');
+const styles = require('./../Style.js');
 
 class CalcButtons extends React.Component {
   constructor(props) {

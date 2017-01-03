@@ -2,10 +2,13 @@ import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, AppRegistry, StyleSheet, Text, TextInput, View, Button, Modal, Picker } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 const styles = require('./Style.js');
-const Horsepower = require('./Horsepower.js');
-const Flowrate = require('./Flowrate.js');
+const Horsepower = require('./nah/Horsepower.js');
+const Flowrate = require('./nah/Flowrate.js');
 const UnitConverter = require('./UnitConverter.js');
 const FormulaView = require('./FormulaView.js');
+const globals = require('./Globals.js');
+
+const TouchableElement = globals.TouchableElement;
 
 // ISSUES
 //   clean up Item props
@@ -33,15 +36,17 @@ function printState(obj) {
   console.log(obj.state);
 }
 
-const TouchableElement = (Platform.OS === 'android') 
-  ? TouchableNativeFeedback
-  : TouchableHighlight ;
-
-//TODO refactor all menu buttons
-const menuButton = (navigate, pageName) => { 
+/**
+ * Create a button component for the home menu
+ * @param {Method} navigate - StackNavigator navigate method 
+ * @param {String} navName - name of the screen in the StackNavigator
+ * @param {String} navTitle (optional) - button text
+ * @return {Object} react component
+ */
+const menuButton = (navigate, navName, navTitle = navName) => { 
   return (
-    <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate(pageName)} >
-      <Text style={styles.btnText}>{ pageName.toUpperCase() }</Text>
+    <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate(navName)} >
+      <Text style={styles.btnText}>{ navTitle.toUpperCase() }</Text>
     </TouchableElement>
   )
 };
@@ -51,102 +56,15 @@ class HomeScreen extends React.Component {
     title: 'WAVY'
   };
   render() {
+    //each screen receives a navigation prop from react-navigation; extract the navigate method
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
         <Text style={styles.title}>WAVY</Text>
-        { menuButton(navigate, 'FormulaView') }
+        { menuButton(navigate, 'FormulaView', 'Formula View') }
         { menuButton(navigate, 'Flowrate') }
-        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Flowrate')}>
-          <Text style={styles.btnText}>FLOWRATE</Text>
-        </TouchableElement>
-        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Horsepower')}>
-          <Text style={styles.btnText}>HORSEPOWER</Text>
-        </TouchableElement>
-        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('UnitConverter')}>
-          <Text style={styles.btnText}>UNIT CONVERTER</Text>
-        </TouchableElement>
-      </View>
-    );
-  }
-}
-
-class Another extends React.Component {  // example for navigating screens
-  static navigationOptions = {
-    title: 'Another',
-  };
-  render() {
-    return (
-      <View>
-        <Text>Another</Text>
-      </View>
-    );
-  }
-}
-
-class ModalExample extends React.Component {  // example of modal and picker 
-  state = {
-    modalVisible: false,
-  }
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
-  modalStyles = StyleSheet.create({
-    modal: {
-      marginTop: '44%',
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      padding: 44,
-      justifyContent: 'center',
-      backgroundColor: '#aaa',
-      borderRadius: 7,
-      borderWidth: 3,
-      borderColor: '#f55',
-      width: 333,
-      // height: 333,
-    },
-    modalElements: {
-      textAlign: 'center',
-    }
-  })
-  render() {
-    return (
-      <View style={{ marginTop: 22 }}>
-        <Modal
-          style={{ marginTop: 22, flex: 1, flexDirection: 'column', justifyContent: 'center', }}
-          animationType="slide"
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {alert("Modal has been closed.")}}
-          >
-          <View style={this.modalStyles.modal}>
-          <View>
-            <Text style={this.modalStyles.modalElements}>Hello World!</Text>
-            <Picker
-              selectedValue={this.state.language}
-              onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
-            </Picker>
-            <TouchableHighlight style={styles.btn} onPress={() => {
-              this.setModalVisible(!this.state.modalVisible)
-            }}>
-              <Text style={this.modalStyles.modalElements}>Hide Modal</Text>
-            </TouchableHighlight>
-          </View>
-          </View>
-        </Modal>
-        <TouchableHighlight onPress={() => {
-          this.setModalVisible(true)
-        }}>
-          <Text>Show Modal</Text>
-        </TouchableHighlight>
-        <Picker
-          selectedValue={this.state.language}
-          onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-          <Picker.Item label="Java" value="java" />
-          <Picker.Item label="JavaScript" value="js" />
-        </Picker>
+        { menuButton(navigate, 'Horsepower') }
+        { menuButton(navigate, 'UnitConverter', 'Unit Converter') }
       </View>
     );
   }
@@ -155,10 +73,8 @@ class ModalExample extends React.Component {  // example of modal and picker
 //TODO make sure first page is explicit
 const CalcApp = StackNavigator({
   Home: { screen: HomeScreen },
-  Another: { screen: Another },
   Horsepower: { screen: Horsepower },
   Flowrate: { screen: Flowrate },
-  ModalEx: { screen: ModalExample },
   UnitConverter: { screen: UnitConverter },
   FormulaView: { screen: FormulaView },
 });

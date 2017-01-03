@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, Text, TextInput, View, Modal } from 'react-native';
-const styles = require('./Style.js');
+const styles = require('./../Style.js');
 
 class ItemUnit extends React.Component {
   constructor(props) {

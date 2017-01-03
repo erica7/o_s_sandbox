@@ -1,133 +1,34 @@
 import React from 'react';
-import { Platform, TouchableHighlight, TouchableNativeFeedback, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 const styles = require('./Style.js');
+const UnitConverterItem = require('./UnitConverterItem.js');
+const globals = require('./Globals.js');
+
+const TouchableElement = globals.TouchableElement;
+const Item = globals.Item;
+
+
+const units = [
+  new Item("Pressure", [["psi", 1], ["bar", 0.0689476], ["MPa", 0.00689476]]),
+  new Item("Flowrate", [["gpm", 1], ["bbl/m", 0.024], ["bbl/h", 1.43]]),
+  new Item("Length", [["in", 1], ["cm", 2.54], ["mm", 25.4]]),
+  new Item("Speed", [["rpm", 1], ["rph", 60]]),
+]
 
 class UnitConverter extends React.Component {
   doNothing = () => {
 
   }
   render() {
-    var TouchableElement = TouchableHighlight;
-    if (Platform.OS === 'android') {
-      TouchableElement = TouchableNativeFeedback;
-    }
+    let unitItems = units.map((x, i) => {
+      // console.log("x",x)
+      return <UnitConverterItem item={ units[i] } />
+    })
     return (
-      <View style={[styles.container]}>
-        <Text style={styles.parameterName}>PARAMETER ONE</Text>
-        <View style={styles.item}>
-          <TextInput
-            // ref={this.props.reference}
-            style={[styles.font, styles.textInput]}
-            // onChangeText={this.props.myFunc}
-            // onFocus={this.props.myFocus}
-            autoCorrect={false}
-            keyboardType="decimal-pad"
-            keyboardAppearance="dark"
-            // value={this.props.variable}
-            selectionColor="#f00"
-          />
-          <TouchableElement 
-            style={styles.unit}
-            onPress={ this.doNothing } 
-            >
-            <Text style={[styles.font, styles.unitText]}>UNT</Text>
-          </TouchableElement>
-          <Text style={styles.unit}>=</Text>
-          <TextInput
-            // ref={this.props.reference}
-            style={[styles.font, styles.textInput]}
-            // onChangeText={this.props.myFunc}
-            // onFocus={this.props.myFocus}
-            autoCorrect={false}
-            keyboardType="decimal-pad"
-            keyboardAppearance="dark"
-            // value={this.props.variable}
-            selectionColor="#f00"
-          />
-          <TouchableElement 
-            style={styles.unit}
-            onPress={ this.doNothing } 
-            >
-            <Text style={[styles.font, styles.unitText]}>UNT</Text>
-          </TouchableElement>
-        </View>
-        <Text style={styles.parameterName}>PARAMETER TWO</Text>
-        <View style={styles.item}>
-          <TextInput
-            // ref={this.props.reference}
-            style={[styles.font, styles.textInput]}
-            // onChangeText={this.props.myFunc}
-            // onFocus={this.props.myFocus}
-            autoCorrect={false}
-            keyboardType="decimal-pad"
-            keyboardAppearance="dark"
-            // value={this.props.variable}
-            selectionColor="#f00"
-          />
-          <TouchableElement 
-            style={styles.unit}
-            onPress={ this.doNothing } 
-            >
-            <Text style={[styles.font, styles.unitText]}>UNT</Text>
-          </TouchableElement>
-          <Text style={styles.font}>=</Text>
-          <TextInput
-            // ref={this.props.reference}
-            style={[styles.font, styles.textInput]}
-            // onChangeText={this.props.myFunc}
-            // onFocus={this.props.myFocus}
-            autoCorrect={false}
-            keyboardType="decimal-pad"
-            keyboardAppearance="dark"
-            // value={this.props.variable}
-            selectionColor="#f00"
-          />
-          <TouchableElement 
-            style={styles.unit}
-            onPress={ this.doNothing } 
-            >
-            <Text style={[styles.font, styles.unitText]}>UNT</Text>
-          </TouchableElement>
-        </View>
-        <Text style={styles.parameterName}>PARAMETER THREE</Text>
-        <View style={styles.item}>
-          <TextInput
-            // ref={this.props.reference}
-            style={[styles.font, styles.textInput]}
-            // onChangeText={this.props.myFunc}
-            // onFocus={this.props.myFocus}
-            autoCorrect={false}
-            keyboardType="decimal-pad"
-            keyboardAppearance="dark"
-            // value={this.props.variable}
-            selectionColor="#f00"
-          />
-          <TouchableElement 
-            style={styles.unit}
-            onPress={ this.doNothing } 
-            >
-            <Text style={[styles.font, styles.unitText]}>UNT</Text>
-          </TouchableElement>
-          <Text style={styles.unit}>=</Text>
-          <TextInput
-            // ref={this.props.reference}
-            style={[styles.font, styles.textInput]}
-            // onChangeText={this.props.myFunc}
-            // onFocus={this.props.myFocus}
-            autoCorrect={false}
-            keyboardType="decimal-pad"
-            keyboardAppearance="dark"
-            // value={this.props.variable}
-            selectionColor="#f00"
-          />
-          <TouchableElement 
-            style={styles.unit}
-            onPress={ this.doNothing } 
-            >
-            <Text style={[styles.font, styles.unitText]}>UNT</Text>
-          </TouchableElement>
-        </View>
-        {/* <View style={styles.spacing}></View> FIX UNIT BUTTON VERTICAL ALIGNMENT FIRST */}
+      <View style={styles.container}>
+        { unitItems }
+        {/* <UnitConverterItem item={units[0]} /> */}
+        
       </View>
     )
   }

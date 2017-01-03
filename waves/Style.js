@@ -53,14 +53,17 @@ const styles = StyleSheet.create({
   },
   unit: {
     flex: 2,
-    color: '#eee',
+    // color: '#eee',
     paddingTop: 8,
     marginTop: 0,
   },
   unitText: {
     alignItems: 'center',
-    color: '#2ee',
+    color: '#eee',
     marginBottom: 7,  // is this going to look good on all screens? 
+  },
+  unitTextClickable: {
+    color: '#3ee',
   },
   unitCenter: {
     flex: 1,
@@ -78,9 +81,16 @@ const styles = StyleSheet.create({
     paddingLeft: 33,
     backgroundColor: '#eee',
   },
+  btnDisabled: {
+    backgroundColor: '#777',
+  },
   btnText: {
     fontSize: 18,
     letterSpacing: 9,
+  },
+  btnTextSelected: {
+    fontWeight: 'bold',
+    color: '#090',
   },
   btnMenu: {
     width: '90%',

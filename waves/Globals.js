@@ -8,7 +8,7 @@ const TouchableElement = (Platform.OS === 'android')
 globals = {
   TouchableElement: (Platform.OS === 'android') ? TouchableNativeFeedback : TouchableHighlight ,
   aVariable: "a variable!",
-  Item: class Item {  //never holds value
+  Item: class Item {  //never stores value
     constructor(displayName, units) {
       this.displayName = displayName;
       this.units = units; //array of possible inputs 
