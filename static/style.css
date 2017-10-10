@@ -1,0 +1,9 @@
+body {
+  color: #ccc;
+  background-color: #444;
+}
+
+input[text] {
+  background-color: blue;
+  background: blue;
+}
