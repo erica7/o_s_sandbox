@@ -1,8 +1,7 @@
-// document.ready(){
-// }
-// document.addEventListener("DOMContentLoaded", function(){
+// need solution: calculating on first digit entered
 
 var lastSolution = "";
+var lastEntry = "";
 
 $(document).ready(function(){
   $("#title").css('color', '#ee2');
@@ -66,6 +65,7 @@ function update() {
     boolConstrained = true;
   }
   if (boolConstrained) {
+
     calculate(solveFor)
   }
 }
