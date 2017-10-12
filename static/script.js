@@ -1,4 +1,6 @@
-// need solution: calculating on first digit entered
+// needs work:
+// emptying fields after calculation
+// visual cues for over-constrained / under-constrained states
 
 var lastSolution = "";
 var lastEntry = "";
@@ -13,11 +15,11 @@ $(document).ready(function(){
 
   update();
 
-  $("#s").keyup(update);
-  $("#n").keyup(update);
-  $("#d").keyup(update);
-  $("#l").keyup(update);
-  $("#q").keyup(update);
+  $("#s").keyup(function(e) { lastEntry = "#s"; run(e); });
+  $("#n").keyup(function(e) { lastEntry = "#n"; run(e); });
+  $("#d").keyup(function(e) { lastEntry = "#d"; run(e); });
+  $("#l").keyup(function(e) { lastEntry = "#l"; run(e); });
+  $("#q").keyup(function(e) { lastEntry = "#q"; run(e); });
 
   $("#s").on("click", function() { empty("#s"); });
   $("#n").on("click", function() { empty("#n"); });
@@ -26,9 +28,17 @@ $(document).ready(function(){
   $("#q").on("click", function() { empty("#q"); });
 });
 
+function run(e) {
+  var code = (e.keyCode ? e.keyCode : e.which);
+  if (code == 13) {
+    update();
+  }
+}
+
 function empty(element) {
-  console.log("empty function hit");
-  console.log("empty > lastSolution: " + lastSolution);
+  // console.log("empty > emptying " + element);
+  // console.log("empty > lastSolution: " + lastSolution);
+  // console.log("empty > lastEntry: " + lastEntry);
   $(element).val("");
 
   if (lastSolution != "") {
@@ -36,6 +46,8 @@ function empty(element) {
     lastSolution = "";
     empty(temp);
   }
+
+  update();
 }
 
 function getInputs() {
@@ -49,10 +61,8 @@ function getInputs() {
 
 function update() {
   var inputs = getInputs();
-
-  var boolConstrained = false;
-
   var len = inputs.length;
+  var boolConstrained = false;
   var count = 0;
   var solveFor;
   for (let i=0; i<len; i++) {
@@ -63,9 +73,13 @@ function update() {
   }
   if (count === 1) {
     boolConstrained = true;
+    $("#state").text("Perfectly constrained");
+  } else if (count < 1) {
+    $("#state").text("Over constrained");
+  } else {
+    $("#state").text("Under constrained");
   }
   if (boolConstrained) {
-
     calculate(solveFor)
   }
 }
