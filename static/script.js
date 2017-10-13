@@ -99,25 +99,25 @@ function calculate(param) {
       $("#s").css('background-color', '#ee2');
       $("#s").animate({ backgroundColor: '#fff' }, 100);
       lastSolution = "#s";
-      break;
+      // break;
     case n:
       var n = q / (0.25 * Math.PI * Math.pow(d, 2) * l * s * 1/231);
       $("#n").val(n.toFixed(2));
       showUpdate(n);
       lastSolution = "#n";
-      break;
+      // break;
     case d:
       var d = Math.sqrt( q / (0.25 * Math.PI * l * n * s * 1/231) );
       $("#d").val(d.toFixed(2));
       showUpdate(d);
       lastSolution = "#d";
-      break;
+      // break;
     case l:
       var l = q / (0.25 * Math.PI * Math.pow(d, 2) * s * n * 1/231);
       $("#l").val(l.toFixed(2));
       showUpdate(l);
       lastSolution = "#l";
-      break;
+      // break;
     case q:
       // FLOWRATE = 0.25 * PI * D^2 * l * n * s * C
       // C = constant = 1 gal/min / 231 in^3/min
@@ -125,8 +125,11 @@ function calculate(param) {
       $("#q").val(q.toFixed(2));
       showUpdate(q);
       lastSolution = "#q";
-      break;
+      // break;
   }
+
+  $(lastSolution).css('background-color', '#2ee');
+  $(lastSolution).animate({backgroundColor:'#fff'}, 1000);
 }
 
 function showUpdate(param) {
