@@ -13,29 +13,27 @@ class Item extends React.Component {
   }
 }
 
-class MyAppText extends React.Component {
-  render() {
-    return (
-      <Text style={styles.allText}>{this.props.children}</Text>
-    )
-  }
-}
+// class MyAppText extends React.Component {
+//   render() {
+//     return (
+//       <Text style={styles.allText}>{this.props.children}</Text>
+//     )
+//   }
+// }
 
 export default class App extends React.Component {
   render() {
     let testValue = this.parameter;
     return (
       <View style={styles.container}>
-        <MyAppText>
-          <Text>Open up App.js to start working on your app!</Text>
-          <Text>Changes you make will automatically reload.</Text>
-          <Text>Shake your phone to open the developer menu.</Text>
-          <Item parameter="Speed" unit="rpm"/>
-          <Item parameter="Number of Plungers" unit="qty"/>
-          <Item parameter="Plunger Diameter" unit="in"/>
-          <Item parameter="Stroke" unit="in"/>
-          <Item parameter="Flowrate" unit="gpm"/>
-        </MyAppText>
+        <Text>Open up App.js to start working on your app!</Text>
+        <Text>Changes you make will automatically reload.</Text>
+        <Text>Shake your phone to open the developer menu.</Text>
+        <Item parameter="Speed" unit="rpm"/>
+        <Item parameter="Number of Plungers" unit="qty"/>
+        <Item parameter="Plunger Diameter" unit="in"/>
+        <Item parameter="Stroke" unit="in"/>
+        <Item parameter="Flowrate" unit="gpm"/>
       </View>
     );
   }
@@ -46,41 +44,37 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'powderblue',
-    // alignItems: 'center',
     justifyContent: 'center',
     padding: 22,
   },
   item: {
     flex: 1,
     flexDirection: 'row',
-    // justifyContent: 'space-between',
+    justifyContent: 'center',
     backgroundColor:'red',
-    // fontSize: 22,
-    width: '100%',
-    height: 20,
     borderWidth: 2,
     borderStyle: 'solid',
     borderColor: 'orange',
   },
   font: {
-    // fontSize: 22,
+    fontSize: 33,
   },
-  allText: {
-    fontSize: 22,
-  },
+  // allText: {
+  //   flex: 1,
+  //   flexDirection: 'column',
+  //   justifyContent: 'center',
+  //   fontSize: 22,
+  // },
   parameter: {
     flex: 2,
-    // width: '40%',
     backgroundColor: 'steelblue'
   },
   textInput: {
     flex: 2,
-    // width: '40%',
     backgroundColor: 'skyblue'
   },
   unit: {
     flex: 1,
-    // width: '20%',
     backgroundColor: 'cornflowerblue'
   }
 
