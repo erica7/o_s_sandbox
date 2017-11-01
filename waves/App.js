@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 
-// Issues
-//   Detecting properly constrained 
-//   State not updating after a solution is found (or is being updated again by the value in the text input)
-//   Putting the recently solved value into the text input (likely depends on previous issue)
-
+// ISSUES
+//   DRY it up 
+//   decimal probs 
+//   triggering calculation wrt multi-digit input 
+//   handle press behavior, clearing fields
 
 function printState(obj) {
   console.log(obj.state);
@@ -16,9 +16,13 @@ class Item extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
   }
   handleChange = (input) => {  // pass this up to App class's state via element's prop myFunc
     this.props.myFunc(input);
+  }
+  handleFocus = () => {
+    this.props.myFocus();
   }
   render() {
     return (
@@ -28,8 +32,10 @@ class Item extends React.Component {
           ref={this.props.reference}
           style={[styles.font, styles.textInput]}
           onChangeText={this.handleChange}
+          onFocus={this.handleFocus}
           autoCorrect={false}
           keyboardType="decimal-pad"
+          keyboardAppearance="dark"
           value={this.props.variable}
         />
         <Text style={[styles.font, styles.unit]}>{this.props.unit} {this.props.variable}</Text>
@@ -44,6 +50,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.myFunc = this.myFunc.bind(this);
+    this.myFocus = this.myFocus.bind(this);
     this.state = {
       // value: '',  // just for dev
       // changes: 0,  // just for dev 
@@ -57,33 +64,49 @@ export default class App extends React.Component {
     };
     this.constraintState = "";
   }
+  displayValue = (input) => {
+    switch (input) {
+      case "s":
+        return this.state.inputs.s === 0 ? "" : this.state.inputs.s;
+      case "n":
+        return this.state.inputs.n === 0 ? "" : this.state.inputs.n;
+      case "d":
+        return this.state.inputs.d === 0 ? "" : this.state.inputs.d;
+      case "l": 
+        return this.state.inputs.l === 0 ? "" : this.state.inputs.l;
+      case "q": 
+        return this.state.inputs.q === 0 ? "" : this.state.inputs.q;
+    }
+  }
   myFunc = (param, param2, callback) => {
     console.log(param);
     console.log(param2);
     // this.setState({ changes: Number(param) });  // just for dev 
     if (param2 === "s") {
+      variableDisplay=this.state.inputs.s
       this.setState({ 
         inputs: { 
           ...this.state.inputs, 
           s: Number(param),
         }, 
-      }, function() {
+      }, () => {
         this.checkConstrained(this.state);
       });
     } else if (param2 === "n") {
-      this.setState({ inputs: {...this.state.inputs, n: Number(param),}, }, function() { this.checkConstrained(this.state); });
+      this.setState({ inputs: {...this.state.inputs, n: Number(param),}, }, () => { this.checkConstrained(this.state); });
     } else if (param2 === "d") {
-      this.setState({ inputs: {...this.state.inputs, d: Number(param),}, }, function() { this.checkConstrained(this.state); });
+      this.setState({ inputs: {...this.state.inputs, d: Number(param),}, }, () => { this.checkConstrained(this.state); });
     } else if (param2 === "l") {
-      this.setState({ inputs: {...this.state.inputs, l: Number(param),}, }, function() { this.checkConstrained(this.state); });
+      this.setState({ inputs: {...this.state.inputs, l: Number(param),}, }, () => { this.checkConstrained(this.state); });
     } else if (param2 === "q") {
-      this.setState({ inputs: {...this.state.inputs, q: Number(param),}, }, function() { this.checkConstrained(this.state); });
+      this.setState({ inputs: {...this.state.inputs, q: Number(param),}, }, () => { this.checkConstrained(this.state); });
     }
-    // callback(this.state);
-    // checkConstrained(this.state);
   }
-
-  checkConstrained = () => {  // callback so that state is properly updated?..
+  myFocus = () => {
+    console.log("myFocus!");
+    // do stuff here 
+  }
+  checkConstrained = () => {  
     console.log('checkConstrained() hit');
     console.log("'this.state' here: " + this.state);
     var boolConstrained = false;
@@ -118,33 +141,33 @@ export default class App extends React.Component {
     var l = this.state.inputs.l;
     var q = this.state.inputs.q;
     var lastSolution;
-    if (solveFor == "s") {                        // update the value in state! 
+    if (solveFor == "s") { 
       console.log("solveFor internal");
       var s = q / (0.25 * Math.PI * Math.pow(d, 2) * l * n * 1/231);
-      lastSolution = s;
-      this.setState({ inputs: { ...this.state.inputs, s: Math.round(lastSolution), } })
+      lastSolution = "s";
+      this.setState({ inputs: { ...this.state.inputs, s: Math.round(s), } })
     } else if (solveFor == "n") {
       console.log("solveFor internal");
       var n = q / (0.25 * Math.PI * Math.pow(d, 2) * l * s * 1/231);
-      lastSolution = n;
-      this.setState({ inputs: { ...this.state.inputs, n: Math.ceil(lastSolution), } })
+      lastSolution = "n";
+      this.setState({ inputs: { ...this.state.inputs, n: Math.ceil(n), } })
     } else if (solveFor == "d") {
       console.log("solveFor internal");
       var d = Math.sqrt( q / (0.25 * Math.PI * l * n * s * 1/231) );
-      lastSolution = d;
-      this.setState({ inputs: { ...this.state.inputs, d: lastSolution.toPrecision(1), } })
+      lastSolution = "d";
+      this.setState({ inputs: { ...this.state.inputs, d: d.toPrecision(1), } })
     } else if (solveFor == "l") {
       console.log("solveFor internal");
       var l = q / (0.25 * Math.PI * Math.pow(d, 2) * s * n * 1/231);
-      lastSolution = l;
-      this.setState({ inputs: { ...this.state.inputs, l: Math.ceil(lastSolution), } })
+      lastSolution = "l";
+      this.setState({ inputs: { ...this.state.inputs, l: Math.ceil(l), } })
     } else if (solveFor == "q") {
       console.log("solveFor internal");
       // FLOWRATE = 0.25 * PI * D^2 * l * n * s * C
       // C = constant = 1 gal/min / 231 in^3/min
       var q = 0.25 * Math.PI * Math.pow(d, 2) * l * n * s * 1/231;
-      lastSolution = q;
-      this.setState({ inputs: { ...this.state.inputs, q: Math.round(lastSolution), } })
+      lastSolution = "q";
+      this.setState({ inputs: { ...this.state.inputs, q: Math.round(q), } })
     }  
     console.log("doTheMath solved for " + solveFor + " to get " + lastSolution);
   }
@@ -153,11 +176,11 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>WAVY</Text>
-        <Item reference="s" myFunc={ (a) => this.myFunc(a, "s", this.checkConstrained) } variable={ String(this.state.inputs.s) } parameter="Speed" unit="rpm"/>
-        <Item reference="n" myFunc={ (a) => this.myFunc(a, "n", this.checkConstrained) } variable={ String(this.state.inputs.n) } parameter="Number of Plungers" unit="qty"/>
-        <Item reference="d" myFunc={ (a) => this.myFunc(a, "d", this.checkConstrained) } variable={ String(this.state.inputs.d) } parameter="Plunger Diameter" unit="in"/>
-        <Item reference="l" myFunc={ (a) => this.myFunc(a, "l", this.checkConstrained) } variable={ String(this.state.inputs.l) } parameter="Stroke" unit="in"/>
-        <Item reference="q" myFunc={ (a) => this.myFunc(a, "q", this.checkConstrained) } variable={ String(this.state.inputs.q) } parameter="Flowrate" unit="gpm"/>
+        <Item reference="s" myFunc={ (a) => this.myFunc(a, "s", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("s")) } parameter="Speed" unit="rpm"/>
+        <Item reference="n" myFunc={ (a) => this.myFunc(a, "n", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("n")) } parameter="Number of Plungers" unit="qty"/>
+        <Item reference="d" myFunc={ (a) => this.myFunc(a, "d", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("d")) } parameter="Plunger Diameter" unit="in"/>
+        <Item reference="l" myFunc={ (a) => this.myFunc(a, "l", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("l")) } parameter="Stroke" unit="in"/>
+        <Item reference="q" myFunc={ (a) => this.myFunc(a, "q", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("q")) } parameter="Flowrate" unit="gpm"/>
         <Button onPress={ () => printState(this) } title="See State"></Button>
         <Text ref="testRef">{this.constraintState}</Text>
         <View style={styles.spacing}></View>
