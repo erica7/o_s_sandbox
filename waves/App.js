@@ -67,15 +67,17 @@ export default class App extends React.Component {
           ...this.state.inputs, 
           s: Number(param),
         }, 
-      }, this.checkConstrained(this.state));
+      }, function() {
+        this.checkConstrained(this.state);
+      });
     } else if (param2 === "n") {
-      this.setState({ inputs: {...this.state.inputs, n: Number(param),}, }, this.checkConstrained(this.state));
+      this.setState({ inputs: {...this.state.inputs, n: Number(param),}, }, function() { this.checkConstrained(this.state); });
     } else if (param2 === "d") {
-      this.setState({ inputs: {...this.state.inputs, d: Number(param),}, }, this.checkConstrained(this.state));
+      this.setState({ inputs: {...this.state.inputs, d: Number(param),}, }, function() { this.checkConstrained(this.state); });
     } else if (param2 === "l") {
-      this.setState({ inputs: {...this.state.inputs, l: Number(param),}, }, this.checkConstrained(this.state));
+      this.setState({ inputs: {...this.state.inputs, l: Number(param),}, }, function() { this.checkConstrained(this.state); });
     } else if (param2 === "q") {
-      this.setState({ inputs: {...this.state.inputs, q: Number(param),}, }, this.checkConstrained(this.state));
+      this.setState({ inputs: {...this.state.inputs, q: Number(param),}, }, function() { this.checkConstrained(this.state); });
     }
     // callback(this.state);
     // checkConstrained(this.state);
@@ -120,29 +122,29 @@ export default class App extends React.Component {
       console.log("solveFor internal");
       var s = q / (0.25 * Math.PI * Math.pow(d, 2) * l * n * 1/231);
       lastSolution = s;
-      this.setState({ inputs: {...this.state.inputs, s: lastSolution,} })
+      this.setState({ inputs: { ...this.state.inputs, s: Math.round(lastSolution), } })
     } else if (solveFor == "n") {
       console.log("solveFor internal");
       var n = q / (0.25 * Math.PI * Math.pow(d, 2) * l * s * 1/231);
       lastSolution = n;
-      this.setState({ inputs: {...this.state.inputs, n: lastSolution,} })
+      this.setState({ inputs: { ...this.state.inputs, n: Math.ceil(lastSolution), } })
     } else if (solveFor == "d") {
       console.log("solveFor internal");
       var d = Math.sqrt( q / (0.25 * Math.PI * l * n * s * 1/231) );
       lastSolution = d;
-      this.setState({ inputs: {...this.state.inputs, d: lastSolution,} })
+      this.setState({ inputs: { ...this.state.inputs, d: lastSolution.toPrecision(1), } })
     } else if (solveFor == "l") {
       console.log("solveFor internal");
       var l = q / (0.25 * Math.PI * Math.pow(d, 2) * s * n * 1/231);
       lastSolution = l;
-      this.setState({ inputs: {...this.state.inputs, l: lastSolution,} })
+      this.setState({ inputs: { ...this.state.inputs, l: Math.ceil(lastSolution), } })
     } else if (solveFor == "q") {
       console.log("solveFor internal");
       // FLOWRATE = 0.25 * PI * D^2 * l * n * s * C
       // C = constant = 1 gal/min / 231 in^3/min
       var q = 0.25 * Math.PI * Math.pow(d, 2) * l * n * s * 1/231;
       lastSolution = q;
-      this.setState({ inputs: {...this.state.inputs, q: lastSolution,} })
+      this.setState({ inputs: { ...this.state.inputs, q: Math.round(lastSolution), } })
     }  
     console.log("doTheMath solved for " + solveFor + " to get " + lastSolution);
   }
@@ -170,7 +172,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#2a363b',
+    backgroundColor: '#111111',
+    // backgroundColor: '#2a363b',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 9,
