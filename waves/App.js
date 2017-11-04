@@ -26,7 +26,7 @@ class Item extends React.Component {
     this.props.myFocus();
   }
   handleDoneEdit = (input) => {
-    this.props.myFunc2(input);
+    // this.props.myFunc2(input);
   }
   render() {
     return (
@@ -56,10 +56,13 @@ export default class App extends React.Component {
     super(props);
     this.myFunc = this.myFunc.bind(this);
     this.myFocus = this.myFocus.bind(this);
-    this.myFunc2 = this.myFunc2.bind(this);
+    // this.myFunc2 = this.myFunc2.bind(this);
+    this.checkConstrained = this.checkConstrained.bind(this);
+    this.solveFor = "";
     this.state = {
       // value: '',  // just for dev
       // changes: 0,  // just for dev 
+      calcBtnDisabled: true,
       inputs: {
         s: 0,
         n: 0,
@@ -84,31 +87,8 @@ export default class App extends React.Component {
         return this.state.inputs.q === 0 ? "" : this.state.inputs.q;
     }
   }
-  myFunc = (param, param2) => { //, callback) => {
-    console.log(param);
-    console.log(param2);
-    // this.setState({ changes: Number(param) });  // just for dev 
-    if (param2 === "s") {
-      variableDisplay=this.state.inputs.s
-      this.setState({ 
-        inputs: { 
-          ...this.state.inputs, 
-          s: Number(param),
-        }, 
-      }, //() => {
-        //this.checkConstrained(this.state);
-      );//});
-    } else if (param2 === "n") {
-      this.setState({ inputs: {...this.state.inputs, n: Number(param),}, }, );// () => { this.checkConstrained(this.state); });
-    } else if (param2 === "d") {
-      this.setState({ inputs: {...this.state.inputs, d: Number(param),}, }, );// () => { this.checkConstrained(this.state); });
-    } else if (param2 === "l") {
-      this.setState({ inputs: {...this.state.inputs, l: Number(param),}, }, );// () => { this.checkConstrained(this.state); });
-    } else if (param2 === "q") {
-      this.setState({ inputs: {...this.state.inputs, q: Number(param),}, }, );// () => { this.checkConstrained(this.state); });
-    }
-  }
-  myFunc2 = (param, param2, callback) => {
+  myFunc = (param, param2, callback) => {
+    // set the state, then check constraint state 
     console.log(param);
     console.log(param2);
     // this.setState({ changes: Number(param) });  // just for dev 
@@ -120,16 +100,16 @@ export default class App extends React.Component {
           s: Number(param),
         }, 
       }, () => {
-        this.checkConstrained(this.state);
+        callback();
       });
     } else if (param2 === "n") {
-      this.setState({ inputs: {...this.state.inputs, n: Number(param),}, }, () => { this.checkConstrained(this.state); });
+      this.setState({ inputs: {...this.state.inputs, n: Number(param),}, }, () => { callback(); });
     } else if (param2 === "d") {
-      this.setState({ inputs: {...this.state.inputs, d: Number(param),}, }, () => { this.checkConstrained(this.state); });
+      this.setState({ inputs: {...this.state.inputs, d: Number(param),}, }, () => { callback(); });
     } else if (param2 === "l") {
-      this.setState({ inputs: {...this.state.inputs, l: Number(param),}, }, () => { this.checkConstrained(this.state); });
+      this.setState({ inputs: {...this.state.inputs, l: Number(param),}, }, () => { callback(); });
     } else if (param2 === "q") {
-      this.setState({ inputs: {...this.state.inputs, q: Number(param),}, }, () => { this.checkConstrained(this.state); });
+      this.setState({ inputs: {...this.state.inputs, q: Number(param),}, }, () => { callback(); });
     }
   }
   myFocus = () => {
@@ -137,33 +117,42 @@ export default class App extends React.Component {
     // do stuff here 
   }
   checkConstrained = () => {  
+    // check how constraint state
     console.log('checkConstrained() hit');
     console.log("'this.state' here: " + this.state);
     var boolConstrained = false;
     var count = 0;
-    var solveFor;
+    // var solveFor;
     for (let key in this.state.inputs) {
       console.log(this.state.inputs[key]);
       if (this.state.inputs[key] === 0 || this.state.inputs[key] === null) {
         count++;
-        solveFor = key;
+        this.solveFor = key;
       }
     }
     console.log("count: " + count);
-    console.log("solveFor: " + solveFor);
+    console.log("solveFor: " + this.solveFor);
     if (count === 1) {
       boolConstrained = true;
-      this.constraintState = "Perfectly constrained";
+      // this.constraintState = "Perfectly constrained";
+      // this.state.calcBtnDisabled = false;
+      this.readyToDoTheMath();
+      return 1;
     } else if (count < 1) {
       this.constraintState = "Over constrained";
     } else {
       this.constraintState = "Under constrained";
     }
     if (boolConstrained) {
-      this.doTheMath(solveFor)
+      // this.doTheMath(solveFor)
     }
+    return 0;
   }
-  doTheMath = (solveFor) => { 
+  readyToDoTheMath = () => {
+    this.constraintState = "Perfectly constrained";
+    this.state.calcBtnDisabled = false;
+  }
+  doTheMath = () => { 
     console.log("doTheMath() hit");
     var s = this.state.inputs.s;
     var n = this.state.inputs.n;
@@ -171,48 +160,50 @@ export default class App extends React.Component {
     var l = this.state.inputs.l;
     var q = this.state.inputs.q;
     var lastSolution;
-    if (solveFor == "s") { 
-      console.log("solveFor internal");
+    if (this.solveFor == "s") { 
+      console.log("this.solveFor internal");
       var s = q / (0.25 * Math.PI * Math.pow(d, 2) * l * n * 1/231);
       lastSolution = "s";
       this.setState({ inputs: { ...this.state.inputs, s: Math.round(s), } })
-    } else if (solveFor == "n") {
-      console.log("solveFor internal");
+    } else if (this.solveFor == "n") {
+      console.log("this.solveFor internal");
       var n = q / (0.25 * Math.PI * Math.pow(d, 2) * l * s * 1/231);
       lastSolution = "n";
       this.setState({ inputs: { ...this.state.inputs, n: Math.ceil(n), } })
-    } else if (solveFor == "d") {
-      console.log("solveFor internal");
+    } else if (this.solveFor == "d") {
+      console.log("this.solveFor internal");
       var d = Math.sqrt( q / (0.25 * Math.PI * l * n * s * 1/231) );
       lastSolution = "d";
       this.setState({ inputs: { ...this.state.inputs, d: d.toPrecision(1), } })
-    } else if (solveFor == "l") {
-      console.log("solveFor internal");
+    } else if (this.solveFor == "l") {
+      console.log("this.solveFor internal");
       var l = q / (0.25 * Math.PI * Math.pow(d, 2) * s * n * 1/231);
       lastSolution = "l";
       this.setState({ inputs: { ...this.state.inputs, l: Math.ceil(l), } })
-    } else if (solveFor == "q") {
-      console.log("solveFor internal");
+    } else if (this.solveFor == "q") {
+      console.log("this.solveFor internal");
       // FLOWRATE = 0.25 * PI * D^2 * l * n * s * C
       // C = constant = 1 gal/min / 231 in^3/min
       var q = 0.25 * Math.PI * Math.pow(d, 2) * l * n * s * 1/231;
       lastSolution = "q";
       this.setState({ inputs: { ...this.state.inputs, q: Math.round(q), } })
     }  
-    console.log("doTheMath solved for " + solveFor + " to get " + lastSolution);
+    console.log("doTheMath solved for " + this.solveFor + " to get " + lastSolution);
+  
   }
   render() {
     let testValue = this.parameter;
     return (
       <View style={styles.container}>
         <Text style={styles.title}>WAVY</Text>
-        <Item reference="s" myFunc={ (a) => this.myFunc(a, "s") } myFunc2={ (a) => this.myFunc2(a, "s", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("s")) } parameter="Speed" unit="rpm"/>
-        <Item reference="n" myFunc={ (a) => this.myFunc(a, "n") } myFunc2={ (a) => this.myFunc2(a, "n", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("n")) } parameter="Number of Plungers" unit="qty"/>
-        <Item reference="d" myFunc={ (a) => this.myFunc(a, "d") } myFunc2={ (a) => this.myFunc2(a, "d", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("d")) } parameter="Plunger Diameter" unit="in"/>
-        <Item reference="l" myFunc={ (a) => this.myFunc(a, "l") } myFunc2={ (a) => this.myFunc2(a, "l", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("l")) } parameter="Stroke" unit="in"/>
-        <Item reference="q" myFunc={ (a) => this.myFunc(a, "q") } myFunc2={ (a) => this.myFunc2(a, "q", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("q")) } parameter="Flowrate" unit="gpm"/>
-        <Button onPress={ () => printState(this) } title="See State"></Button>
-        <Text ref="testRef">{this.constraintState}</Text>
+        <Item reference="s" myFunc={ (a) => this.myFunc(a, "s", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("s")) } parameter="Speed" unit="rpm"/>
+        <Item reference="n" myFunc={ (a) => this.myFunc(a, "n", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("n")) } parameter="Number of Plungers" unit="qty"/>
+        <Item reference="d" myFunc={ (a) => this.myFunc(a, "d", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("d")) } parameter="Plunger Diameter" unit="in"/>
+        <Item reference="l" myFunc={ (a) => this.myFunc(a, "l", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("l")) } parameter="Stroke" unit="in"/>
+        <Item reference="q" myFunc={ (a) => this.myFunc(a, "q", this.checkConstrained) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue("q")) } parameter="Flowrate" unit="gpm"/>
+        <Button disabled={this.state.calcBtnDisabled} ref="calculateBtn" onPress={ () => this.doTheMath(this) } title="Calculate"></Button>
+        <Button raised large onPress={ () => printState(this) } title="See State"></Button>
+        <Text style={styles.note} ref="testRef">{this.constraintState}</Text>
         <View style={styles.spacing}></View>
       </View>
     );
@@ -225,6 +216,9 @@ export default class App extends React.Component {
 
 // STYLING // 
 const styles = StyleSheet.create({
+  note: {
+    color: '#eee',
+  },
   container: {
     flex: 1,
     flexDirection: 'column',
