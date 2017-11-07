@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform, TouchableHighlight, TouchableNativeFeedback } from 'react';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 const styles = require('./Style.js');
 
@@ -51,9 +52,9 @@ class Item extends React.Component {
           keyboardType="decimal-pad"
           keyboardAppearance="dark"
           value={this.props.variable}
+          selectionColor="#f00"
         />
-        <Text style={[styles.font, styles.unit]}>{this.props.unit} {this.props.variable}</Text>
-        <Button onPress={ () => printState(this) } title="S"></Button>
+        <Text style={[styles.font, styles.unit]}>{this.props.unit}</Text>
       </View>
     )
   }
@@ -143,18 +144,21 @@ export default class App extends React.Component {
     }
     console.log("this.state.count: " + this.state.count);
     console.log("solveFor: " + this.state.solveFor);
-    if (this.state.count === 1) {  // why doesn't this run? porqueeeeee!!!!
-      console.log("perf const");                              // this runs 
-      this.state.constraintState = "Perfectly constrained";   // this doesn't 
-      this.state.calcBtnDisabled = false;                     // this doesn't 
+    if (this.state.count === 1) { 
+      console.log("perf const");                              // this runs      -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
+      this.state.constraintState = "Perfectly constrained";   // this doesn't   -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
+      this.state.calcBtnDisabled = false;                     // this doesn't   -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
+      this.forceUpdate();
     } else if (this.state.count < 1) {  // 
       console.log("over const");
       this.state.constraintState = "Over constrained";
       this.state.calcBtnDisabled = true;
+      this.forceUpdate();
     } else {
       console.log("under const");
       this.state.constraintState = "Under constrained";
       this.state.calcBtnDisabled = true;
+      this.forceUpdate();
     }
   } 
   doTheMath = () => { 
@@ -197,6 +201,10 @@ export default class App extends React.Component {
   }
   render() {
     let testValue = this.parameter;
+    var TouchableElement = TouchableHighlight;
+    // if (Platform.OS === 'android') {
+    //  TouchableElement = TouchableNativeFeedback;
+    // }
     return (
       <View style={styles.container}>
         <Text style={styles.title}>WAVY</Text>
@@ -205,10 +213,13 @@ export default class App extends React.Component {
         {this.paramItem({varName:"d", parameter:"Plunger Diameter", unit:"in"})}
         {this.paramItem({varName:"l", parameter:"Stroke", unit:"in"})}
         {this.paramItem({varName:"q", parameter:"Flowrate", unit:"gpm"})}
-        <Button disabled={this.state.calcBtnDisabled} ref="calculateBtn" onPress={ () => this.doTheMath(this) } title="Calculate"></Button>
-        <Button raised large onPress={ () => printState(this) } title="See State"></Button>
-        <Button raised large onPress={ () => this.printStateLocal() } title="See State Local"></Button>
-        <Text style={styles.note} ref="testRef">{this.state.constraintState}</Text>
+        <TouchableElement styles={styles.calcBtn} onPress={ () => this.doTheMath(this) }>
+          <Text>Click here!</Text>
+        </TouchableElement>
+        <Button styles={styles.calcBtn} disabled={this.state.calcBtnDisabled} ref="calculateBtn" onPress={ () => this.doTheMath(this) } title="Calculate"></Button>
+        {/* <Button raised large onPress={ () => printState(this) } title="See State"></Button> */}
+        {/* <Button raised large onPress={ () => this.printStateLocal() } title="See State Local"></Button> */}
+        {/* <Text style={styles.note} ref="testRef">{this.state.constraintState}</Text> */}
         <View style={styles.spacing}></View>
       </View>
     );
