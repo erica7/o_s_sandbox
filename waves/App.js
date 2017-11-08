@@ -1,7 +1,8 @@
 import React from 'react';
-import { Platform, TouchableHighlight, TouchableNativeFeedback } from 'react';
+import { Platform, TouchableHighlight, TouchableNativeFeedback } from 'react-native';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 const styles = require('./Style.js');
+// var { Platform, TouchableHighlight, TouchableNativeFeedback } = React;
 
 // ISSUES
 //   DRY it up 
@@ -73,6 +74,7 @@ export default class App extends React.Component {
       calcBtnDisabled: true,
       solveFor: "",
       lastSolution: "",
+      
       inputs: {
         s: 0,
         n: 0,
@@ -213,7 +215,7 @@ export default class App extends React.Component {
         {this.paramItem({varName:"d", parameter:"Plunger Diameter", unit:"in"})}
         {this.paramItem({varName:"l", parameter:"Stroke", unit:"in"})}
         {this.paramItem({varName:"q", parameter:"Flowrate", unit:"gpm"})}
-        <TouchableElement styles={styles.calcBtn} onPress={ () => this.doTheMath(this) }>
+        <TouchableElement style={styles.calcBtn} underlayColor="#f00" activeOpacity={0.5} onPress={ () =>  {if (!this.state.calcBtnDisabled) {this.doTheMath(this)} }  }>
           <Text>Click here!</Text>
         </TouchableElement>
         <Button styles={styles.calcBtn} disabled={this.state.calcBtnDisabled} ref="calculateBtn" onPress={ () => this.doTheMath(this) } title="Calculate"></Button>

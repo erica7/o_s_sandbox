@@ -64,9 +64,10 @@ const styles = StyleSheet.create({
     color: '#3eacab',
   },
   calcBtn: {
-    color: 'red',
+    // color: 'red',
     // raised: true,
-    backgroundColor: 'green',
+    padding: 7,
+    backgroundColor: '#3eacab',
 
   },
   spacing: {
