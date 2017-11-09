@@ -63,12 +63,16 @@ const styles = StyleSheet.create({
     margin: 9,
     color: '#3eacab',
   },
-  calcBtn: {
-    // color: 'red',
-    // raised: true,
-    padding: 7,
-    backgroundColor: '#3eacab',
-
+  btn: {
+    marginTop: 12,
+    padding: 12,
+    paddingRight: 33,
+    paddingLeft: 33,
+    backgroundColor: '#222',
+  },
+  btnText: {
+    fontSize: 16,
+    letterSpacing: 9,
   },
   spacing: {
     height: 290,
