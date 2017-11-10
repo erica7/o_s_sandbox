@@ -26,7 +26,7 @@ class Item extends React.Component {
     render() {
       return (
         <View style={styles.item}>
-          <Text style={[styles.font, styles.parameter]}>{this.props.parameter}</Text>
+          <Text style={[styles.font, styles.parameter]}>{this.props.parameter.toUpperCase()}</Text>
           <TextInput
             ref={this.props.reference}
             style={[styles.font, styles.textInput]}
@@ -40,7 +40,7 @@ class Item extends React.Component {
             value={this.props.variable}
             selectionColor="#f00"
           />
-          <Text style={[styles.font, styles.unit]}>{this.props.unit}</Text>
+          <Text style={[styles.font, styles.unit]}>{this.props.unit.toUpperCase()}</Text>
         </View>
       )
     }

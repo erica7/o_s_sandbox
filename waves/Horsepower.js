@@ -4,7 +4,7 @@ const styles = require('./Style.js');
 const Item = require('./Item.js');
 
 // APP CLASS // builds the display of all the items, holds the state of variable values, and contains the logic
-export class Flowrate extends React.Component {
+export class Horsepower extends React.Component {
     constructor(props) {
       super(props);
       this.myFunc = this.myFunc.bind(this);
@@ -17,11 +17,9 @@ export class Flowrate extends React.Component {
         solveFor: "",
         lastSolution: "",
         inputs: {
-          s: 0,
-          n: 0,
-          d: 0,
-          l: 0,
           q: 0,
+          p: 0,
+          h: 0,
         },
       };
     }
@@ -30,43 +28,35 @@ export class Flowrate extends React.Component {
     }
     displayValue = (input) => {
       switch (input) {
-        case "s":
-          return this.state.inputs.s === 0 ? "" : this.state.inputs.s;
-        case "n":
-          return this.state.inputs.n === 0 ? "" : this.state.inputs.n;
-        case "d":
-          return this.state.inputs.d === 0 ? "" : this.state.inputs.d;
-        case "l": 
-          return this.state.inputs.l === 0 ? "" : this.state.inputs.l;
-        case "q": 
+        case "q":
           return this.state.inputs.q === 0 ? "" : this.state.inputs.q;
+        case "p":
+          return this.state.inputs.p === 0 ? "" : this.state.inputs.p;
+        case "h":
+          return this.state.inputs.h === 0 ? "" : this.state.inputs.h;
       }
     }
     myFunc = (param, param2) => {
       // set the state, then check constraint state 
       console.log("myFunc() hit: param:", param, "; param2:", param2);
-      if (param2 === "s") {
+      if (param2 === "q") {
         // if (param[param.length-1] == ".") {
           
         // } else {
           this.setState({ 
             inputs: { 
               ...this.state.inputs, 
-              s: Number(param),
+              q: Number(param),
             }, 
           }, 
             ()=>{this.checkConstrained()}
           );
         // }
         
-      } else if (param2 === "n") {
-        this.setState({ inputs: {...this.state.inputs, n: Number(param),}, },  ()=>{this.checkConstrained()} );
-      } else if (param2 === "d") {
-        this.setState({ inputs: {...this.state.inputs, d: Number(param),}, },  ()=>{this.checkConstrained()} );
-      } else if (param2 === "l") {
-        this.setState({ inputs: {...this.state.inputs, l: Number(param),}, },  ()=>{this.checkConstrained()} );
-      } else if (param2 === "q") {
-        this.setState({ inputs: {...this.state.inputs, q: Number(param),}, },  ()=>{this.checkConstrained()} );
+      } else if (param2 === "p") {
+        this.setState({ inputs: {...this.state.inputs, p: Number(param),}, },  ()=>{this.checkConstrained()} );
+      } else if (param2 === "h") {
+        this.setState({ inputs: {...this.state.inputs, h: Number(param),}, },  ()=>{this.checkConstrained()} );
       }
     }
     myFocus = () => {
@@ -107,34 +97,24 @@ export class Flowrate extends React.Component {
     } 
     doTheMath = () => { 
       console.log("doTheMath() hit");
-      var s = this.state.inputs.s;
-      var n = this.state.inputs.n;
-      var d = this.state.inputs.d;
-      var l = this.state.inputs.l;
       var q = this.state.inputs.q;
+      var p = this.state.inputs.p;
+      var h = this.state.inputs.h;
       // var lastSolution;
-      if (this.state.solveFor == "s") { 
-        var s = q / (0.25 * Math.PI * Math.pow(d, 2) * l * n * 1/231);
-        this.state.lastSolution = "s";
-        this.setState({ inputs: { ...this.state.inputs, s: Math.round(s), } })  // ISSUE: remains blank solving for this with 333 in all other fields; has to do with Math.round
-      } else if (this.state.solveFor == "n") {
-        var n = q / (0.25 * Math.PI * Math.pow(d, 2) * l * s * 1/231);
-        this.state.lastSolution = "n";
-        this.setState({ inputs: { ...this.state.inputs, n: Math.ceil(n), } })
-      } else if (this.state.solveFor == "d") {
-        var d = Math.sqrt( q / (0.25 * Math.PI * l * n * s * 1/231) );
-        this.state.lastSolution = "d";
-        this.setState({ inputs: { ...this.state.inputs, d: d.toPrecision(1), } })
-      } else if (this.state.solveFor == "l") {
-        var l = q / (0.25 * Math.PI * Math.pow(d, 2) * s * n * 1/231);
-        this.state.lastSolution = "l";
-        this.setState({ inputs: { ...this.state.inputs, l: Math.ceil(l), } })
-      } else if (this.state.solveFor == "q") {
-        // FLOWRATE = 0.25 * PI * D^2 * l * n * s * C
-        // C = constant = 1 gal/min / 231 in^3/min
-        var q = 0.25 * Math.PI * Math.pow(d, 2) * l * n * s * 1/231;
+      if (this.state.solveFor == "q") { 
+        var q = h * 1550 / p;
         this.state.lastSolution = "q";
-        this.setState({ inputs: { ...this.state.inputs, q: Math.round(q), } })
+        this.setState({ inputs: { ...this.state.inputs, q: Math.round(q), } })  
+      } else if (this.state.solveFor == "p") {
+        var p = h * 1550 / q;
+        this.state.lastSolution = "p";
+        this.setState({ inputs: { ...this.state.inputs, p: Math.ceil(p), } })
+      } else if (this.state.solveFor == "h") {
+        // HORSEPOWER = q * p * C
+        // C = constant = 1 / 1550
+        var h = q * p * 1/1550;
+        this.state.lastSolution = "h";
+        this.setState({ inputs: { ...this.state.inputs, h: Math.round(h), } })
       }  
       console.log("doTheMath solved for " + this.state.solveFor + " to get " + this.state.lastSolution);
     }
@@ -142,15 +122,6 @@ export class Flowrate extends React.Component {
       return (
         <Item reference={props.varName} myFunc={ (a) => this.myFunc(a, props.varName) } myFocus={ () => this.myFocus() } variable={ String(this.displayValue(props.varName)) } parameter={props.parameter} unit={props.unit}/>
       );
-    }
-    clearAll = () => {
-        this.setState({ inputs: {
-            s: 0,
-            n: 0,
-            d: 0,
-            l: 0,
-            q: 0,
-        } })
     }
     styleBtn = () => {
       if (this.state.calcBtnDisabled) {
@@ -175,21 +146,21 @@ export class Flowrate extends React.Component {
       }
       return (
         <View style={styles.container}>
-          {this.paramItem({varName:"s", parameter:"Speed", unit:"rpm"})}
-          {this.paramItem({varName:"n", parameter:"Number of Plungers", unit:"qty"})}
-          {this.paramItem({varName:"d", parameter:"Plunger Diameter", unit:"in"})}
-          {this.paramItem({varName:"l", parameter:"Stroke", unit:"in"})}
+          {/* <Text style={styles.title}>WAVY</Text> */}
           {this.paramItem({varName:"q", parameter:"Flowrate", unit:"gpm"})}
+          {this.paramItem({varName:"p", parameter:"Pressure", unit:"psi"})}
+          {this.paramItem({varName:"h", parameter:"Horsepower", unit:"hhp"})}
           <TouchableElement style={[styles.btn, this.styleBtn()]} underlayColor="#ccc" activeOpacity={0.7} onPress={ () =>  {if (!this.state.calcBtnDisabled) {this.doTheMath(this)} }  }>
             <Text style={styles.btnText}>CALCULATE</Text>
           </TouchableElement>
-          <TouchableElement style={[styles.btn]} underlayColor="#ccc" activeOpacity={0.7} onPress={ () =>  { this.clearAll() } }>
-            <Text style={styles.btnText}>CLEAR ALL</Text>
-          </TouchableElement>
+          {/* <Button styles={styles.calcBtn} disabled={this.state.calcBtnDisabled} ref="calculateBtn" onPress={ () => this.doTheMath(this) } title="Calculate"></Button> */}
+          {/* <Button raised large onPress={ () => printState(this) } title="See State"></Button> */}
+          {/* <Button raised large onPress={ () => this.printStateLocal() } title="See State Local"></Button> */}
+          {/* <Text style={styles.note} ref="testRef">{this.state.constraintState}</Text> */}
           <View style={styles.spacing}></View>
         </View>
       );
     }
   }
 
-module.exports = Flowrate;
+module.exports = Horsepower;
