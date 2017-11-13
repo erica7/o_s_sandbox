@@ -37,7 +37,7 @@ class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     var TouchableElement = TouchableHighlight;
     if (Platform.OS === 'android') {
-     TouchableElement = TouchableNativeFeedback;
+      TouchableElement = TouchableNativeFeedback;
     }
     return (
       <View style={styles.container}>
