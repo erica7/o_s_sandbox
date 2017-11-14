@@ -1,71 +1,43 @@
 import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, StyleSheet, Text, TextInput, View, Button } from 'react-native';
 const styles = require('./Style.js');
-// const Item = require('./Item.js');
 
-// APP CLASS // builds the display of all the items, holds the state of variable values, and contains the logic
 class CalcPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.doTheMathC = this.doTheMathC.bind(this);
-    // this.styleBtnC = this.styleBtnC.bind(this);
     this.clearAllC = this.clearAllC.bind(this);
-    this.calcBtnDisabledC = this.calcBtnDisabledC.bind(this);
   }
-
   doTheMathC = () => {
-    console.log("CalcPage doTheMathC");
     this.props.doTheMath();
   }
-  // styleBtnC = () => {
-  //   console.log("CalcPage styleBtnC");
-  //   return this.props.styleBtn();
-  // }
   clearAllC = () => {
-    console.log("CalcPage clearAllC");
     this.props.clearAll();
   }
-  calcBtnDisabledC = () => {
-    console.log("CalcPage calcBtnDisabledC");
-    return this.props.isCalcBtnDisabled();
-  }
-
   styleBtn = () => {
-    console.log("Horse2 styleBtn");
-    let myBool = this.calcBtnDisabledC();
+    let myBool = this.props.isCalcBtnDisabled;
     if (myBool) {
-      return (
-        {
-          backgroundColor: '#777',
-        }
-      );
+      return ( { backgroundColor: '#777', } );
     } else {
-      return (
-        {
-          backgroundColor: '#eee',
-        }
-      );
+      return ( { backgroundColor: '#eee', } );
     }
   }
-
   render() {
     let testValue = this.parameter;
     var TouchableElement = TouchableHighlight;
     if (Platform.OS === 'android') {
       TouchableElement = TouchableNativeFeedback;
     }
-    let myBool = this.calcBtnDisabledC;
-    var myStyle = this.styleBtn();
-
-    //onPress={() => { if (true) { this.doTheMathC } }}
+    let myBool = this.props.isCalcBtnDisabled;
+    let myStyle = this.styleBtn();
     return (
       <View>
         <TouchableElement
           style={[styles.btn, myStyle]}
           underlayColor="#ccc"
           activeOpacity={0.7}
-          onPress={ !myBool && this.doTheMathC }
+          onPress={ () => { if (!myBool) {this.doTheMathC()}} }
         >
           <Text style={styles.btnText}>CALCULATE</Text>
         </TouchableElement>

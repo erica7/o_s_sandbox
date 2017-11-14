@@ -7,6 +7,7 @@ const Flowrate = require('./Flowrate.js');
 const Horsepower = require('./Horsepower.js');
 const Horse2 = require('./Horse2.js');
 const CalcPage = require('./CalcPage.js');
+const Calc = require('./Calc.js');
 
 // ISSUES
 //   clean up Item props
@@ -57,6 +58,9 @@ class HomeScreen extends React.Component {
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Horse2')}>
           <Text style={styles.btnText}>HORSE 2</Text>
         </TouchableElement>
+        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Calc')}>
+          <Text style={styles.btnText}>CALC HORSEY</Text>
+        </TouchableElement>
       </View>
     );
   }
@@ -82,6 +86,7 @@ export const CalcApp = StackNavigator({
   Horsepower: { screen: Horsepower },
   Horse2: { screen: Horse2 },
   // CalcPage: { screen: CalcPage },
+  Calc: { screen: Calc },
 });
 
 export default class App extends React.Component {

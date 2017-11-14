@@ -2,13 +2,12 @@ import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, StyleSheet, Text, TextInput, View, Button } from 'react-native';
 const styles = require('./Style.js');
 const Item = require('./Item.js');
-const CalcPage = require('./CalcPage.js');
 
 //NOTES
 // CalcPage prop isCalcBtnDisabled is equal to this.state.calcBtnDisabled; used to keep calculate button styling and behavior current
 //ISSUES
 
-export class Horse2 extends React.Component {
+export class Horsey extends React.Component {
   constructor(props) {
     super(props);
     this.myFunc = this.myFunc.bind(this);
@@ -17,11 +16,6 @@ export class Horse2 extends React.Component {
     this.doTheMath = this.doTheMath.bind(this);
     this.clearAll = this.clearAll.bind(this);
     this.state = {
-      count: 0,
-      constraintState: "",
-      calcBtnDisabled: true,
-      solveFor: "",
-      lastSolution: "",
       inputs: {
         q: 0,
         p: 0,
@@ -29,8 +23,8 @@ export class Horse2 extends React.Component {
       },
     };
   }
-  printStateLocal = () => {
-    console.log(this.state);
+  checkConstrained = () => {
+    this.props.checkConstrained(this.state.inputs);
   }
   displayValue = (input) => {
     switch (input) {
@@ -45,11 +39,11 @@ export class Horse2 extends React.Component {
   myFunc = (param, param2) => {
     // set the state, then check constraint state 
     if (param2 === "q") {
-      this.setState({ inputs: { ...this.state.inputs, q: Number(param), }, }, () => { this.checkConstrained() });
+      this.setState({ inputs: { ...this.state.inputs, q: Number(param), }, }, () => { this.checkConstrained(this.state.inputs) });
     } else if (param2 === "p") {
-      this.setState({ inputs: { ...this.state.inputs, p: Number(param), }, }, () => { this.checkConstrained() });
+      this.setState({ inputs: { ...this.state.inputs, p: Number(param), }, }, () => { this.checkConstrained(this.state.inputs) });
     } else if (param2 === "h") {
-      this.setState({ inputs: { ...this.state.inputs, h: Number(param), }, }, () => { this.checkConstrained() });
+      this.setState({ inputs: { ...this.state.inputs, h: Number(param), }, }, () => { this.checkConstrained(this.state.inputs) });
     }
   }
   myFocus = () => {
@@ -59,31 +53,6 @@ export class Horse2 extends React.Component {
   }
   myHandleKeyDown = () => {
     this.checkConstrained();
-  }
-  checkConstrained = () => {
-    // check how constraint state
-    this.state.count = 0;
-    for (let key in this.state.inputs) {
-      console.log(this.state.inputs[key]);
-      if (this.state.inputs[key] === 0 || this.state.inputs[key] === null) {
-        this.state.count++;
-        this.state.solveFor = key;
-      }
-    }
-    if (this.state.count === 1) {
-      // console.log("perf const");                              // this runs      -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
-      this.state.constraintState = "Perfectly constrained";   // this doesn't   -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
-      this.state.calcBtnDisabled = false;                     // this doesn't   -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
-    } else if (this.state.count < 1) {  // 
-      // console.log("over const");
-      this.state.constraintState = "Over constrained";
-      this.state.calcBtnDisabled = true;
-    } else {
-      // console.log("under const");
-      this.state.constraintState = "Under constrained";
-      this.state.calcBtnDisabled = true;
-    }
-    this.forceUpdate();
   }
   doTheMath = () => {
     var q = this.state.inputs.q;
@@ -136,15 +105,9 @@ export class Horse2 extends React.Component {
         {this.paramItem({ varName: "q", parameter: "Flowrate", unit: "gpm" })}
         {this.paramItem({ varName: "p", parameter: "Pressure", unit: "psi" })}
         {this.paramItem({ varName: "h", parameter: "Horsepower", unit: "hhp" })}
-        <CalcPage
-          doTheMath={this.doTheMath}
-          styleBtn={this.styleBtn}
-          clearAll={this.clearAll}
-          isCalcBtnDisabled={this.state.calcBtnDisabled}
-        />
       </View>
     );
   }
 }
 
-module.exports = Horse2;
+module.exports = Horsey;
