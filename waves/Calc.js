@@ -14,6 +14,7 @@
 
 // ISSUES
 // how to call doTheMath 'down' to Horsey
+// how to edit/clear state of chile Horsey from parent Calc
 
 import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, StyleSheet, Text, TextInput, View, Button } from 'react-native';
@@ -41,7 +42,8 @@ class Calc extends React.Component {
     // how to call doTheMath 'down' to Horsey
   }
   clearAllC = () => {
-    this.props.clearAll();
+    // this.props.clearAll();
+    
   }
   styleBtn = () => {
     let myBool = this.props.isCalcBtnDisabled;
@@ -87,7 +89,7 @@ class Calc extends React.Component {
     return (
       <View style={styles.container}>
 
-        <Horsey checkConstrained={this.checkConstrained}/>
+        <Horsey checkConstrained={this.checkConstrained} clearAll={this.clearAll}/>
 
         <TouchableElement
           style={[styles.btn, myStyle]}
