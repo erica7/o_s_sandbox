@@ -15,6 +15,8 @@
 // ISSUES
 // how to call doTheMath 'down' to Horsey
 // how to edit/clear state of chile Horsey from parent Calc
+// where should the "input" part of state live???... 
+//    quantity and name of keys changes for each unique formula 
 
 import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, StyleSheet, Text, TextInput, View, Button } from 'react-native';
@@ -89,7 +91,7 @@ class Calc extends React.Component {
     return (
       <View style={styles.container}>
 
-        <Horsey checkConstrained={this.checkConstrained} clearAll={this.clearAll}/>
+        <Horsey initialize={this.initialize} checkConstrained={this.checkConstrained} clearAll={this.clearAll}/>
 
         <TouchableElement
           style={[styles.btn, myStyle]}
