@@ -2,14 +2,20 @@ import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, StyleSheet, Text, TextInput, View, Button } from 'react-native';
 const styles = require('./Style.js');
 const Item = require('./Item.js');
+const CalcButtons = require('./CalcButtons.js');
 
-// APP CLASS // builds the display of all the items, holds the state of variable values, and contains the logic
+//NOTES
+// CalcButtons prop isCalcBtnDisabled is equal to this.state.calcBtnDisabled; used to keep calculate button styling and behavior current
+//ISSUES
+
 export class Horsepower extends React.Component {
   constructor(props) {
     super(props);
     this.myFunc = this.myFunc.bind(this);
     this.myFocus = this.myFocus.bind(this);
     this.checkConstrained = this.checkConstrained.bind(this);
+    this.doTheMath = this.doTheMath.bind(this);
+    this.clearAll = this.clearAll.bind(this);
     this.state = {
       count: 0,
       constraintState: "",
@@ -38,21 +44,8 @@ export class Horsepower extends React.Component {
   }
   myFunc = (param, param2) => {
     // set the state, then check constraint state 
-    console.log("myFunc() hit: param:", param, "; param2:", param2);
     if (param2 === "q") {
-      // if (param[param.length-1] == ".") {
-
-      // } else {
-      this.setState({
-        inputs: {
-          ...this.state.inputs,
-          q: Number(param),
-        },
-      },
-        () => { this.checkConstrained() }
-      );
-      // }
-
+      this.setState({ inputs: { ...this.state.inputs, q: Number(param), }, }, () => { this.checkConstrained() });
     } else if (param2 === "p") {
       this.setState({ inputs: { ...this.state.inputs, p: Number(param), }, }, () => { this.checkConstrained() });
     } else if (param2 === "h") {
@@ -69,7 +62,6 @@ export class Horsepower extends React.Component {
   }
   checkConstrained = () => {
     // check how constraint state
-    console.log('checkConstrained() hit');
     this.state.count = 0;
     for (let key in this.state.inputs) {
       console.log(this.state.inputs[key]);
@@ -78,25 +70,22 @@ export class Horsepower extends React.Component {
         this.state.solveFor = key;
       }
     }
-    console.log("this.state.count: " + this.state.count);
-    console.log("solveFor: " + this.state.solveFor);
     if (this.state.count === 1) {
-      console.log("perf const");                              // this runs      -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
+      // console.log("perf const");                              // this runs      -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
       this.state.constraintState = "Perfectly constrained";   // this doesn't   -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
       this.state.calcBtnDisabled = false;                     // this doesn't   -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
     } else if (this.state.count < 1) {  // 
-      console.log("over const");
+      // console.log("over const");
       this.state.constraintState = "Over constrained";
       this.state.calcBtnDisabled = true;
     } else {
-      console.log("under const");
+      // console.log("under const");
       this.state.constraintState = "Under constrained";
       this.state.calcBtnDisabled = true;
     }
     this.forceUpdate();
   }
   doTheMath = () => {
-    console.log("doTheMath() hit");
     var q = this.state.inputs.q;
     var p = this.state.inputs.p;
     var h = this.state.inputs.h;
@@ -116,48 +105,43 @@ export class Horsepower extends React.Component {
       this.state.lastSolution = "h";
       this.setState({ inputs: { ...this.state.inputs, h: Math.round(h), } })
     }
-    console.log("doTheMath solved for " + this.state.solveFor + " to get " + this.state.lastSolution);
+    // this.forceUpdate();
+  }
+  clearAll = () => {
+    this.setState({
+      inputs: {
+        q: 0,
+        p: 0,
+        h: 0,
+      }
+    });
+    this.checkConstrained();
   }
   paramItem = (props) => {
     return (
-      <Item reference={props.varName} myFunc={(a) => this.myFunc(a, props.varName)} myFocus={() => this.myFocus()} variable={String(this.displayValue(props.varName))} parameter={props.parameter} unit={props.unit} />
+      <Item
+        reference={props.varName}
+        myFunc={(a) => this.myFunc(a, props.varName)}
+        myFocus={() => this.myFocus()}
+        variable={String(this.displayValue(props.varName))}
+        parameter={props.parameter} 
+        unit={props.unit} 
+      />
     );
-  }
-  styleBtn = () => {
-    if (this.state.calcBtnDisabled) {
-      return (
-        {
-          backgroundColor: '#777',
-        }
-      );
-    } else {
-      return (
-        {
-          backgroundColor: '#eee',
-        }
-      );
-    }
   }
   render() {
     let testValue = this.parameter;
-    var TouchableElement = TouchableHighlight;
-    if (Platform.OS === 'android') {
-      TouchableElement = TouchableNativeFeedback;
-    }
     return (
       <View style={styles.container}>
-        {/* <Text style={styles.title}>WAVY</Text> */}
         {this.paramItem({ varName: "q", parameter: "Flowrate", unit: "gpm" })}
         {this.paramItem({ varName: "p", parameter: "Pressure", unit: "psi" })}
         {this.paramItem({ varName: "h", parameter: "Horsepower", unit: "hhp" })}
-        <TouchableElement style={[styles.btn, this.styleBtn()]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => { if (!this.state.calcBtnDisabled) { this.doTheMath(this) } }}>
-          <Text style={styles.btnText}>CALCULATE</Text>
-        </TouchableElement>
-        {/* <Button styles={styles.calcBtn} disabled={this.state.calcBtnDisabled} ref="calculateBtn" onPress={ () => this.doTheMath(this) } title="Calculate"></Button> */}
-        {/* <Button raised large onPress={ () => printState(this) } title="See State"></Button> */}
-        {/* <Button raised large onPress={ () => this.printStateLocal() } title="See State Local"></Button> */}
-        {/* <Text style={styles.note} ref="testRef">{this.state.constraintState}</Text> */}
-        <View style={styles.spacing}></View>
+        <CalcButtons
+          doTheMath={this.doTheMath}
+          styleBtn={this.styleBtn}
+          clearAll={this.clearAll}
+          isCalcBtnDisabled={this.state.calcBtnDisabled}
+        />
       </View>
     );
   }

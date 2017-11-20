@@ -1,13 +1,11 @@
 import React from 'react';
-import { Platform, TouchableHighlight, TouchableNativeFeedback, AppRegistry, StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { Platform, TouchableHighlight, TouchableNativeFeedback, AppRegistry, StyleSheet, Text, TextInput, View, Button, Modal, Picker } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 const styles = require('./Style.js');
-const Item = require('./Item.js');
-const Flowrate = require('./Flowrate.js');
+const OldFlow = require('./OldFlow.js');
+const OldHorse = require('./OldHorse.js');
 const Horsepower = require('./Horsepower.js');
-const Horse2 = require('./Horse2.js');
-const CalcPage = require('./CalcPage.js');
-const Calc = require('./Calc.js');
+const Flowrate = require('./Flowrate.js');
 
 // ISSUES
 //   clean up Item props
@@ -17,6 +15,11 @@ const Calc = require('./Calc.js');
 //   triggering calculation wrt multi-digit input  - check out onEndEditing, onSelectionChange vs onChangeText; currently resolved using active/inactive calculate button
 //   DRY it up .... srsly
 
+// TODO
+//   done for flowrate|change units on calc pages - click on the unit, present modal, update unit & calculation accordingly 
+//   done for flowrate|populate unit converter modal dynamically based on item options 
+//   unit converter - probably single page, only the common stuff 
+//   pre-populated common values such as number of plungers 
 
 // DRY
 //   Calculate and Clear All buttons are the same on each page 
@@ -40,11 +43,25 @@ class HomeScreen extends React.Component {
     if (Platform.OS === 'android') {
       TouchableElement = TouchableNativeFeedback;
     }
+    menuButton = (pageName) => {  // navigate() isn't working, something about param format surely 
+      return (
+        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate("\"{pageName}\"")} >
+          <Text style={styles.btnText}>{ pageName.toUpperCase() }</Text>
+        </TouchableElement>
+      )
+    }
     return (
       <View style={styles.container}>
         <Text style={styles.title}>WAVY</Text>
+        { menuButton('Flowrate') }
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Another')}>
           <Text style={styles.btnText}>ANOTHER</Text>
+        </TouchableElement>
+        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('OldFlow')}>
+          <Text style={styles.btnText}>OLD FLOW</Text>
+        </TouchableElement>
+        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('OldHorse')}>
+          <Text style={styles.btnText}>OLD HORSE</Text>
         </TouchableElement>
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Flowrate')}>
           <Text style={styles.btnText}>FLOWRATE</Text>
@@ -52,21 +69,15 @@ class HomeScreen extends React.Component {
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Horsepower')}>
           <Text style={styles.btnText}>HORSEPOWER</Text>
         </TouchableElement>
-        {/* <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('CalcPage')}>
-          <Text style={styles.btnText}>CALC PAGE TEST</Text>
-        </TouchableElement> */}
-        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Horse2')}>
-          <Text style={styles.btnText}>HORSE 2</Text>
-        </TouchableElement>
-        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Calc')}>
-          <Text style={styles.btnText}>CALC HORSEY</Text>
+        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('ModalEx')}>
+          <Text style={styles.btnText}>Modal Example</Text>
         </TouchableElement>
       </View>
     );
   }
 }
 
-class Another extends React.Component {
+class Another extends React.Component {  // example for navigating screens
   static navigationOptions = {
     title: 'Another',
   };
@@ -79,14 +90,82 @@ class Another extends React.Component {
   }
 }
 
+class ModalExample extends React.Component {  // example of modal and picker 
+  state = {
+    modalVisible: false,
+  }
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+  modalStyles = StyleSheet.create({
+    modal: {
+      marginTop: '44%',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      padding: 44,
+      justifyContent: 'center',
+      backgroundColor: '#aaa',
+      borderRadius: 7,
+      borderWidth: 3,
+      borderColor: '#f55',
+      width: 333,
+      // height: 333,
+    },
+    modalElements: {
+      textAlign: 'center',
+    }
+  })
+  render() {
+    return (
+      <View style={{ marginTop: 22 }}>
+        <Modal
+          style={{ marginTop: 22, flex: 1, flexDirection: 'column', justifyContent: 'center', }}
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {alert("Modal has been closed.")}}
+          >
+          <View style={this.modalStyles.modal}>
+          <View>
+            <Text style={this.modalStyles.modalElements}>Hello World!</Text>
+            <Picker
+              selectedValue={this.state.language}
+              onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+              <Picker.Item label="Java" value="java" />
+              <Picker.Item label="JavaScript" value="js" />
+            </Picker>
+            <TouchableHighlight style={styles.btn} onPress={() => {
+              this.setModalVisible(!this.state.modalVisible)
+            }}>
+              <Text style={this.modalStyles.modalElements}>Hide Modal</Text>
+            </TouchableHighlight>
+          </View>
+          </View>
+        </Modal>
+        <TouchableHighlight onPress={() => {
+          this.setModalVisible(true)
+        }}>
+          <Text>Show Modal</Text>
+        </TouchableHighlight>
+        <Picker
+          selectedValue={this.state.language}
+          onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+          <Picker.Item label="Java" value="java" />
+          <Picker.Item label="JavaScript" value="js" />
+        </Picker>
+      </View>
+    );
+  }
+}
+  
 export const CalcApp = StackNavigator({
   Home: { screen: HomeScreen },
   Another: { screen: Another },
-  Flowrate: { screen: Flowrate },
+  OldFlow: { screen: OldFlow },
+  OldHorse: { screen: OldHorse },
   Horsepower: { screen: Horsepower },
-  Horse2: { screen: Horse2 },
-  // CalcPage: { screen: CalcPage },
-  Calc: { screen: Calc },
+  Flowrate: { screen: Flowrate },
+  ModalEx: { screen: ModalExample },
 });
 
 export default class App extends React.Component {

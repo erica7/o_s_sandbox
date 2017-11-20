@@ -1,3 +1,5 @@
+//SCRAP THIS
+
 // App 
 
 // Calc
@@ -28,14 +30,21 @@ class Calc extends React.Component {
     super(props);
 
     this.doTheMathC = this.doTheMathC.bind(this);
-    this.clearAllC = this.clearAllC.bind(this);
-
+    // this.clearAllC = this.clearAllC.bind(this);
+    this.handleInput = this.handleInput.bind(this);
+    this.displayValue = this.displayValue.bind(this);
+    
     this.state = {
       count: 0,
       constraintState: "",
       calcBtnDisabled: true,
       solveFor: "",
       lastSolution: "",
+      inputs: {
+        q:0,
+        p:0,
+        h:0,
+      },
       
     };
   }
@@ -44,8 +53,28 @@ class Calc extends React.Component {
     // how to call doTheMath 'down' to Horsey
   }
   clearAllC = () => {
-    // this.props.clearAll();
+    this.setState({ inputs: { ...this.state.inputs } })
+    // this.state.inputs = {};  // clear the inputs in state
     
+  }
+  displayValue = (input) => {
+    switch (input) {
+      case "q":
+        return this.state.inputs.q === 0 ? "" : this.state.inputs.q;
+      case "p":
+        return this.state.inputs.p === 0 ? "" : this.state.inputs.p;
+      case "h":
+        return this.state.inputs.h === 0 ? "" : this.state.inputs.h;
+    }
+  }
+  handleInput = (param, param2) => {
+    if (param2 === "q") {
+      this.setState({ inputs: { ...this.state.inputs, q: Number(param), }, }, () => { this.checkConstrained(this.state.inputs) });
+    } else if (param2 === "p") {
+      this.setState({ inputs: { ...this.state.inputs, p: Number(param), }, }, () => { this.checkConstrained(this.state.inputs) });
+    } else if (param2 === "h") {
+      this.setState({ inputs: { ...this.state.inputs, h: Number(param), }, }, () => { this.checkConstrained(this.state.inputs) });
+    }
   }
   styleBtn = () => {
     let myBool = this.props.isCalcBtnDisabled;
@@ -55,12 +84,12 @@ class Calc extends React.Component {
       return ( { backgroundColor: '#eee', } );
     }
   }
-  checkConstrained = (inputs) => {
+  checkConstrained = () => {
     // check how constraint state
     this.state.count = 0;
-    for (let key in inputs) {
-      console.log(inputs[key]);
-      if (inputs[key] === 0 || inputs[key] === null) {
+    for (let key in this.state.inputs) {
+      console.log(this.state.inputs[key]);
+      if (this.state.inputs[key] === 0 || this.state.inputs[key] === null) {
         this.state.count++;
         this.state.solveFor = key;
       }
@@ -91,7 +120,13 @@ class Calc extends React.Component {
     return (
       <View style={styles.container}>
 
-        <Horsey initialize={this.initialize} checkConstrained={this.checkConstrained} clearAll={this.clearAll}/>
+        <Horsey 
+          initialize={this.initialize} 
+          checkConstrained={this.checkConstrained} 
+          displayValue={this.displayValue} 
+          clearAll={this.clearAll}
+          handleInput={this.handleInput}
+        />
 
         <TouchableElement
           style={[styles.btn, myStyle]}

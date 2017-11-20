@@ -82,6 +82,15 @@ const styles = StyleSheet.create({
     // backgroundColor: '#444',
     marginTop: 9,
   },
+  modalView: {
+    padding: 44,
+    justifyContent: 'center',
+    backgroundColor: '#333c',
+    borderRadius: 7,
+    borderWidth: 3,
+    borderColor: '#333',
+    height: '100%',
+  },
 
   // allText: {
   //   flex: 1,

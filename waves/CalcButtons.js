@@ -2,10 +2,9 @@ import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, StyleSheet, Text, TextInput, View, Button } from 'react-native';
 const styles = require('./Style.js');
 
-class CalcPage extends React.Component {
+class CalcButtons extends React.Component {
   constructor(props) {
     super(props);
-
     this.doTheMathC = this.doTheMathC.bind(this);
     this.clearAllC = this.clearAllC.bind(this);
   }
@@ -57,4 +56,4 @@ class CalcPage extends React.Component {
   }
 }
 
-module.exports = CalcPage;
+module.exports = CalcButtons;

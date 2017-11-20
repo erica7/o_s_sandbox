@@ -2,6 +2,18 @@ import React from 'react';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 const styles = require('./Style.js');
 
+class UnitStatic extends React.Component {
+  render() {
+    return (
+      <Text style={[styles.font, styles.unit]}>{this.props.unit.toUpperCase()}</Text>
+    )
+  }
+}
+
+class UnitChange extends React.Component {
+  
+}
+
 // ITEM CLASS // builds the 'variable' display with the label, number input, and units
 class Item extends React.Component {
   constructor(props) {
@@ -40,7 +52,7 @@ class Item extends React.Component {
           value={this.props.variable}
           selectionColor="#f00"
         />
-        <Text style={[styles.font, styles.unit]}>{this.props.unit.toUpperCase()}</Text>
+        <UnitStatic unit={this.props.unit} />
       </View>
     )
   }
