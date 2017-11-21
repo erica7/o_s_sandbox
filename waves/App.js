@@ -43,10 +43,12 @@ class HomeScreen extends React.Component {
     if (Platform.OS === 'android') {
       TouchableElement = TouchableNativeFeedback;
     }
-    menuButton = (pageName) => {  // navigate() isn't working, something about param format surely 
+    menuButton = (pageName) => {  // navigate() isn't working, something about param format surely  // update: this is bullshit
+      const pageN = "'" + pageName + "'";
+      // console.log(pageN);
       return (
-        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate("\"{pageName}\"")} >
-          <Text style={styles.btnText}>{ pageName.toUpperCase() }</Text>
+        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate({pageN})} >
+          <Text style={styles.btnText}>{ pageN }</Text>
         </TouchableElement>
       )
     }
@@ -54,7 +56,7 @@ class HomeScreen extends React.Component {
       <View style={styles.container}>
         <Text style={styles.title}>WAVY</Text>
         { menuButton('Flowrate') }
-        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Another')}>
+        {/* <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Another')}>
           <Text style={styles.btnText}>ANOTHER</Text>
         </TouchableElement>
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('OldFlow')}>
@@ -62,16 +64,16 @@ class HomeScreen extends React.Component {
         </TouchableElement>
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('OldHorse')}>
           <Text style={styles.btnText}>OLD HORSE</Text>
-        </TouchableElement>
+        </TouchableElement> */}
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Flowrate')}>
           <Text style={styles.btnText}>FLOWRATE</Text>
         </TouchableElement>
-        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Horsepower')}>
+        {/* <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Horsepower')}>
           <Text style={styles.btnText}>HORSEPOWER</Text>
         </TouchableElement>
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('ModalEx')}>
           <Text style={styles.btnText}>Modal Example</Text>
-        </TouchableElement>
+        </TouchableElement> */}
       </View>
     );
   }

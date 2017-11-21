@@ -45,6 +45,8 @@ const styles = StyleSheet.create({
   unit: {
     flex: 2,
     color: '#eee',
+    paddingTop: 8,
+    marginTop: 0,
   },
   test: {
     color: 'white',

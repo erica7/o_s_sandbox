@@ -5,8 +5,6 @@ const styles = require('./Style.js');
 class ItemUnit extends React.Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleFocus = this.handleFocus.bind(this);
     this.updateUnit = this.updateUnit.bind(this);
     this.state = {
       modalVisible: false,
@@ -15,15 +13,8 @@ class ItemUnit extends React.Component {
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
   }
-  handleChange = (input) => {  // pass this up to App class's state via element's prop myFunc
-    this.props.myFunc(input);
-  }
-  handleFocus = () => {
-    this.props.myFocus();
-  }
   updateUnit = (parameter, index) => {
     this.props.updateUnit(parameter, index);
-    this.forceUpdate();
     this.setModalVisible(!this.state.modalVisible);
   }
   render() {
@@ -56,8 +47,8 @@ class ItemUnit extends React.Component {
         <TextInput
           ref={this.props.reference}
           style={[styles.font, styles.textInput]}
-          onChangeText={this.handleChange}
-          onFocus={this.handleFocus}
+          onChangeText={this.props.myFunc}
+          onFocus={this.props.myFocus}
           autoCorrect={false}
           keyboardType="decimal-pad"
           keyboardAppearance="dark"
