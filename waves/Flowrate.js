@@ -124,47 +124,11 @@ export class Flowrate extends React.Component {
     };
   }
   doTheMath = () => {
-    console.log("doTheMath() hit");
     let tempInputs = this.state.inputs;
-    // get the current values 
-    let s = tempInputs.s.value;
-    let n = tempInputs.n.value;
-    let d = tempInputs.d.value;
-    let l = tempInputs.l.value;
-    let q = tempInputs.q.value;
-    // get the current constants 
-    let Cs = this.items.s.units[tempInputs.s.unit].const
-    let Cn = this.items.n.units[tempInputs.n.unit].const
-    let Cd = this.items.d.units[tempInputs.d.unit].const
-    let Cl = this.items.l.units[tempInputs.l.unit].const
-    let Cq = this.items.q.units[tempInputs.q.unit].const
-    // solve for the empty variable 
-    if (this.state.solveFor == "s") {
-      s = q * Cq / (0.25 * Math.PI * Math.pow(d, 2) * l * Cl * n * 1 / 231);
-      this.state.lastSolution = "s";
-      tempInputs.s.value = Math.round(s);  // ISSUE: remains blank solving for this with 333 in all other fields; has to do with Math.round
-    } else if (this.state.solveFor == "n") {
-      n = q * Cq / (0.25 * Math.PI * Math.pow(d, 2) * l * Cl * s * 1 / 231);
-      this.state.lastSolution = "n";
-      tempInputs.n.value = Math.ceil(n);
-    } else if (this.state.solveFor == "d") {
-      d = Math.sqrt(q * Cq / (0.25 * Math.PI * l * Cl * n * s * 1 / 231));
-      this.state.lastSolution = "d";
-      tempInputs.d.value = d.toPrecision(1);
-    } else if (this.state.solveFor == "l") {
-      l = q * Cq / (0.25 * Math.PI * Math.pow(d, 2) * s * n * 1 / 231) / Cl;
-      this.state.lastSolution = "l";
-      tempInputs.l.value = Math.ceil(l);
-    } else if (this.state.solveFor == "q") {
-      // FLOWRATE = 0.25 * PI * D^2 * l * n * s * C
-      // C = constant = 1 gal/min / 231 in^3/min
-      q = 0.25 * Math.PI * Math.pow(d, 2) * l * Cl * n * s * 1 / 231 * Cq;
-      this.state.lastSolution = "q";
-      tempInputs.q.value = Math.round(q);
-    }
-    this.setState({inputs: tempInputs})
+    res = LoadVariables.doTheMath(tempInputs, this.items, this.state.solveFor, this.state.lastSolution);
+    this.state.lastSOlution = res[1];
+    this.setState({inputs: res[0]});
     this.checkConstrained();
-    // console.log("doTheMath solved for " + this.state.solveFor + " to get " + this.state.lastSolution);
   }
   displayValue = (input) => {
     return this.state.inputs[input].value === 0 ? "" : this.state.inputs[input].value;
