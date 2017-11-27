@@ -2,10 +2,11 @@ import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, AppRegistry, StyleSheet, Text, TextInput, View, Button, Modal, Picker } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 const styles = require('./Style.js');
-const OldFlow = require('./OldFlow.js');
-const OldHorse = require('./OldHorse.js');
+// const OldFlow = require('./OldFlow.js');
+// const OldHorse = require('./nah/OldHorse.js');
 const Horsepower = require('./Horsepower.js');
 const Flowrate = require('./Flowrate.js');
+const UnitConverter = require('./UnitConverter.js');
 
 // ISSUES
 //   clean up Item props
@@ -68,12 +69,15 @@ class HomeScreen extends React.Component {
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Flowrate')}>
           <Text style={styles.btnText}>FLOWRATE</Text>
         </TouchableElement>
-        {/* <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Horsepower')}>
+        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Horsepower')}>
           <Text style={styles.btnText}>HORSEPOWER</Text>
         </TouchableElement>
-        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('ModalEx')}>
+        {/* <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('ModalEx')}>
           <Text style={styles.btnText}>Modal Example</Text>
         </TouchableElement> */}
+        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('UnitConverter')}>
+          <Text style={styles.btnText}>UNIT CONVERTER</Text>
+        </TouchableElement>
       </View>
     );
   }
@@ -163,11 +167,12 @@ class ModalExample extends React.Component {  // example of modal and picker
 export const CalcApp = StackNavigator({
   Home: { screen: HomeScreen },
   Another: { screen: Another },
-  OldFlow: { screen: OldFlow },
-  OldHorse: { screen: OldHorse },
+  // OldFlow: { screen: OldFlow },
+  // OldHorse: { screen: OldHorse },
   Horsepower: { screen: Horsepower },
   Flowrate: { screen: Flowrate },
   ModalEx: { screen: ModalExample },
+  UnitConverter: { screen: UnitConverter },
 });
 
 export default class App extends React.Component {

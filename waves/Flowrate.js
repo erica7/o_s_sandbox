@@ -1,13 +1,13 @@
 import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, StyleSheet, Text, TextInput, View, Button } from 'react-native';
 const styles = require('./Style.js');
-const Item = require('./Item.js');
+// const Item = require('./Item.js');
 const ItemUnit = require('./ItemUnit.js');
 const CalcButtons = require('./CalcButtons.js');
-import * as LoadVariables from './FlowrateVariables';
-console.log(LoadVariables.test)
+const LoadVariables = require('./FlowrateVariables.js')
+// import * as LoadVariables from './FlowrateVariables';
 
-// methods and properties specific to formula 
+// methods and properties specific to formula --> moved to FlowrateVariables.js
 //  some of constructor: items object, state.inputs object 
 //  doTheMath 
 
@@ -33,65 +33,6 @@ export class Flowrate extends React.Component {
     this.checkConstrained = this.checkConstrained.bind(this);
     this.updateUnit = this.updateUnit.bind(this);
     this.items = LoadVariables.items;
-    // this.items = {  // item info that doesn't change
-    //   s: {
-    //     paramName: "Speed",
-    //     units: [
-    //       {
-    //         unit: "rpm",
-    //         const: 1
-    //       }
-    //     ]
-    //   },
-    //   n: {
-    //     paramName: "Number of Plungers",
-    //     units: [
-    //       {
-    //         unit: "qty",
-    //         const: 1
-    //       }
-    //     ],
-    //   },
-    //   d: {
-    //     paramName: "Plunger Diameter",
-    //     units: [
-    //       {
-    //         unit: "in",
-    //         const: 1
-    //       }
-    //     ],
-    //   },
-    //   l: {
-    //     paramName: "Stroke",
-    //     units: [
-    //       {
-    //         unit: "in",
-    //         const: 1
-    //       },
-    //       {
-    //         unit: "cm",
-    //         const: 1/2.54
-    //       } //or whatever
-    //     ],
-    //   },
-    //   q: {
-    //     paramName: "Flowrate",
-    //     units: [
-    //       {
-    //         unit: "gpm",
-    //         const: 1
-    //       },
-    //       { 
-    //         unit: "bbl/m",
-    //         const: 0.024
-    //       },
-    //       {
-    //         unit: "bbl/h",
-    //         const: 1.43
-    //       }
-    //     ],
-    //   },
-    // };
     this.state = {
       count: 0,
       constraintState: "",
@@ -99,28 +40,6 @@ export class Flowrate extends React.Component {
       solveFor: "",
       lastSolution: "",
       inputs: LoadVariables.inputs,
-      // inputs: {
-      //   s: {
-      //     value: 0,
-      //     unit: 0,
-      //   },
-      //   n: {
-      //     value: 0,
-      //     unit: 0,
-      //   },
-      //   d: {
-      //     value: 0,
-      //     unit: 0
-      //   },
-      //   l: {
-      //     value: 0,
-      //     unit: 0
-      //   },
-      //   q: {
-      //     value: 0,
-      //     unit: 0
-      //   },
-      // },
     };
   }
   doTheMath = () => {
@@ -161,10 +80,10 @@ export class Flowrate extends React.Component {
     console.log("this.state.count: " + this.state.count);
     console.log("solveFor: " + this.state.solveFor);
     if (this.state.count === 1) {
-      console.log("perf const");                              // this runs      -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
-      this.state.constraintState = "Perfectly constrained";   // this doesn't   -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
-      this.state.calcBtnDisabled = false;                     // this doesn't   -- porqueeeeee!!!! - nvmd, forceUpdate() seems to do the trick
-    } else if (this.state.count < 1) {  // 
+      console.log("perf const");
+      this.state.constraintState = "Perfectly constrained";
+      this.state.calcBtnDisabled = false; 
+    } else if (this.state.count < 1) {  
       console.log("over const");
       this.state.constraintState = "Over constrained";
       this.state.calcBtnDisabled = true;

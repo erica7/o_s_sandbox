@@ -1,7 +1,8 @@
 import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, StyleSheet, Text, TextInput, View, Button } from 'react-native';
 const styles = require('./Style.js');
-const Item = require('./Item.js');
+// const Item = require('./Item.js');
+const ItemUnit = require('./ItemUnit.js');
 const CalcButtons = require('./CalcButtons.js');
 
 //NOTES
@@ -119,7 +120,7 @@ export class Horsepower extends React.Component {
   }
   paramItem = (props) => {
     return (
-      <Item
+      <ItemUnit
         reference={props.varName}
         myFunc={(a) => this.myFunc(a, props.varName)}
         myFocus={() => this.myFocus()}

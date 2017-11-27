@@ -14,6 +14,15 @@ const styles = StyleSheet.create({
     padding: 9,
     paddingTop: 18,
   },
+  title: {
+    fontSize: 22,
+    fontWeight: '800',
+    textAlign: 'center',
+    letterSpacing: 50,
+    marginLeft: 50,
+    margin: 9,
+    color: '#3eacab',
+  },
   item: {
     flex: 1,
     flexDirection: 'row',
@@ -44,21 +53,22 @@ const styles = StyleSheet.create({
   },
   unit: {
     flex: 2,
+    // flexDirection: 'column', //
     color: '#eee',
     paddingTop: 8,
     marginTop: 0,
+    justifyContent: 'center', //
+    alignItems: 'center',
+    textAlign: 'center', //
+  },
+  unitCenter: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   test: {
     color: 'white',
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: '800',
-    textAlign: 'center',
-    letterSpacing: 50,
-    marginLeft: 50,
-    margin: 9,
-    color: '#3eacab',
   },
   btn: {
     marginTop: 12,
@@ -99,6 +109,15 @@ const styles = StyleSheet.create({
   //   flexDirection: 'column',
   //   fontSize: 22,
   // },
+
+  // // // // Unit Converter
+  parameterName: {
+    fontSize: 22,
+    fontWeight: '800',
+    textAlign: 'center',
+    margin: 9,
+    color: '#ccc',
+  }
 });
 
 module.exports = styles;
