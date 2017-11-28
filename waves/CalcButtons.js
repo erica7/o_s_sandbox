@@ -49,7 +49,6 @@ class CalcButtons extends React.Component {
         >
           <Text style={styles.btnText}>CLEAR ALL</Text>
         </TouchableElement>
-
         <View style={styles.spacing}></View>
       </View>
     );

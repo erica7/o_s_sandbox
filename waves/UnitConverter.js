@@ -127,6 +127,7 @@ class UnitConverter extends React.Component {
             <Text style={[styles.font, styles.unit]}>UNT</Text>
           </TouchableElement>
         </View>
+        {/* <View style={styles.spacing}></View> FIX UNIT BUTTON VERTICAL ALIGNMENT FIRST */}
       </View>
     )
   }
