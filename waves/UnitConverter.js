@@ -13,7 +13,7 @@ class UnitConverter extends React.Component {
     }
     return (
       <View style={[styles.container]}>
-        <Text style={styles.parameterName}>PARAMETER</Text>
+        <Text style={styles.parameterName}>PARAMETER ONE</Text>
         <View style={styles.item}>
           <TextInput
             // ref={this.props.reference}
@@ -30,7 +30,7 @@ class UnitConverter extends React.Component {
             style={styles.unit}
             onPress={ this.doNothing } 
             >
-            <Text style={[styles.font, styles.unit]}>UNT</Text>
+            <Text style={[styles.font, styles.unitText]}>UNT</Text>
           </TouchableElement>
           <Text style={styles.unit}>=</Text>
           <TextInput
@@ -48,10 +48,10 @@ class UnitConverter extends React.Component {
             style={styles.unit}
             onPress={ this.doNothing } 
             >
-            <Text style={[styles.font, styles.unit]}>UNT</Text>
+            <Text style={[styles.font, styles.unitText]}>UNT</Text>
           </TouchableElement>
         </View>
-        <Text style={styles.parameterName}>PARAMETER</Text>
+        <Text style={styles.parameterName}>PARAMETER TWO</Text>
         <View style={styles.item}>
           <TextInput
             // ref={this.props.reference}
@@ -68,9 +68,9 @@ class UnitConverter extends React.Component {
             style={styles.unit}
             onPress={ this.doNothing } 
             >
-            <Text style={[styles.font, styles.unit]}>UNT</Text>
+            <Text style={[styles.font, styles.unitText]}>UNT</Text>
           </TouchableElement>
-          <Text style={styles.unit}>=</Text>
+          <Text style={styles.font}>=</Text>
           <TextInput
             // ref={this.props.reference}
             style={[styles.font, styles.textInput]}
@@ -86,10 +86,10 @@ class UnitConverter extends React.Component {
             style={styles.unit}
             onPress={ this.doNothing } 
             >
-            <Text style={[styles.font, styles.unit]}>UNT</Text>
+            <Text style={[styles.font, styles.unitText]}>UNT</Text>
           </TouchableElement>
         </View>
-        <Text style={styles.parameterName}>PARAMETER</Text>
+        <Text style={styles.parameterName}>PARAMETER THREE</Text>
         <View style={styles.item}>
           <TextInput
             // ref={this.props.reference}
@@ -106,7 +106,7 @@ class UnitConverter extends React.Component {
             style={styles.unit}
             onPress={ this.doNothing } 
             >
-            <Text style={[styles.font, styles.unit]}>UNT</Text>
+            <Text style={[styles.font, styles.unitText]}>UNT</Text>
           </TouchableElement>
           <Text style={styles.unit}>=</Text>
           <TextInput
@@ -124,7 +124,7 @@ class UnitConverter extends React.Component {
             style={styles.unit}
             onPress={ this.doNothing } 
             >
-            <Text style={[styles.font, styles.unit]}>UNT</Text>
+            <Text style={[styles.font, styles.unitText]}>UNT</Text>
           </TouchableElement>
         </View>
         {/* <View style={styles.spacing}></View> FIX UNIT BUTTON VERTICAL ALIGNMENT FIRST */}

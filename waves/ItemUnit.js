@@ -59,7 +59,7 @@ class ItemUnit extends React.Component {
           style={styles.unit}
           onPress={() => { if (this.props.unitBool) { this.setModalVisible(!this.state.modalVisible) }}} 
           >
-          <Text style={[styles.font, styles.unit, styles.unitCenter]}>{this.props.unit.toUpperCase()}</Text>
+          <Text style={[styles.font, styles.unitText]}>{this.props.unit.toUpperCase()}</Text>
         </TouchableElement>
       </View>
     )

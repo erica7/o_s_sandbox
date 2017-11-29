@@ -53,13 +53,14 @@ const styles = StyleSheet.create({
   },
   unit: {
     flex: 2,
-    // flexDirection: 'column', //
     color: '#eee',
     paddingTop: 8,
     marginTop: 0,
-    justifyContent: 'center', //
+  },
+  unitText: {
     alignItems: 'center',
-    textAlign: 'center', //
+    color: '#2ee',
+
   },
   unitCenter: {
     flex: 1,
