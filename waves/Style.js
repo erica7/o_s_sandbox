@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   unitText: {
     alignItems: 'center',
     color: '#2ee',
-
+    marginBottom: 7,  // is this going to look good on all screens? 
   },
   unitCenter: {
     flex: 1,
