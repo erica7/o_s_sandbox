@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, TouchableHighlight, TouchableNativeFeedback, StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { View } from 'react-native';
 const styles = require('./Style.js');
 const ItemUnit = require('./ItemUnit.js');
 const CalcButtons = require('./CalcButtons.js');
@@ -120,10 +120,6 @@ export class Flowrate extends React.Component {
     );
   }
   render() {
-    var TouchableElement = TouchableHighlight;
-    if (Platform.OS === 'android') {
-      TouchableElement = TouchableNativeFeedback;
-    }
     let itemArr = ["s","n","d","l","q"];
     let itemArrGen = itemArr.map((x) => {
         return this.itemUnit(x);

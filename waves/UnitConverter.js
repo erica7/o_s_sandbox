@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, TouchableHighlight, TouchableNativeFeedback, StyleSheet, Text, TextInput, View, Button, Modal } from 'react-native';
+import { Platform, TouchableHighlight, TouchableNativeFeedback, Text, TextInput, View } from 'react-native';
 const styles = require('./Style.js');
 
 class UnitConverter extends React.Component {
