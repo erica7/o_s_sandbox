@@ -3,7 +3,7 @@ import { View } from 'react-native';
 const styles = require('./Style.js');
 const ItemUnit = require('./ItemUnit.js');
 const CalcButtons = require('./CalcButtons.js');
-const LoadVariables = require('./FlowrateVariables.js')
+const LoadVariables = require('./FlowrateVariables.js');
 // import * as LoadVariables from './FlowrateVariables';
 
 // methods and properties specific to formula --> moved to FlowrateVariables.js
@@ -36,7 +36,7 @@ export class Flowrate extends React.Component {
       count: 0,
       constraintState: "",
       calcBtnDisabled: true,
-      solveFor: "",
+      solveFor: "", //null
       lastSolution: "",
       inputs: LoadVariables.inputs,
     };
@@ -108,12 +108,7 @@ export class Flowrate extends React.Component {
   }
   itemUnit = (input) => {
     let obj = this.items[input];
-    let unitBool = false;
-    if (obj.units.length > 1) {
-      unitBool = true;
-    } else {
-      unitBool = false;
-    }
+    let unitBool = obj.units.length > 1;  
     let unitIndex = this.state.inputs[input].unit;
     return (
       <ItemUnit reference={input} myFunc={(a) => this.myFunc(a, input)} myFocus={() => this.myFocus()} variable={String(this.displayValue(input))} parameter={obj.paramName} unit={obj.units[unitIndex].unit} unitBool={unitBool} units={obj.units} updateUnit={this.updateUnit} />

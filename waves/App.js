@@ -34,47 +34,53 @@ function printState(obj) {
   console.log(obj.state);
 }
 
+//TODO const TouchableElement w/ ternary 
+const TouchableElement = (Platform.OS === 'android') 
+  ? TouchableNativeFeedback
+  : TouchableHighlight ;
+
+//TODO refactor all menu buttons
+const menuButton = (navigate, pageName) => {  // navigate() isn't working, something about param format surely  // update: this is bullshit
+  const pageN = "'" + pageName + "'";
+  // console.log(pageN);
+  return (
+    <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate(pageName)} >
+      <Text style={styles.btnText}>{ pageN }</Text>
+    </TouchableElement>
+  )
+};
+
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'WAVY'
   };
   render() {
     const { navigate } = this.props.navigation;
-    var TouchableElement = TouchableHighlight;
-    if (Platform.OS === 'android') {
-      TouchableElement = TouchableNativeFeedback;
-    }
-    menuButton = (pageName) => {  // navigate() isn't working, something about param format surely  // update: this is bullshit
-      const pageN = "'" + pageName + "'";
-      // console.log(pageN);
-      return (
-        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate({pageN})} >
-          <Text style={styles.btnText}>{ pageN }</Text>
-        </TouchableElement>
-      )
-    }
+    // // TODO ternary operation ?:
+    // var TouchableElement = TouchableHighlight;
+    // if (Platform.OS === 'android') {
+    //   TouchableElement = TouchableNativeFeedback;
+    // }
+    // // TODO move outside 
+    // menuButton = (pageName) => {  // navigate() isn't working, something about param format surely  // update: this is bullshit
+    //   const pageN = "'" + pageName + "'";
+    //   // console.log(pageN);
+    //   return (
+    //     <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate({pageN})} >
+    //       <Text style={styles.btnText}>{ pageN }</Text>
+    //     </TouchableElement>
+    //   )
+    // }
     return (
       <View style={styles.container}>
         <Text style={styles.title}>WAVY</Text>
-        { menuButton('Flowrate') }
-        {/* <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Another')}>
-          <Text style={styles.btnText}>ANOTHER</Text>
-        </TouchableElement>
-        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('OldFlow')}>
-          <Text style={styles.btnText}>OLD FLOW</Text>
-        </TouchableElement>
-        <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('OldHorse')}>
-          <Text style={styles.btnText}>OLD HORSE</Text>
-        </TouchableElement> */}
+        { menuButton(navigate, 'Flowrate') }
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Flowrate')}>
           <Text style={styles.btnText}>FLOWRATE</Text>
         </TouchableElement>
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Horsepower')}>
           <Text style={styles.btnText}>HORSEPOWER</Text>
         </TouchableElement>
-        {/* <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('ModalEx')}>
-          <Text style={styles.btnText}>Modal Example</Text>
-        </TouchableElement> */}
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('UnitConverter')}>
           <Text style={styles.btnText}>UNIT CONVERTER</Text>
         </TouchableElement>

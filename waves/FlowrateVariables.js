@@ -1,3 +1,7 @@
+//TODO class 
+
+//TODO s will be an instance 
+
 module.exports = { 
   items: {
     s: {
