@@ -2,8 +2,6 @@ import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, AppRegistry, StyleSheet, Text, TextInput, View, Button, Modal, Picker } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 const styles = require('./Style.js');
-// const OldFlow = require('./OldFlow.js');
-// const OldHorse = require('./nah/OldHorse.js');
 const Horsepower = require('./Horsepower.js');
 const Flowrate = require('./Flowrate.js');
 const UnitConverter = require('./UnitConverter.js');
@@ -34,18 +32,15 @@ function printState(obj) {
   console.log(obj.state);
 }
 
-//TODO const TouchableElement w/ ternary 
 const TouchableElement = (Platform.OS === 'android') 
   ? TouchableNativeFeedback
   : TouchableHighlight ;
 
 //TODO refactor all menu buttons
-const menuButton = (navigate, pageName) => {  // navigate() isn't working, something about param format surely  // update: this is bullshit
-  const pageN = "'" + pageName + "'";
-  // console.log(pageN);
+const menuButton = (navigate, pageName) => { 
   return (
     <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate(pageName)} >
-      <Text style={styles.btnText}>{ pageN }</Text>
+      <Text style={styles.btnText}>{ pageName.toUpperCase() }</Text>
     </TouchableElement>
   )
 };
@@ -56,21 +51,6 @@ class HomeScreen extends React.Component {
   };
   render() {
     const { navigate } = this.props.navigation;
-    // // TODO ternary operation ?:
-    // var TouchableElement = TouchableHighlight;
-    // if (Platform.OS === 'android') {
-    //   TouchableElement = TouchableNativeFeedback;
-    // }
-    // // TODO move outside 
-    // menuButton = (pageName) => {  // navigate() isn't working, something about param format surely  // update: this is bullshit
-    //   const pageN = "'" + pageName + "'";
-    //   // console.log(pageN);
-    //   return (
-    //     <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate({pageN})} >
-    //       <Text style={styles.btnText}>{ pageN }</Text>
-    //     </TouchableElement>
-    //   )
-    // }
     return (
       <View style={styles.container}>
         <Text style={styles.title}>WAVY</Text>
@@ -169,20 +149,21 @@ class ModalExample extends React.Component {  // example of modal and picker
     );
   }
 }
-  
-export const CalcApp = StackNavigator({
+
+//TODO make sure first page is explicit
+const CalcApp = StackNavigator({
   Home: { screen: HomeScreen },
   Another: { screen: Another },
-  // OldFlow: { screen: OldFlow },
-  // OldHorse: { screen: OldHorse },
   Horsepower: { screen: Horsepower },
   Flowrate: { screen: Flowrate },
   ModalEx: { screen: ModalExample },
   UnitConverter: { screen: UnitConverter },
 });
 
-export default class App extends React.Component {
-  render() {
-    return <CalcApp />;
-  }
-}
+export default App = CalcApp;
+
+// export default class App extends React.Component {
+//   render() {
+//     return <CalcApp />;
+//   }
+// }

@@ -42,11 +42,14 @@ export class Flowrate extends React.Component {
     };
   }
   doTheMath = () => {
-    let tempInputs = this.state.inputs;
-    res = LoadVariables.doTheMath(tempInputs, this.items, this.state.solveFor, this.state.lastSolution);
-    this.state.lastSOlution = res[1];
-    this.setState({inputs: res[0]});
-    this.checkConstrained();
+    // let tempInputs = this.state.inputs;
+    // this.state.lastSolution = res[1];
+    // this.setState({inputs: res[0]});
+    this.setState((prevState, props) => {
+      res = LoadVariables.doTheMath(prevState.inputs, this.items, prevState.solveFor, prevState.lastSolution);
+      return {inputs: res[0], lastSolution: res[1]}
+    }, this.checkConstrained);
+    
   }
   displayValue = (input) => {
     return this.state.inputs[input].value === 0 ? "" : this.state.inputs[input].value;
@@ -55,7 +58,7 @@ export class Flowrate extends React.Component {
     // set the state, then check constraint state 
     let tempInputs = this.state.inputs;
     tempInputs[param2].value = Number(param);
-    this.setState({inputs: tempInputs}, () => { this.checkConstrained() })
+    this.setState({inputs: tempInputs}, this.checkConstrained);
   }
   myFocus = () => {
     // console.log("myFocus!");
@@ -133,3 +136,21 @@ export class Flowrate extends React.Component {
 }
 
 module.exports = Flowrate;
+
+
+//Formula class
+//props: items, formulas array
+//render: ItemUnits, two buttons 
+//function: 
+
+//formulas = [{constraints:[n length], calculate:function(n params -- entire object or array of objects)}]
+
+
+
+//InputItem class
+//props: set of possible units
+//state: value, selected unit
+//function: 
+//  isFilledIn: has anything been entered (e.g. value not null)
+//  getValue
+//  getUnits
