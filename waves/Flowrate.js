@@ -138,16 +138,16 @@ export class Flowrate extends React.Component {
 module.exports = Flowrate;
 
 
-//Formula class
+//FormulaView class
 //props: items, formulas array
-//render: ItemUnits, two buttons 
+//render: FormulaItem, two buttons 
 //function: 
 
 //formulas = [{constraints:[n length], calculate:function(n params -- entire object or array of objects)}]
 
 
 
-//InputItem class
+//FormulaItem class
 //props: set of possible units
 //state: value, selected unit
 //function: 
