@@ -1,4 +1,5 @@
 import React from 'react';
+const FormulaItem = require('./FormulaItem.js');
 
 // item Class:
 class Item {  //never holds value
@@ -21,13 +22,13 @@ props = {
   n: new Item("Number of Plungers", [["qty", 1]]),
 }
 
-const inputs = [
-  ['rpm'],
-  ['qty'],
-  ['in','cm'],
-  ['in','cm'],
-  ['gpm','bbl/m','bbl/h'],
-];
+// const inputs = [
+//   ['rpm'],
+//   ['qty'],
+//   ['in','cm'],
+//   ['in','cm'],
+//   ['gpm','bbl/m','bbl/h'],
+// ];
 
 //use canonical units 
 const formulas = [
@@ -41,7 +42,16 @@ const formulas = [
 
 export class FormulaView extends React.Component {
   constructor(props) {
-    <FormulaItem item={props.items[i]}>
+    super(props);
+    this.item = new Item("Speed", [["rpm", 1]]);
   }
+  render() {
+    // const item = new Item("Speed", [["rpm", 1]]);
+    return(
+      <FormulaItem item={this.item} />
 
+    );
+  }
 }
+
+module.exports = FormulaView;

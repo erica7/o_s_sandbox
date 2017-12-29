@@ -5,6 +5,7 @@ const styles = require('./Style.js');
 const Horsepower = require('./Horsepower.js');
 const Flowrate = require('./Flowrate.js');
 const UnitConverter = require('./UnitConverter.js');
+const FormulaView = require('./FormulaView.js');
 
 // ISSUES
 //   clean up Item props
@@ -54,6 +55,7 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>WAVY</Text>
+        { menuButton(navigate, 'FormulaView') }
         { menuButton(navigate, 'Flowrate') }
         <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate('Flowrate')}>
           <Text style={styles.btnText}>FLOWRATE</Text>
@@ -158,6 +160,7 @@ const CalcApp = StackNavigator({
   Flowrate: { screen: Flowrate },
   ModalEx: { screen: ModalExample },
   UnitConverter: { screen: UnitConverter },
+  FormulaView: { screen: FormulaView },
 });
 
 export default App = CalcApp;
