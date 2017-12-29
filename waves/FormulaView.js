@@ -1,20 +1,25 @@
 import React from 'react';
 
-// // props passed to FormulaView are items
-// // item Class:
-// class Item {
-//   constructor(displayName, units, conversion){
-//     this.displayName = displayName;
-//     this.units = units; //array of possible inputs 
-//     this.conversion = conversion; //array of conversion factors
-//   }
-//   getValue() {
-//     return 
-//   }
-// }
-// props = {
-  
-// }
+// item Class:
+class Item {  //never holds value
+  constructor(displayName, units){
+    this.displayName = displayName;
+    this.units = units; //array of possible inputs 
+    // this.conversion = conversion; //array of conversion factors
+  }
+  getDisplayName() {
+    // return displayName
+    return this.displayName;
+  }
+  getUnits() {
+    return this.units;
+  }
+}
+// props passed to FormulaView are items, e.g.:
+props = {
+  s: new Item("Speed", [["rpm", 1]]),
+  n: new Item("Number of Plungers", [["qty", 1]]),
+}
 
 const inputs = [
   ['rpm'],
@@ -36,7 +41,7 @@ const formulas = [
 
 export class FormulaView extends React.Component {
   constructor(props) {
-
+    <FormulaItem item={props.items[i]}>
   }
 
 }

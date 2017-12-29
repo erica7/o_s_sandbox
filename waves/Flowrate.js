@@ -148,7 +148,7 @@ module.exports = Flowrate;
 
 
 //FormulaItem class
-//props: set of possible units
+//props: set of possible units, set of conversion factors
 //state: value, selected unit
 //function: 
 //  isFilledIn: has anything been entered (e.g. value not null)
