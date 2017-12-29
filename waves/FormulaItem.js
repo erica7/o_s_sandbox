@@ -13,29 +13,33 @@ export class FormulaItem extends React.Component {
     this.state = {
       canonicalValue: null, //canonical value
       displayUnit: props.item.getUnits()[0], //display unit
-      // canonicalUnit: this.props.canonicalUnit, //never changes... remove from state?
+      modalVisible: false,
     }
   }
   
   displayValue = () => {
     //convert the canonicalValue to displayValue based on the displayUnit
-    return this.state.canonicalValue * this.state.displayUnit[1];  //.getConversionFactor()
+    console.log("displayValue canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
+    if (this.state.canonicalValue !== null) {
+      return (this.state.canonicalValue * this.state.displayUnit[1]).toString();  //.getConversionFactor()
+    } else {
+      return null;
+    }
   }
   updateValue = (text) => {
     // this.setState with the new canonical value
+    console.log("updateValue text", text, "displayUnit", this.state.displayUnit);
     this.setState({canonicalValue: text / this.state.displayUnit[1]});
+    // console.log("text",text);
+    // console.log("divide       ", text / this.state.displayUnit[1]);
+    // console.log("divide better", parseInt(text) / this.state.displayUnit[1]);
+  }
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
   }
 
   render() {
-    if (this.props.item.getUnits().length > 1) {  // don't bother building these components if only one unit is available because modal will never show
-      var unitOptions = this.props.units.map((x,i)=>{
-        return (
-          <TouchableElement style={styles.btn} onPress={() => {this.updateUnit(this.props.reference, i)}}>
-            <Text style={styles.btnText}>{ x.unit.toUpperCase() }</Text>
-          </TouchableElement>
-        )
-      })
-    }
+    //refactor with const item = this.props.item, etc
     return(
       <View style={styles.item}>
         <Modal
@@ -45,7 +49,15 @@ export class FormulaItem extends React.Component {
           onRequestClose={() => {alert("Modal has been closed.")}}
           >
           <View style={styles.modalView}>
-            { unitOptions }
+            { 
+              (this.props.item.getUnits().length > 1) &&  // don't bother building these components if only one unit is available because modal will never show
+                this.props.item.getUnits().map( (x,i) => (
+                  <TouchableElement style={styles.btn} onPress={() => {this.setState({displayUnit: x, modalVisible: false})}}>
+                    <Text style={styles.btnText}>{ x[0].toUpperCase() }</Text>
+                  </TouchableElement>
+                )
+              )
+            }
           </View>
         </Modal>
         <Text style={[styles.font, styles.parameter]}>{this.props.item.displayName.toUpperCase()}</Text>
@@ -56,7 +68,7 @@ export class FormulaItem extends React.Component {
           onChangeText={this.updateValue}
           // onFocus={this.props.myFocus}
           autoCorrect={false}
-          keyboardType="decimal-pad"
+          keyboardType="decimal-pad"  // TODO check docs for android compatibility 
           keyboardAppearance="dark"
           // value={this.props.variable}
           value={this.displayValue()}

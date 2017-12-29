@@ -43,7 +43,7 @@ const formulas = [
 export class FormulaView extends React.Component {
   constructor(props) {
     super(props);
-    this.item = new Item("Speed", [["rpm", 1]]);
+    this.item = new Item("Speed", [["rpm", 1], ["rph", 60]]);
   }
   render() {
     // const item = new Item("Speed", [["rpm", 1]]);
