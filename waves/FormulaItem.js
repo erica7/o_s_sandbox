@@ -1,11 +1,9 @@
 import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback, Text, TextInput, View, Modal } from 'react-native';
 const styles = require('./Style.js');
+const globals = require('./Globals.js');
 
-// separate out into globals file and require as needed
-const TouchableElement = (Platform.OS === 'android') 
-  ? TouchableNativeFeedback
-  : TouchableHighlight ;
+const TouchableElement = globals.TouchableElement;
 
 export class FormulaItem extends React.Component {
   constructor(props) {
@@ -19,7 +17,7 @@ export class FormulaItem extends React.Component {
   
   displayValue = () => {
     //convert the canonicalValue to displayValue based on the displayUnit
-    console.log("displayValue canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
+    console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
     if (this.state.canonicalValue !== null) {
       return (this.state.canonicalValue * this.state.displayUnit[1]).toString();  //.getConversionFactor()
     } else {
