@@ -17,8 +17,8 @@ class UnitConverter extends React.Component {
       return <UnitConverterItem item={ this.units[i] } />
     })
     return (
-      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100} style={styles.container}>
-        <ScrollView style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100} style={[styles.container, styles.color_background_primary]}>
+        <ScrollView style={[styles.container, styles.color_background_primary]}>
           { unitItems }
         </ScrollView>
       </KeyboardAvoidingView>

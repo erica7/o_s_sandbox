@@ -1,14 +1,13 @@
 import { StyleSheet } from 'react-native';
-
+// NOTE regex example styles\.btn[^a-z_]
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#111',
     alignItems: 'center',
+    width: '100%',
     padding: 9,
     paddingTop: 18,
-    width: '100%',
   },
   //primary button (e.g. main menu, modal)
   btn: {
@@ -16,19 +15,12 @@ const styles = StyleSheet.create({
     padding: 12,
     paddingRight: 33,
     paddingLeft: 33,
-    backgroundColor: '#eee',
-  },
-  btn__disabled: {
-    backgroundColor: '#777',
+    // backgroundColor: '#eee',
   },
   //primary button text (e.g. main menu, modal)
   btn_text: {
     fontSize: 18,
     letterSpacing: 9,
-  },
-  btn_text__selected: {
-    fontWeight: 'bold',
-    color: '#199', //'#090',
   },
   //secondary button (e.g. units)
   btnSec: {
@@ -38,11 +30,7 @@ const styles = StyleSheet.create({
   //secondary button text (e.g. units)
   btnSec_text: {
     alignItems: 'center',
-    color: '#eee',
     marginBottom: 7,  // is this going to look good on all screens? 
-  },
-  btnSec_text__active: {
-    color: '#3ee',
   },
   // 'list'/'row' item 
   item: {
@@ -52,15 +40,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textInput: {
-    color: '#eee',
-    backgroundColor: '#000',
+    textAlign: 'right',
     marginLeft: 12,
     marginRight: 12,
     padding: 7,
     paddingRight: 14,
     paddingBottom: 4,
     borderRadius: 7,
-    textAlign: 'right',
   },
 
   // FONT SIZE
@@ -84,19 +70,32 @@ const styles = StyleSheet.create({
   flex_4: { flex: 4, },
   flex_5: { flex: 5, },
   flex_6: { flex: 6, },
-  // COLORS
-  color_font_primary: { color: '#eee', },
-  color_font_secondary: { color: '#3ee', },
-  color_btn_primary: { backgroundColor: '#eee', },
-  color_btn_secondary: { backgroundColor: '#111', },
-  color_background_primary: { color: '#111', },
-  color_background_secondary: { color: '#000', },
-
   // SIZE
   width_full: {
     width: '90%',
   },
-
+  // COLORS
+  //  NIGHT MODE
+  color_font_primary: { color: '#eee', },
+  color_font_secondary: { color: '#111', },
+  color_font_accent: { color: '#3ee', },
+  color_font_selected: { color: '#199', fontWeight: 'bold', },
+  color_btn_primary: { backgroundColor: '#eee', },
+  color_btn_secondary: { backgroundColor: '#111', },
+  color_btn_disabled: { backgroundColor: '#777', },
+  color_background_primary: { backgroundColor: '#111', },
+  color_background_secondary: { backgroundColor: '#000', },
+  //  DAY MODE
+  // color_font_primary: { color: '#111', },
+  // color_font_secondary: { color: '#eee', },
+  // color_font_accent: { color: '#3eacab', },
+  // color_font_selected: { color: '#199', fontWeight: 'bold', },
+  // color_btn_primary: { backgroundColor: '#111', },
+  // color_btn_secondary: { backgroundColor: '#eee', },
+  // color_btn_disabled: { backgroundColor: '#777', },
+  // color_background_primary: { backgroundColor: '#eee', },
+  // color_background_secondary: { backgroundColor: '#fff', },
+  
   //FIXME - ensure compatibility with different devices / redesign
   //FormulaView
   spacing: {
@@ -108,28 +107,17 @@ const styles = StyleSheet.create({
 
 
 
-  //App menu page title
-  // FIXME - eliminate this class; replace with modular classes for font stlying & spacing, colors, etc
-  title: {
-    // fontSize: 22,
-    // fontWeight: '800',
-    // textAlign: 'center',
-    // letterSpacing: 50,
-    // marginLeft: 50,
-    // margin: 9,
-    color: '#3eacab',
-  },
-  // FIXME - eliminate classe; refactor into separate classes 
+  // FIXME - eliminate class; refactor into separate classes 
   //FormulaItem and UnitConverterItem
   parameter: {
     flex: 4,
-    color: '#eee',
+    // color: '#eee',
     textAlign: 'right',
     // textTransform: 'upper-case',
   },
-  // FIXME - eliminate classe; refactor into separate classes 
+  // FIXME - eliminate class; refactor into separate classes 
   modalView: {
-    backgroundColor: '#333c',
+    backgroundColor: '#333',
     justifyContent: 'center',
     height: '100%',
     padding: 44,
@@ -137,13 +125,11 @@ const styles = StyleSheet.create({
     borderWidth: 3,
   },
   //UnitConverter
-  // FIXME - eliminate classe; refactor into separate classes 
+  // FIXME - eliminate class; refactor into separate classes 
   parameterName: {
     fontSize: 22,
-    // fontWeight: '800',
     textAlign: 'center',
     margin: 9,
-    color: '#ccc',
   },
 
 });

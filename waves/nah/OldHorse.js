@@ -145,13 +145,13 @@ export class OldHorse extends React.Component {
       TouchableElement = TouchableNativeFeedback;
     }
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, styles.color_background_primary]}>
         {/* <Text style={styles.title}>WAVY</Text> */}
         {this.paramItem({ varName: "q", parameter: "Flowrate", unit: "gpm" })}
         {this.paramItem({ varName: "p", parameter: "Pressure", unit: "psi" })}
         {this.paramItem({ varName: "h", parameter: "Horsepower", unit: "hhp" })}
-        <TouchableElement style={[styles.btn, this.styleBtn()]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => { if (!this.state.calcBtnDisabled) { this.doTheMath(this) } }}>
-          <Text style={styles.btn_text}>CALCULATE</Text>
+        <TouchableElement style={[styles.btn, styles.color_btn_primary, this.styleBtn()]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => { if (!this.state.calcBtnDisabled) { this.doTheMath(this) } }}>
+          <Text style={[styles.btn_text, styles.color_font_secondary]}>CALCULATE</Text>
         </TouchableElement>
         {/* <Button styles={styles.calcBtn} disabled={this.state.calcBtnDisabled} ref="calculateBtn" onPress={ () => this.doTheMath(this) } title="Calculate"></Button> */}
         {/* <Button raised large onPress={ () => printState(this) } title="See State"></Button> */}

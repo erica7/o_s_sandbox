@@ -176,17 +176,17 @@ export class OldFlow extends React.Component {
       TouchableElement = TouchableNativeFeedback;
     }
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, styles.color_background_primary]}>
         {this.paramItem({ varName: "s", parameter: "Speed", unit: "rpm" })}
         {this.paramItem({ varName: "n", parameter: "Number of Plungers", unit: "qty" })}
         {this.paramItem({ varName: "d", parameter: "Plunger Diameter", unit: "in" })}
         {this.paramItem({ varName: "l", parameter: "Stroke", unit: "in" })}
         {this.paramItem({ varName: "q", parameter: "Flowrate", unit: "gpm" })}
-        <TouchableElement style={[styles.btn, this.styleBtn()]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => { if (!this.state.calcBtnDisabled) { this.doTheMath(this) } }}>
-          <Text style={styles.btn_text}>CALCULATE</Text>
+        <TouchableElement style={[styles.btn, styles.color_btn_primary, this.styleBtn()]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => { if (!this.state.calcBtnDisabled) { this.doTheMath(this) } }}>
+          <Text style={[styles.btn_text, styles.color_font_secondary]}>CALCULATE</Text>
         </TouchableElement>
-        <TouchableElement style={[styles.btn]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => { this.clearAll() }}>
-          <Text style={styles.btn_text}>CLEAR ALL</Text>
+        <TouchableElement style={[styles.btn, styles.color_btn_primary]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => { this.clearAll() }}>
+          <Text style={[styles.btn_text, styles.color_font_secondary]}>CLEAR ALL</Text>
         </TouchableElement>
         <View style={styles.spacing}></View>
       </View>

@@ -123,7 +123,7 @@ export class Flowrate extends React.Component {
         return this.itemUnit(x);
     })
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, styles.color_background_primary]}>
         { itemArrGen }
         <CalcButtons
           doTheMath={this.doTheMath}

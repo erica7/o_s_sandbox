@@ -118,7 +118,7 @@ class Calc extends React.Component {
     let myBool = this.props.isCalcBtnDisabled;
     let myStyle = this.styleBtn();
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, styles.color_background_primary]}>
 
         <Horsey 
           initialize={this.initialize} 
@@ -129,21 +129,21 @@ class Calc extends React.Component {
         />
 
         <TouchableElement
-          style={[styles.btn, myStyle]}
+          style={[styles.btn, styles.color_btn_primary, myStyle]}
           underlayColor="#ccc"
           activeOpacity={0.7}
           onPress={ () => { if (!myBool) {this.doTheMathC()}} }
         >
-          <Text style={styles.btn_text}>CALCULATE</Text>
+          <Text style={[styles.btn_text, styles.color_font_secondary]}>CALCULATE</Text>
         </TouchableElement>
 
         <TouchableElement
-          style={[styles.btn]}
+          style={[styles.btn, styles.color_btn_primary]}
           underlayColor="#ccc"
           activeOpacity={0.7}
           onPress={ this.clearAllC }
         >
-          <Text style={styles.btn_text}>CLEAR ALL</Text>
+          <Text style={[styles.btn_text, styles.color_font_secondary]}>CLEAR ALL</Text>
         </TouchableElement>
 
         <View style={styles.spacing}></View>

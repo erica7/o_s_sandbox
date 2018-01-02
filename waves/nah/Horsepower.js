@@ -133,7 +133,7 @@ export class Horsepower extends React.Component {
   render() {
     let testValue = this.parameter;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, styles.color_background_primary]}>
         {this.paramItem({ varName: "q", parameter: "Flowrate", unit: "gpm" })}
         {this.paramItem({ varName: "p", parameter: "Pressure", unit: "psi" })}
         {this.paramItem({ varName: "h", parameter: "Horsepower", unit: "hhp" })}

@@ -53,7 +53,7 @@ class UnitConverterItem extends React.Component {
 
   render() {
     return (
-      <View style={[styles.container]}>
+      <View style={[styles.container, styles.color_background_primary]}>
         <Modal
           animationType="slide"
           transparent={true}
@@ -63,8 +63,12 @@ class UnitConverterItem extends React.Component {
           <View style={styles.modalView}>
             { 
               this.props.item.getUnits().map((x,i) => (
-                <TouchableElement style={[styles.btn]} onPress={() => { this.state.unit2Active ? this.setState({displayUnit2: x, modalVisible: false}) : this.setState({displayUnit: x, modalVisible: false}) }}>
-                  <Text style={[styles.btn_text, this.state.unit2Active ? this.state.displayUnit2 == x && styles.btn_text__selected : this.state.displayUnit == x && styles.btn_text__selected] }>
+                <TouchableElement style={[styles.btn, styles.color_btn_primary]} onPress={() => { this.state.unit2Active ? this.setState({displayUnit2: x, modalVisible: false}) : this.setState({displayUnit: x, modalVisible: false}) }}>
+                  <Text style={[styles.btn_text, styles.color_font_secondary,
+                      this.state.unit2Active 
+                        ? this.state.displayUnit2 == x && styles.color_font_selected
+                        : this.state.displayUnit == x && styles.color_font_selected 
+                  ]}>
                     { x[0].toUpperCase() } {this.state.unit2Active ? this.state.displayUnit2 == x && "\u2713" : this.state.displayUnit == x && "\u2713" }
                   </Text>
                 </TouchableElement>
@@ -72,10 +76,10 @@ class UnitConverterItem extends React.Component {
             }
           </View>
         </Modal>
-        <Text style={styles.parameterName}>{this.props.item.getDisplayName().toUpperCase()}</Text>
+        <Text style={[styles.parameterName, styles.color_font_primary]}>{this.props.item.getDisplayName().toUpperCase()}</Text>
         <View style={styles.item}>
           <TextInput
-            style={[styles.font, styles.textInput, styles.flex_5]}
+            style={[styles.font, styles.textInput, styles.color_font_primary, styles.color_background_secondary, styles.flex_5]}
             onChangeText={this.updateValue}
             autoCorrect={false}
             keyboardType="decimal-pad"  // TODO check docs for android compatibility 
@@ -89,7 +93,7 @@ class UnitConverterItem extends React.Component {
             activeOpacity={0.7}
             onPress={() => { this.setState({unit2Active: false, modalVisible: true}) }} 
             >
-            <Text style={[styles.font, styles.btnSec_text, styles.btnSec_text__active]}>
+            <Text style={[styles.font, styles.btnSec_text, styles.color_font_accent]}>
               {this.state.displayUnit[0].toUpperCase()}
             </Text>
           </TouchableElement>
@@ -98,7 +102,7 @@ class UnitConverterItem extends React.Component {
 
         <View style={styles.item}>
           <TextInput
-            style={[styles.font, styles.textInput, styles.flex_5]}
+            style={[styles.font, styles.textInput, styles.color_font_primary, styles.color_background_secondary, styles.flex_5]}
             onChangeText={this.updateValue2}
             autoCorrect={false}
             keyboardType="decimal-pad"  // TODO check docs for android compatibility 
@@ -112,7 +116,7 @@ class UnitConverterItem extends React.Component {
             activeOpacity={0.7}
             onPress={() => { this.setState({unit2Active: true, modalVisible: true}) }} 
             >
-            <Text style={[styles.font, styles.btnSec_text, styles.btnSec_text__active]}>
+            <Text style={[styles.font, styles.btnSec_text, styles.color_font_accent]}>
               {this.state.displayUnit2[0].toUpperCase()}
             </Text>
           </TouchableElement>

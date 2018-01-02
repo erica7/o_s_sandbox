@@ -41,7 +41,7 @@ class Item extends React.Component {
         <Text style={[styles.font, styles.parameter]}>{this.props.parameter.toUpperCase()}</Text>
         <TextInput
           ref={this.props.reference}
-          style={[styles.font, styles.textInput, styles.flex_3]}
+          style={[styles.font, styles.textInput, styles.color_font_primary, styles.color_background_secondary, styles.flex_3]}
           onChangeText={this.handleChange}
           onKeyDown={this.handleKeyDown}
           onSelectionChange={this.handleDoneEdit}

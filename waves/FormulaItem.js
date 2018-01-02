@@ -69,8 +69,8 @@ export class FormulaItem extends React.Component {
           <View style={styles.modalView}>
             { 
               item.getUnits().map((x,i) => (
-                <TouchableElement style={[styles.btn]} onPress={() => {this.setState({displayUnit: x, modalVisible: false})}}>
-                  <Text style={[styles.btn_text, this.state.displayUnit == x && styles.btn_text__selected]}>
+                <TouchableElement style={[styles.btn, styles.color_btn_primary]} onPress={() => {this.setState({displayUnit: x, modalVisible: false})}}>
+                  <Text style={[styles.btn_text, styles.color_font_secondary, this.state.displayUnit == x && styles.color_font_selected]}>
                     { x[0].toUpperCase() } {this.state.displayUnit == x && "\u2713"}
                   </Text>
                 </TouchableElement>
@@ -78,10 +78,10 @@ export class FormulaItem extends React.Component {
             }
           </View>
         </Modal>
-        <Text style={[styles.font, styles.parameter]}>{item.displayName.toUpperCase()}</Text>
+        <Text style={[styles.font, styles.color_font_primary, styles.parameter]}>{item.displayName.toUpperCase()}</Text>
         <TextInput
           ref={this.props.reference}
-          style={[styles.font, styles.textInput, styles.flex_3, styles.font_bigger]}
+          style={[styles.font, styles.textInput, styles.color_font_primary, styles.color_background_secondary, styles.flex_3, styles.font_bigger]}
           onChangeText={this.updateValue}
           autoCorrect={false}
           keyboardType="decimal-pad"  // TODO check docs for android compatibility 
@@ -95,7 +95,7 @@ export class FormulaItem extends React.Component {
           activeOpacity={item.getUnits().length > 1 ? 0.7 : 1}
           onPress={() => { if (item.getUnits().length > 1) { this.setState({modalVisible: true}) }}} 
           >
-          <Text style={[styles.font, styles.btnSec_text, item.getUnits().length > 1 && styles.btnSec_text__active]}>
+          <Text style={[styles.font, styles.btnSec_text, styles.color_font_primary, item.getUnits().length > 1 && styles.color_font_accent]}>
             {this.state.displayUnit[0].toUpperCase()}
           </Text>
         </TouchableElement>

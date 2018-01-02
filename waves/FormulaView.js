@@ -63,23 +63,23 @@ export class FormulaView extends React.Component {
       return <FormulaItem item={ this.items[i][Object.keys(this.items[i])] } />
     })
     return(
-      <View style={styles.container}>
+      <View style={[styles.container, styles.color_background_primary]}>
         { formulaItems }
         <TouchableElement
-          style={[styles.btn, this.state.allowCalc ? null : styles.btn__disabled]}
+          style={[styles.btn, styles.color_btn_primary, this.state.allowCalc ? null : styles.color_btn_disabled]}
           underlayColor={this.state.allowCalc ? "#ccc" : "none"}
           activeOpacity={this.state.allowCalc ? 0.7 : 1}
           onPress={ () => { if (this.state.allowCalc) {this.doTheMathC()}} }
         >
-          <Text style={styles.btn_text}>CALCULATE</Text>
+          <Text style={[styles.btn_text, styles.color_font_secondary]}>CALCULATE</Text>
         </TouchableElement>
         <TouchableElement
-          style={[styles.btn]}
+          style={[styles.btn, styles.color_btn_primary]}
           underlayColor="#ccc"
           activeOpacity={0.7}
           onPress={ this.clearAll }
         >
-          <Text style={styles.btn_text}>CLEAR ALL</Text>
+          <Text style={[styles.btn_text, styles.color_font_secondary]}>CLEAR ALL</Text>
         </TouchableElement>
         <View style={styles.spacing}></View>
       </View>

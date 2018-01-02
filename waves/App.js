@@ -45,8 +45,8 @@ function printState(obj) {
  */
 const menuButton = (navigate, navName, navTitle = navName, p = null) => { 
   return (
-    <TouchableElement style={[styles.btn, styles.width_full]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate(navName, {p: p})} >
-      <Text style={styles.btn_text}>{ navTitle.toUpperCase() }</Text>
+    <TouchableElement style={[styles.btn, styles.color_btn_primary, styles.width_full]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate(navName, {p: p})} >
+      <Text style={[styles.btn_text, styles.color_font_secondary]}>{ navTitle.toUpperCase() }</Text>
     </TouchableElement>
   )
 };
@@ -59,8 +59,8 @@ class HomeScreen extends React.Component {
     //each screen receives a navigation prop from react-navigation; extract the navigate method
     const { navigate } = this.props.navigation;
     return (
-      <View style={styles.container}>
-        <Text style={[styles.font, styles.light]}>WAVY</Text>
+      <View style={[styles.container, styles.color_background_primary]}>
+        <Text style={[styles.font, styles.color_font_primary]}>WAVY</Text>
         { menuButton(navigate, 'FormulaView', 'Flowrate', flowrate) }
         { menuButton(navigate, 'FormulaView', 'Horsepower', horsepower) }
         { menuButton(navigate, 'UnitConverter', 'Unit Converter', unitArray) }
