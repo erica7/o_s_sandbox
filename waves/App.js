@@ -1,36 +1,35 @@
 import React from 'react';
-import { Platform, TouchableHighlight, TouchableNativeFeedback, AppRegistry, StyleSheet, Text, TextInput, View, Button, Modal, Picker } from 'react-native';
+import { Text, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 const styles = require('./Style.js');
-const Horsepower = require('./nah/Horsepower.js');
-const Flowrate = require('./nah/Flowrate.js');
+// const Horsepower = require('./nah/Horsepower.js');
+// const Flowrate = require('./nah/Flowrate.js');
 const UnitConverter = require('./UnitConverter.js');
 const FormulaView = require('./FormulaView.js');
 const globals = require('./Globals.js');
+const formulas = require('./Formulas.js');
+const units = require('./Units.js');
 
 const TouchableElement = globals.TouchableElement;
+const flowrate = formulas.flowrate;
+const horsepower = formulas.horsepower;
+const unitArray = units.units;
 
-// ISSUES
-//   clean up Item props
-//   decimal probs 
-//   handle press behavior, clearing fields
-//   make button styling respond to active/inactive state
-//   triggering calculation wrt multi-digit input  - check out onEndEditing, onSelectionChange vs onChangeText; currently resolved using active/inactive calculate button
-//   DRY it up .... srsly
+// NOTES - App structure:
+//  Globals and Formulas
+//  App 
+//   |-- FormulaView (no values)
+//   |    |-- FormulaItem (values)
+//   |-- UnitConverter
+//        |-- UnitConverterItem
+
+// FIXME
+//  formula calculation 
+//  decimal probs 
 
 // TODO
-//   done for flowrate|change units on calc pages - click on the unit, present modal, update unit & calculation accordingly 
-//   done for flowrate|populate unit converter modal dynamically based on item options 
-//   unit converter - probably single page, only the common stuff 
-//   pre-populated common values such as number of plungers 
-
-// DRY
-//   Calculate and Clear All buttons are the same on each page 
-
-// OTHER
-//   state vs local variables   ...replace state entirely??
-//   where to define: methods/variables in constructor vs outside constructor 
-//   when is render executed?
+//  consider if / how to clear individual fields on a single click
+//  pre-populated common values such as number of plungers 
 
 function printState(obj) {
   console.log(obj.state);
@@ -41,11 +40,12 @@ function printState(obj) {
  * @param {Method} navigate - StackNavigator navigate method 
  * @param {String} navName - name of the screen in the StackNavigator
  * @param {String} navTitle (optional) - button text
+ * @param {Object} p (optional) - object containing information to be passed to component
  * @return {Object} react component
  */
-const menuButton = (navigate, navName, navTitle = navName) => { 
+const menuButton = (navigate, navName, navTitle = navName, p = null) => { 
   return (
-    <TouchableElement style={[styles.btn, styles.width_full]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate(navName)} >
+    <TouchableElement style={[styles.btn, styles.width_full]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate(navName, {p: p})} >
       <Text style={styles.btn_text}>{ navTitle.toUpperCase() }</Text>
     </TouchableElement>
   )
@@ -60,11 +60,12 @@ class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>WAVY</Text>
-        { menuButton(navigate, 'FormulaView', 'Formula View') }
-        { menuButton(navigate, 'Flowrate') }
-        { menuButton(navigate, 'Horsepower') }
-        { menuButton(navigate, 'UnitConverter', 'Unit Converter') }
+        <Text style={[styles.font, styles.light]}>WAVY</Text>
+        { menuButton(navigate, 'FormulaView', 'Flowrate', flowrate) }
+        { menuButton(navigate, 'FormulaView', 'Horsepower', horsepower) }
+        { menuButton(navigate, 'UnitConverter', 'Unit Converter', unitArray) }
+        {/* { menuButton(navigate, 'Flowrate') }
+        { menuButton(navigate, 'Horsepower') } */}
       </View>
     );
   }
@@ -73,10 +74,10 @@ class HomeScreen extends React.Component {
 //TODO make sure first page is explicit
 const CalcApp = StackNavigator({
   Home: { screen: HomeScreen },
-  Horsepower: { screen: Horsepower },
-  Flowrate: { screen: Flowrate },
-  UnitConverter: { screen: UnitConverter },
   FormulaView: { screen: FormulaView },
+  UnitConverter: { screen: UnitConverter },
+  // Horsepower: { screen: Horsepower },
+  // Flowrate: { screen: Flowrate },
 });
 
 export default App = CalcApp;

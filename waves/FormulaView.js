@@ -7,26 +7,9 @@ const globals = require('./Globals.js');
 const TouchableElement = globals.TouchableElement;
 const Item = globals.Item;
 
-// TODO separate
-// Array of items which are passed as props to FormulaView 
-const flowrate = [
-  {s: new Item("Speed", [["rpm", 1], ["rph", 60]])},
-  {n: new Item("Number of Plungers", [["qty", 1]])},
-  {d: new Item("Plunger Diameter", [["in", 1], ["cm", 2.54]])},
-  {l: new Item("Stroke", [["in", 1], ["cm", 2.54]])},
-  {q: new Item("Flowrate", [["gpm", 1], ["bbl/m", 0.024], ["bbl/h", 1.43]])},
-]
-
-// TODO separate
-// Array of forumal objects which contain formulas (which always use canonical units) and their constraint patterns 
-const formulas = [
-  {
-    constraints: [true, true, true, true, false],
-    formula: function(s, n, d, l, q_null) {
-      return 0.25 * Math.PI * Math.pow(d.getValue(), 2) * l.getValue() * n.getValue() * s.getValue() * 1 / 231;
-    }
-  },
-]
+// FIXME TJPS 
+// How is the FormulaView supposed to get the text input values to check constrained state and do the calculation? 
+// How is the FormulaView supposed to send the value back to the ForumlaItem that has been solved for? 
 
 export class FormulaView extends React.Component {
   constructor(props) {
@@ -35,13 +18,18 @@ export class FormulaView extends React.Component {
     this.state = {
       allowCalc: false,
     }
+    // catch parameters sent through stackNavigator
+    const { params } = this.props.navigation.state;
+    this.items = params.p.items;
+    this.formulas = params.p.formulas;
   }
+  
 
   // Determine if the inputs properly constrain the function and update this.state.allowCalc
   // FIXME
   something = () => {
-    for (let i=0; i<formulas.length; i++) {
-      if (formulas[i].constraints == cState) {
+    for (let i=0; i<this.formulas.length; i++) {
+      if (this.formulas[i].constraints == cState) {
         this.setState({allowCalc: true});
         return;
       } else {
@@ -53,8 +41,8 @@ export class FormulaView extends React.Component {
   // Solve for the missing value using the formulas array: find the correct formula and call its function
   // FIXME
   doTheMath = () => {
-    for (let i=0; i<formulas.length; i++) {
-      if (formulas[i].constraints == cState) {
+    for (let i=0; i<this.formulas.length; i++) {
+      if (this.formulas[i].constraints == cState) {
         // execute the formula and update the child component's state.canonicalValue
         // child.state.canonicalValue = formula(s,n,d,l,q);
       }
@@ -70,9 +58,9 @@ export class FormulaView extends React.Component {
   render() {
     // FIXME get the FormulaItem canonical value
 
-    let formulaItems = flowrate.map((x, i) => {
+    let formulaItems = this.items.map((x, i) => {
       // console.log("x",x)
-      return <FormulaItem item={ flowrate[i][Object.keys(flowrate[i])] } />
+      return <FormulaItem item={ this.items[i][Object.keys(this.items[i])] } />
     })
     return(
       <View style={styles.container}>

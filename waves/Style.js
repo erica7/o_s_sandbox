@@ -66,6 +66,13 @@ const styles = StyleSheet.create({
   // FONT SIZE
   font: { fontSize: 22, },
   font_bigger: { fontSize: 26, },
+  // FONT STYLE 
+  font_bold: {
+    fontWeigth: 'bold',
+  },
+  font_spaced: {
+    letterSpacing: 50,
+  },
   // TEXT ALIGNMENT
   text_left: { textAlign: 'left', },
   text_center: { textAlign: 'center', },
@@ -78,7 +85,13 @@ const styles = StyleSheet.create({
   flex_5: { flex: 5, },
   flex_6: { flex: 6, },
   // COLORS
-  // ....TODO 
+  color_font_primary: { color: '#eee', },
+  color_font_secondary: { color: '#3ee', },
+  color_btn_primary: { backgroundColor: '#eee', },
+  color_btn_secondary: { backgroundColor: '#111', },
+  color_background_primary: { color: '#111', },
+  color_background_secondary: { color: '#000', },
+
   // SIZE
   width_full: {
     width: '90%',
@@ -92,15 +105,18 @@ const styles = StyleSheet.create({
     // backgroundColor: '#444',
   },
 
+
+
+
   //App menu page title
   // FIXME - eliminate this class; replace with modular classes for font stlying & spacing, colors, etc
   title: {
-    fontSize: 22,
-    fontWeight: '800',
-    textAlign: 'center',
-    letterSpacing: 50,
-    marginLeft: 50,
-    margin: 9,
+    // fontSize: 22,
+    // fontWeight: '800',
+    // textAlign: 'center',
+    // letterSpacing: 50,
+    // marginLeft: 50,
+    // margin: 9,
     color: '#3eacab',
   },
   // FIXME - eliminate classe; refactor into separate classes 
@@ -119,7 +135,6 @@ const styles = StyleSheet.create({
     padding: 44,
     borderRadius: 7,
     borderWidth: 3,
-    borderColor: '#333',
   },
   //UnitConverter
   // FIXME - eliminate classe; refactor into separate classes 

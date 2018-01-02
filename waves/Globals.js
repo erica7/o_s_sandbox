@@ -1,10 +1,6 @@
 import React from 'react';
 import { Platform, TouchableHighlight, TouchableNativeFeedback } from 'react-native';
 
-const TouchableElement = (Platform.OS === 'android') 
-  ? TouchableNativeFeedback
-  : TouchableHighlight ;
-
 globals = {
   TouchableElement: (Platform.OS === 'android') ? TouchableNativeFeedback : TouchableHighlight ,
   aVariable: "a variable!",
@@ -22,7 +18,7 @@ globals = {
       // console.log("getUnits this.units", this.units)
       return this.units;
     }
-  }
+  },
 }
 
 module.exports = globals;

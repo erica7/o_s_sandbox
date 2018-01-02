@@ -1,12 +1,12 @@
 import React from 'react';
-import { Platform, TouchableHighlight, TouchableNativeFeedback, Text, TextInput, View, Modal } from 'react-native';
+import { Text, TextInput, View, Modal } from 'react-native';
 const styles = require('./Style.js');
 const globals = require('./Globals.js');
 
 const TouchableElement = globals.TouchableElement;
 
-sendCanonicalValueToParent = () => {
-
+sendStateToParent = () => {
+  // e.g. send state.canonicalValue to parent 
 }
 
 export class FormulaItem extends React.Component {
@@ -32,7 +32,6 @@ export class FormulaItem extends React.Component {
       let val = (this.state.canonicalValue * this.getConversionFactor()).toLocaleString('en-US');
       if (this.state.decimal) {
         this.setState({decimal: false});
-        console.log("val plus", val + ".")
         val += ".";  // FIXME - trailing decimal does not appear correctly
       } 
       return val;
@@ -46,7 +45,6 @@ export class FormulaItem extends React.Component {
   updateValue = (text) => {
     // tag input of decimal point
     if (text[text.length-1] == ".") {
-      console.log("period detected")
       this.setState({decimal: true});
     }
 
