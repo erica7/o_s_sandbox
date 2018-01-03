@@ -25,7 +25,7 @@ export class FormulaItem extends React.Component {
   // Return the displayValue based on the canonicalValue and the displayUnit
   displayValue = () => {
     // console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
-    if (this.state.canonicalValue !== null && !Number.isNaN(this.state.canonicalValue) && this.state.canonicalValue * this.getConversionFactor() != 0)  {
+    if (this.state.canonicalValue !== null && !Number.isNaN(this.state.canonicalValue)) {  // && this.state.canonicalValue * this.getConversionFactor() != 0)  {
       let val = (this.state.canonicalValue * this.getConversionFactor()).toLocaleString('en-US');
       if (this.state.decimal) {
         this.setState({decimal: false});
@@ -44,13 +44,9 @@ export class FormulaItem extends React.Component {
   // Update this.state.canonicalValue on user input 
   setCanonicalValue(text) {
     //FIXME determine all possible conditions and refactor 
-    if (text == null) {
+    if (!text) {  // !"" and !null both evaluate to true
       this.setState({canonicalValue: null}, () => { this.props.childChanged() });
-      return;
-    }
-
-    if (text == "") {
-      this.setState({canonicalValue: null}, () => { this.props.childChanged() });
+      console.log("!text text:", text)
       return;
     }
 
@@ -61,13 +57,7 @@ export class FormulaItem extends React.Component {
 
     // calculate the new canonical value and update state, notify the parent element that child changed 
     let newCanonicalValue = parseInt(text.replace(/,/g, "")) / this.getConversionFactor();
-    // this.setState({canonicalValue: newCanonicalValue});  // // // // // // doesn't trigger render event immediately
     this.setState({canonicalValue: newCanonicalValue}, () => { this.props.childChanged() }); 
-    
-    // console.log("this.state", this.state)
-
-    // notify parent element that child changed  // moved to callback
-    // this.props.childChanged();
   }
 
   render() {

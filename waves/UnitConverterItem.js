@@ -26,7 +26,7 @@ class UnitConverterItem extends React.Component {
   // Convert the canonicalValue to displayValue based on the displayUnit
   displayValue = (n) => {
     // console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
-    if (this.state.canonicalValue !== null && !Number.isNaN(this.state.canonicalValue) && this.state.canonicalValue * this.getConversionFactor() != 0)  {
+    if (this.state.canonicalValue !== null && !Number.isNaN(this.state.canonicalValue)) {  // && this.state.canonicalValue * this.getConversionFactor() != 0)  {
       return (this.state.canonicalValue * this.getConversionFactor(n)).toLocaleString('en-US', {maximumFractionDigits: 2});  
     } else {
       return null;

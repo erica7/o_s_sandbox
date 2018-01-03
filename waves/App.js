@@ -25,6 +25,7 @@ const unitArray = units.units;
 
 // FIXME
 //  formula calculation 
+//  zero probs - how to display (or not) zero, numbers very close to zero
 //  decimal probs 
 
 // TODO

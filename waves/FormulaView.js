@@ -23,6 +23,8 @@ export class FormulaView extends React.Component {
     this.childChanged = this.childChanged.bind(this);
   }
 
+  // TODO DRY childChanged and doTheMath 
+
   // Notifier function
   // Check each child's state to determine if the inputs properly constrain the function and update this.state.allowCalc
   childChanged() {
@@ -31,7 +33,8 @@ export class FormulaView extends React.Component {
     // fill an array with boolean values if child component has a valid value
     let temp = [];
     for (let i=0; i<this.items.length; i++) {
-      this.child[i].getCanonicalValue() == null ? temp.push(false) : temp.push(true);
+      let hasValue = this.child[i].getCanonicalValue() !== null;
+      temp.push(hasValue);
     }
 
     // compare the boolean array to the constraint patterns
@@ -47,8 +50,7 @@ export class FormulaView extends React.Component {
         this.setState({allowCalc: true}); 
         return;
       } else { 
-        this.setState({allowCalc: false});  // FIXME not behaving properly 
-        // this.forceUpdate(); // just for testing
+        this.setState({allowCalc: false});
       }
     }
 
@@ -57,7 +59,6 @@ export class FormulaView extends React.Component {
   }
 
   // Solve for the missing value using the formulas array: find the correct formula and call its function
-  // FIXME
   doTheMath = () => {
     console.log("doTheMath()")
     // console.log("this.formulas", this.formulas)
@@ -67,15 +68,17 @@ export class FormulaView extends React.Component {
     let temp = [];
     let tempValues = [];
     for (let i=0; i<this.items.length; i++) {
-      this.child[i].getCanonicalValue() == null ? temp.push(false) : temp.push(true);
-      this.child[i].getCanonicalValue() == null ? tempValues.push(null) : tempValues.push(this.child[i].getCanonicalValue());
+      let hasValue = this.child[i].getCanonicalValue() !== null;
+      temp.push(hasValue);
+      tempValues.push(this.child[i].getCanonicalValue());
     }
 
     // compare the boolean array to the constraint patterns
-    let matchInd = 90;
-    for (let j=0; j<this.formulas.length; j++) {
+    let emptyInd = -1;
+    let matchInd = -1;
+    for (let j=0; j<this.formulas.length; j++) {  // j iterates over the possible formulas 
       let match = true;
-      for (let i=0; i<temp.length; i++) {
+      for (let i=0; i<temp.length; i++) {  // i iterates over the constraint state (presence or absence of each variable)
         if (this.formulas[j].constraints[i] !== temp[i]) {
           match = false;
         }
@@ -85,20 +88,19 @@ export class FormulaView extends React.Component {
       }
       if (match == true) {
         matchInd = j;
+        break;
       } 
     }
 
     console.log("tempValues array", tempValues.join(", "))
+    console.log("emptyInd", emptyInd)
     console.log("matchInd", matchInd)
     
     // perform the calculation
     let result = this.formulas[matchInd].formula(tempValues);
-    // let result = this.formulas[matchInd].formula(tempValues[0],tempValues[1],tempValues[2],tempValues[3],tempValues[4]);
-    // console.log('result', result);
 
     // set the result to the canonical value
-    this.child[emptyInd].setCanonicalValue(result.toString());
-    // console.log("*****", this.child[1].setCanonicalValue("22"));
+    this.child[emptyInd].setCanonicalValue(result.toString()); //NOTE setCanonicalValue will (_should_) call notifier method childChanged to update state.allowCalc
   }
 
   // Set all Childs' state.canonicalValue = null;
@@ -110,8 +112,7 @@ export class FormulaView extends React.Component {
 
   render() {
     let formulaItems = this.items.map((x, i) => {
-      // console.log("x",x)
-      return <FormulaItem item={ this.items[i][Object.keys(this.items[i])] } ref={ref => (this.child[`${i}`] = ref)} childChanged={this.childChanged} notifierFunction={this.notifierFunction} />
+      return <FormulaItem item={ this.items[i][Object.keys(this.items[i])] } ref={ref => (this.child[`${i}`] = ref)} childChanged={this.childChanged} />
     })
     return(
       <View style={[styles.container, styles.color_background_primary]}>
