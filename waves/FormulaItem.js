@@ -5,10 +5,6 @@ const globals = require('./Globals.js');
 
 const TouchableElement = globals.TouchableElement;
 
-sendStateToParent = () => {
-  // e.g. send state.canonicalValue to parent 
-}
-
 export class FormulaItem extends React.Component {
   constructor(props) {
     super(props);
@@ -18,6 +14,7 @@ export class FormulaItem extends React.Component {
       modalVisible: false,
       decimal: false,
     }
+    this.setCanonicalValue = this.setCanonicalValue.bind(this);
   }
 
   // Return the conversion factor of a unit 
@@ -39,21 +36,38 @@ export class FormulaItem extends React.Component {
       return null;
     }
   }
+
+  getCanonicalValue = () => {
+    return this.state.canonicalValue;
+  }
   
   // Update this.state.canonicalValue on user input 
-  // FIXME - see inside 
-  updateValue = (text) => {
-    // tag input of decimal point
+  setCanonicalValue(text) {
+    //FIXME determine all possible conditions and refactor 
+    if (text == null) {
+      this.setState({canonicalValue: null}, () => { this.props.childChanged() });
+      return;
+    }
+
+    if (text == "") {
+      this.setState({canonicalValue: null}, () => { this.props.childChanged() });
+      return;
+    }
+
+    // FIXME tag input of decimal point
     if (text[text.length-1] == ".") {
       this.setState({decimal: true});
     }
 
-    // calculate the new canonical value and update state 
+    // calculate the new canonical value and update state, notify the parent element that child changed 
     let newCanonicalValue = parseInt(text.replace(/,/g, "")) / this.getConversionFactor();
-    this.setState({canonicalValue: newCanonicalValue});
+    // this.setState({canonicalValue: newCanonicalValue});  // // // // // // doesn't trigger render event immediately
+    this.setState({canonicalValue: newCanonicalValue}, () => { this.props.childChanged() }); 
+    
+    // console.log("this.state", this.state)
 
-    // send canonical value to parent element 
-    // FIXME
+    // notify parent element that child changed  // moved to callback
+    // this.props.childChanged();
   }
 
   render() {
@@ -82,7 +96,8 @@ export class FormulaItem extends React.Component {
         <TextInput
           ref={this.props.reference}
           style={[styles.font, styles.textInput, styles.color_font_primary, styles.color_background_secondary, styles.flex_3, styles.font_bigger]}
-          onChangeText={this.updateValue}
+          onChangeText={this.setCanonicalValue}
+          // onChangeText={this.props.notifierFunction.bind(this, "TEST")}
           autoCorrect={false}
           keyboardType="decimal-pad"  // TODO check docs for android compatibility 
           keyboardAppearance="dark"

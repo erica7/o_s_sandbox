@@ -12,12 +12,37 @@ formulas = {
     ],
     formulas: [
       {
-        constraints: [true, true, true, true, false],
-        formula: function(s, n, d, l, q_null) {
-          return 0.25 * Math.PI * Math.pow(d.getValue(), 2) * l.getValue() * n.getValue() * s.getValue() * 1 / 231;
+        constraints: [false, true, true, true, true],
+        formula: function([s, n, d, l, q]) {
+          return q / (0.25 * Math.PI * Math.pow(d, 2) * l * n * 1 / 231);
         }
       },
-      //TODO build out
+      {
+        constraints: [true, false, true, true, true],
+        formula: function([s, n, d, l, q]) {
+          return q / (0.25 * Math.PI * Math.pow(d, 2) * l * s * 1 / 231);
+        }
+      },
+      {
+        constraints: [true, true, false, true, true],
+        formula: function([s, n, d, l, q]) {
+          return Math.sqrt(q / (0.25 * Math.PI * l * n * s * 1 / 231));
+        }
+      },
+      {
+        constraints: [true, true, true, false, true],
+        formula: function([s, n, d, l, q]) {
+          return q / (0.25 * Math.PI * Math.pow(d, 2) * s * n * 1 / 231);
+        }
+      },
+      {
+        constraints: [true, true, true, true, false],
+        formula: function([s, n, d, l, q]) {
+          // return 0.25 * Math.PI * Math.pow(d, 2) * l.getValue() * n.getValue() * s.getValue() * 1 / 231;
+          return 0.25 * Math.PI * Math.pow(d, 2) * l * n * s * 1 / 231;
+        }
+      },
+      //TODO double check formulas and constants
     ],
   },
   horsepower: {
@@ -29,19 +54,19 @@ formulas = {
     formulas: [
       {
         constraints: [false, true, true],
-        formula: function(q_null, p, h) {
+        formula: function([q_null, p, h]) {
           return h * 1550 / p;
         }
       },
       {
         constraints: [true, false, true],
-        formula: function(q, p_null, h) {
+        formula: function([q, p_null, h]) {
           return h * 1550 / q;
         }
       },
       {
         constraints: [true, true, false],
-        formula: function(q, p, h_null) {
+        formula: function([q, p, h_null]) {
           return q * p / 1550;
         }
       },
