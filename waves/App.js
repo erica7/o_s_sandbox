@@ -45,7 +45,7 @@ function printState(obj) {
  */
 const menuButton = (navigate, navName, navTitle = navName) => { 
   return (
-    <TouchableElement style={[styles.btnMenu]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate(navName)} >
+    <TouchableElement style={[styles.btn, styles.width_full]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => navigate(navName)} >
       <Text style={styles.btn_text}>{ navTitle.toUpperCase() }</Text>
     </TouchableElement>
   )
