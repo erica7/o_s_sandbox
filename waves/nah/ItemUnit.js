@@ -26,7 +26,7 @@ class ItemUnit extends React.Component {
       var unitOptions = this.props.units.map((x,i)=>{
         return (
           <TouchableElement style={styles.btn} onPress={() => {this.updateUnit(this.props.reference, i)}}>
-            <Text style={styles.btnText}>{ x.unit.toUpperCase() }</Text>
+            <Text style={styles.btn_text}>{ x.unit.toUpperCase() }</Text>
           </TouchableElement>
         )
       })
@@ -46,7 +46,7 @@ class ItemUnit extends React.Component {
         <Text style={[styles.font, styles.parameter]}>{this.props.parameter.toUpperCase()}</Text>
         <TextInput
           ref={this.props.reference}
-          style={[styles.font, styles.textInput]}
+          style={[styles.font, styles.textInput, styles.flex_3]}
           onChangeText={this.props.myFunc}
           onFocus={this.props.myFocus}
           autoCorrect={false}
@@ -56,10 +56,10 @@ class ItemUnit extends React.Component {
           selectionColor="#f00"
         />
         <TouchableElement 
-          style={styles.unit}
+          style={[styles.btnSec, styles.flex_2]}
           onPress={() => { if (this.props.unitBool) { this.setModalVisible(!this.state.modalVisible) }}} 
           >
-          <Text style={[styles.font, styles.unitText]}>{this.props.unit.toUpperCase()}</Text>
+          <Text style={[styles.font, styles.btnSec_text]}>{this.props.unit.toUpperCase()}</Text>
         </TouchableElement>
       </View>
     )

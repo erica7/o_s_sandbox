@@ -134,7 +134,7 @@ class Calc extends React.Component {
           activeOpacity={0.7}
           onPress={ () => { if (!myBool) {this.doTheMathC()}} }
         >
-          <Text style={styles.btnText}>CALCULATE</Text>
+          <Text style={styles.btn_text}>CALCULATE</Text>
         </TouchableElement>
 
         <TouchableElement
@@ -143,7 +143,7 @@ class Calc extends React.Component {
           activeOpacity={0.7}
           onPress={ this.clearAllC }
         >
-          <Text style={styles.btnText}>CLEAR ALL</Text>
+          <Text style={styles.btn_text}>CLEAR ALL</Text>
         </TouchableElement>
 
         <View style={styles.spacing}></View>

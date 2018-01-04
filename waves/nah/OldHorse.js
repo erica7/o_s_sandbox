@@ -151,7 +151,7 @@ export class OldHorse extends React.Component {
         {this.paramItem({ varName: "p", parameter: "Pressure", unit: "psi" })}
         {this.paramItem({ varName: "h", parameter: "Horsepower", unit: "hhp" })}
         <TouchableElement style={[styles.btn, this.styleBtn()]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => { if (!this.state.calcBtnDisabled) { this.doTheMath(this) } }}>
-          <Text style={styles.btnText}>CALCULATE</Text>
+          <Text style={styles.btn_text}>CALCULATE</Text>
         </TouchableElement>
         {/* <Button styles={styles.calcBtn} disabled={this.state.calcBtnDisabled} ref="calculateBtn" onPress={ () => this.doTheMath(this) } title="Calculate"></Button> */}
         {/* <Button raised large onPress={ () => printState(this) } title="See State"></Button> */}

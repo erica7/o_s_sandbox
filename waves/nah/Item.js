@@ -5,7 +5,7 @@ const styles = require('./Style.js');
 class UnitStatic extends React.Component {
   render() {
     return (
-      <Text style={[styles.font, styles.unit]}>{this.props.unit.toUpperCase()}</Text>
+      <Text style={[styles.font, styles.btnSec, styles.flex_2]}>{this.props.unit.toUpperCase()}</Text>
     )
   }
 }
@@ -41,7 +41,7 @@ class Item extends React.Component {
         <Text style={[styles.font, styles.parameter]}>{this.props.parameter.toUpperCase()}</Text>
         <TextInput
           ref={this.props.reference}
-          style={[styles.font, styles.textInput]}
+          style={[styles.font, styles.textInput, styles.flex_3]}
           onChangeText={this.handleChange}
           onKeyDown={this.handleKeyDown}
           onSelectionChange={this.handleDoneEdit}

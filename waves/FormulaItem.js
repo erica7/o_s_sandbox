@@ -12,48 +12,54 @@ sendCanonicalValueToParent = () => {
 export class FormulaItem extends React.Component {
   constructor(props) {
     super(props);
-    // console.log("FormulaItem this.props", this.props);
     this.state = {
       canonicalValue: null, 
       displayUnit: props.item.getUnits()[0], 
       modalVisible: false,
+      decimal: false,
     }
   }
+
+  // Return the conversion factor of a unit 
   getConversionFactor = () => {
     return this.state.displayUnit[1];
   }
-  /**
-   * Convert the canonicalValue to displayValue based on the displayUnit
-   */
+  
+  // Return the displayValue based on the canonicalValue and the displayUnit
   displayValue = () => {
     // console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
-    if (this.state.canonicalValue !== null) {
-      if (this.state.canonicalValue * this.getConversionFactor() != 0) {
-        return (this.state.canonicalValue * this.getConversionFactor()).toString();  
+    if (this.state.canonicalValue !== null && !Number.isNaN(this.state.canonicalValue) && this.state.canonicalValue * this.getConversionFactor() != 0)  {
+      let val = (this.state.canonicalValue * this.getConversionFactor()).toLocaleString('en-US');
+      if (this.state.decimal) {
+        this.setState({decimal: false});
+        console.log("val plus", val + ".")
+        val += ".";  // FIXME - trailing decimal does not appear correctly
       } 
+      return val;
     } else {
       return null;
     }
   }
-  /**
-   * Update this.state.canonicalValue on user input 
-   * FIXME
-   */
+  
+  // Update this.state.canonicalValue on user input 
+  // FIXME - see inside 
   updateValue = (text) => {
-    // console.log("updateValue text", text, "displayUnit", this.state.displayUnit);
-    let newCanonicalValue = text / this.getConversionFactor();
+    // tag input of decimal point
+    if (text[text.length-1] == ".") {
+      console.log("period detected")
+      this.setState({decimal: true});
+    }
+
+    // calculate the new canonical value and update state 
+    let newCanonicalValue = parseInt(text.replace(/,/g, "")) / this.getConversionFactor();
     this.setState({canonicalValue: newCanonicalValue});
 
     // send canonical value to parent element 
-
+    // FIXME
   }
 
   render() {
-    //TODO refactor with const item = this.props.item, etc
-
-    // console.log("this.props.ref",this.props.ref);
-    // console.log("this.state",this.state);
-
+    let item = this.props.item;
     return(
       <View style={styles.item}>
         <Modal
@@ -64,9 +70,9 @@ export class FormulaItem extends React.Component {
           >
           <View style={styles.modalView}>
             { 
-              this.props.item.getUnits().map((x,i) => (
+              item.getUnits().map((x,i) => (
                 <TouchableElement style={[styles.btn]} onPress={() => {this.setState({displayUnit: x, modalVisible: false})}}>
-                  <Text style={[styles.btnText, this.state.displayUnit == x && styles.btnTextSelected]}>
+                  <Text style={[styles.btn_text, this.state.displayUnit == x && styles.btn_text__selected]}>
                     { x[0].toUpperCase() } {this.state.displayUnit == x && "\u2713"}
                   </Text>
                 </TouchableElement>
@@ -74,10 +80,10 @@ export class FormulaItem extends React.Component {
             }
           </View>
         </Modal>
-        <Text style={[styles.font, styles.parameter]}>{this.props.item.displayName.toUpperCase()}</Text>
+        <Text style={[styles.font, styles.parameter]}>{item.displayName.toUpperCase()}</Text>
         <TextInput
           ref={this.props.reference}
-          style={[styles.font, styles.textInput]}
+          style={[styles.font, styles.textInput, styles.flex_3, styles.font_bigger]}
           onChangeText={this.updateValue}
           autoCorrect={false}
           keyboardType="decimal-pad"  // TODO check docs for android compatibility 
@@ -86,12 +92,12 @@ export class FormulaItem extends React.Component {
           selectionColor="#f00"
         />
         <TouchableElement 
-          style={[styles.unit]}
-          underlayColor={this.props.item.getUnits().length > 1 ? "#333" : "none"}
-          activeOpacity={this.props.item.getUnits().length > 1 ? 0.7 : 1}
-          onPress={() => { if (this.props.item.getUnits().length > 1) { this.setState({modalVisible: true}) }}} 
+          style={[styles.btnSec, styles.flex_2]}
+          underlayColor={item.getUnits().length > 1 ? "#333" : "none"}
+          activeOpacity={item.getUnits().length > 1 ? 0.7 : 1}
+          onPress={() => { if (item.getUnits().length > 1) { this.setState({modalVisible: true}) }}} 
           >
-          <Text style={[styles.font, styles.unitText, this.props.item.getUnits().length > 1 && styles.unitTextClickable]}>
+          <Text style={[styles.font, styles.btnSec_text, item.getUnits().length > 1 && styles.btnSec_text__active]}>
             {this.state.displayUnit[0].toUpperCase()}
           </Text>
         </TouchableElement>

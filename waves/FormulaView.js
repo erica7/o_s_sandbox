@@ -8,7 +8,7 @@ const TouchableElement = globals.TouchableElement;
 const Item = globals.Item;
 
 // TODO separate
-// props passed to FormulaView are items, e.g.:
+// Array of items which are passed as props to FormulaView 
 const flowrate = [
   {s: new Item("Speed", [["rpm", 1], ["rph", 60]])},
   {n: new Item("Number of Plungers", [["qty", 1]])},
@@ -18,7 +18,7 @@ const flowrate = [
 ]
 
 // TODO separate
-// always uses canonical units 
+// Array of forumal objects which contain formulas (which always use canonical units) and their constraint patterns 
 const formulas = [
   {
     constraints: [true, true, true, true, false],
@@ -37,10 +37,8 @@ export class FormulaView extends React.Component {
     }
   }
 
-  /**
-   * Determine if the inputs properly constrain the function and update this.state.allowCalc
-   * FIXME
-   */
+  // Determine if the inputs properly constrain the function and update this.state.allowCalc
+  // FIXME
   something = () => {
     for (let i=0; i<formulas.length; i++) {
       if (formulas[i].constraints == cState) {
@@ -52,10 +50,8 @@ export class FormulaView extends React.Component {
     }
   }
 
-  /**
-   * Solve for the missing value using the formulas array: find the correct formula and call its function
-   * FIXME
-   */
+  // Solve for the missing value using the formulas array: find the correct formula and call its function
+  // FIXME
   doTheMath = () => {
     for (let i=0; i<formulas.length; i++) {
       if (formulas[i].constraints == cState) {
@@ -65,18 +61,14 @@ export class FormulaView extends React.Component {
     }
   }
 
-  /**
-   * Set all Childs' state.canonicalValue = null;
-   * FIXME
-   */
+  // Set all Childs' state.canonicalValue = null;
+  // FIXME
   clearAll = () => {
     console.log("clearAll")
   }
-  
+
   render() {
     // FIXME get the FormulaItem canonical value
-    console.log("this.state.allowCalc", this.state.allowCalc)
-    console.log("this.child", this.child);
 
     let formulaItems = flowrate.map((x, i) => {
       // console.log("x",x)
@@ -86,12 +78,12 @@ export class FormulaView extends React.Component {
       <View style={styles.container}>
         { formulaItems }
         <TouchableElement
-          style={[styles.btn, this.state.allowCalc ? null : styles.btnDisabled]}
+          style={[styles.btn, this.state.allowCalc ? null : styles.btn__disabled]}
           underlayColor={this.state.allowCalc ? "#ccc" : "none"}
           activeOpacity={this.state.allowCalc ? 0.7 : 1}
           onPress={ () => { if (this.state.allowCalc) {this.doTheMathC()}} }
         >
-          <Text style={styles.btnText}>CALCULATE</Text>
+          <Text style={styles.btn_text}>CALCULATE</Text>
         </TouchableElement>
         <TouchableElement
           style={[styles.btn]}
@@ -99,7 +91,7 @@ export class FormulaView extends React.Component {
           activeOpacity={0.7}
           onPress={ this.clearAll }
         >
-          <Text style={styles.btnText}>CLEAR ALL</Text>
+          <Text style={styles.btn_text}>CLEAR ALL</Text>
         </TouchableElement>
         <View style={styles.spacing}></View>
       </View>

@@ -183,10 +183,10 @@ export class OldFlow extends React.Component {
         {this.paramItem({ varName: "l", parameter: "Stroke", unit: "in" })}
         {this.paramItem({ varName: "q", parameter: "Flowrate", unit: "gpm" })}
         <TouchableElement style={[styles.btn, this.styleBtn()]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => { if (!this.state.calcBtnDisabled) { this.doTheMath(this) } }}>
-          <Text style={styles.btnText}>CALCULATE</Text>
+          <Text style={styles.btn_text}>CALCULATE</Text>
         </TouchableElement>
         <TouchableElement style={[styles.btn]} underlayColor="#ccc" activeOpacity={0.7} onPress={() => { this.clearAll() }}>
-          <Text style={styles.btnText}>CLEAR ALL</Text>
+          <Text style={styles.btn_text}>CLEAR ALL</Text>
         </TouchableElement>
         <View style={styles.spacing}></View>
       </View>

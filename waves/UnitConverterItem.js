@@ -17,45 +17,39 @@ class UnitConverterItem extends React.Component {
       modalVisible: false,
     }
   }
+
+  // Return the conversion factor of a unit 
   getConversionFactor = (n) => {
     return n == 2 ? this.state.displayUnit2[1] : this.state.displayUnit[1];
   }
 
-  /**
-   * Convert the canonicalValue to displayValue based on the displayUnit
-   */
+  // Convert the canonicalValue to displayValue based on the displayUnit
   displayValue = (n) => {
     // console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
-    if (this.state.canonicalValue !== null) {
-      if (this.state.canonicalValue * this.getConversionFactor(n) != 0) {
-        return (this.state.canonicalValue * this.getConversionFactor(n)).toString();  //.getConversionFactor()
-      } 
+    if (this.state.canonicalValue !== null && !Number.isNaN(this.state.canonicalValue) && this.state.canonicalValue * this.getConversionFactor() != 0)  {
+      return (this.state.canonicalValue * this.getConversionFactor(n)).toLocaleString('en-US', {maximumFractionDigits: 2});  
     } else {
       return null;
     }
   }
 
-  /**
-   * Update this.state.canonicalValue on user input 
-   * FIXME - refactor 
-   */
+  // Update this.state.canonicalValue on user input 
+  // FIXME - refactor 
   updateValue = (text) => {
     // console.log("updateValue text", text, "displayUnit", this.state.displayUnit);
-    let newCanonicalValue = text / this.getConversionFactor(1);
+    let newCanonicalValue = parseInt(text.replace(/,/g, "")) / this.getConversionFactor(1);
     this.setState({canonicalValue: newCanonicalValue});
     return null;
   }
-  /**
-   * Update this.state.canonicalValue on user input 
-   * FIXME - refactor 
-   */
+  
+  // Update this.state.canonicalValue on user input 
+  // FIXME - refactor 
   updateValue2 = (text) => {
     // console.log("updateValue text", text, "displayUnit", this.state.displayUnit);
-    let newCanonicalValue = text / this.getConversionFactor(2);
+    let newCanonicalValue = parseInt(text.replace(/,/g, "")) / this.getConversionFactor(2);
     this.setState({canonicalValue: newCanonicalValue});
     return null;
   }
-
 
   render() {
     return (
@@ -70,7 +64,7 @@ class UnitConverterItem extends React.Component {
             { 
               this.props.item.getUnits().map((x,i) => (
                 <TouchableElement style={[styles.btn]} onPress={() => { this.state.unit2Active ? this.setState({displayUnit2: x, modalVisible: false}) : this.setState({displayUnit: x, modalVisible: false}) }}>
-                  <Text style={[styles.btnText, this.state.unit2Active ? this.state.displayUnit2 == x && styles.btnTextSelected : this.state.displayUnit == x && styles.btnTextSelected] }>
+                  <Text style={[styles.btn_text, this.state.unit2Active ? this.state.displayUnit2 == x && styles.btn_text__selected : this.state.displayUnit == x && styles.btn_text__selected] }>
                     { x[0].toUpperCase() } {this.state.unit2Active ? this.state.displayUnit2 == x && "\u2713" : this.state.displayUnit == x && "\u2713" }
                   </Text>
                 </TouchableElement>
@@ -78,10 +72,10 @@ class UnitConverterItem extends React.Component {
             }
           </View>
         </Modal>
-        <Text style={styles.parameterName}>{this.props.item.getDisplayName()}</Text>
+        <Text style={styles.parameterName}>{this.props.item.getDisplayName().toUpperCase()}</Text>
         <View style={styles.item}>
           <TextInput
-            style={[styles.font, styles.textInput]}
+            style={[styles.font, styles.textInput, styles.flex_5]}
             onChangeText={this.updateValue}
             autoCorrect={false}
             keyboardType="decimal-pad"  // TODO check docs for android compatibility 
@@ -90,20 +84,21 @@ class UnitConverterItem extends React.Component {
             selectionColor="#f00"
           />
           <TouchableElement 
-            style={[styles.unit]}
+            style={[styles.btnSec, styles.flex_2]}
             underlayColor={"#333"}
             activeOpacity={0.7}
             onPress={() => { this.setState({unit2Active: false, modalVisible: true}) }} 
             >
-            <Text style={[styles.font, styles.unitText, styles.unitTextClickable]}>
+            <Text style={[styles.font, styles.btnSec_text, styles.btnSec_text__active]}>
               {this.state.displayUnit[0].toUpperCase()}
             </Text>
           </TouchableElement>
 
-          <Text style={[styles.font, styles.unitText]}>=</Text>
+        </View>
 
+        <View style={styles.item}>
           <TextInput
-            style={[styles.font, styles.textInput]}
+            style={[styles.font, styles.textInput, styles.flex_5]}
             onChangeText={this.updateValue2}
             autoCorrect={false}
             keyboardType="decimal-pad"  // TODO check docs for android compatibility 
@@ -112,12 +107,12 @@ class UnitConverterItem extends React.Component {
             selectionColor="#f00"
           />
           <TouchableElement 
-            style={[styles.unit]}
+            style={[styles.btnSec, styles.flex_2]}
             underlayColor={"#333"}
             activeOpacity={0.7}
             onPress={() => { this.setState({unit2Active: true, modalVisible: true}) }} 
             >
-            <Text style={[styles.font, styles.unitText, styles.unitTextClickable]}>
+            <Text style={[styles.font, styles.btnSec_text, styles.btnSec_text__active]}>
               {this.state.displayUnit2[0].toUpperCase()}
             </Text>
           </TouchableElement>
