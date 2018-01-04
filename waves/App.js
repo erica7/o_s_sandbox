@@ -24,13 +24,16 @@ const unitArray = units.units;
 //        |-- UnitConverterItem
 
 // FIXME
-//  formula calculation 
-//  zero probs - how to display (or not) zero, numbers very close to zero
 //  decimal probs 
 
 // TODO
 //  consider if / how to clear individual fields on a single click
 //  pre-populated common values such as number of plungers 
+//  styling
+//  add content
+//  test; squash bugs and resolve issues
+//  document, comment 
+//  go live
 
 function printState(obj) {
   console.log(obj.state);

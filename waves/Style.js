@@ -121,8 +121,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: '100%',
     padding: 44,
-    borderRadius: 7,
-    borderWidth: 3,
   },
   //UnitConverter
   // FIXME - eliminate class; refactor into separate classes 
