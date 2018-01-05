@@ -7,12 +7,15 @@ const globals = require('./Globals.js');
 const TouchableElement = globals.TouchableElement;
 const Item = globals.Item;
 
+//NOTE: Arrow functions preserve the `this` binding. The `this` value of the enclosing execution context is used.
+
 export class FormulaView extends React.Component {
   constructor(props) {
     super(props); // extends the context (`this`) of the parent constructor 
     // console.log("FormulaView this.props", this.props);
     this.state = {
       allowCalc: false,
+      allowClearAll: false,
     }
     // catch parameters sent through stackNavigator
     const { params } = this.props.navigation.state;
@@ -25,44 +28,68 @@ export class FormulaView extends React.Component {
 
   // TODO DRY childChanged and doTheMath 
 
-  // Notifier function
-  // Check each child's state to determine if the inputs properly constrain the function and update this.state.allowCalc
-  childChanged() {
-    // console.log("this.formulas", this.formulas)
-
-    // fill an array with boolean values if child component has a valid value
-    let temp = [];
-    for (let i=0; i<this.items.length; i++) {
+  getChildBools = () => {
+    var temp = [];
+    var clearAllBool = false;
+    var lenItems = this.items.length;
+    for (let i=0; i<lenItems; i++) {
       let hasValue = this.child[i].getCanonicalValue() !== null;
       temp.push(hasValue);
+      if (hasValue) clearAllBool = true;
     }
+    return temp;
+  }
+
+
+
+  getChildValues = () => {
+    var temp = [];
+    var clearAllBool = false;
+    var lenItems = this.items.length;
+    for (let i=0; i<lenItems; i++) {
+      let val = this.child[i].getCanonicalValue();
+      temp.push(val);
+      if (val !== null) clearAllBool = true;
+    }
+    this.setState({allowClearAll: clearAllBool});
+    return temp;
+  }
+
+
+  // Notifier function
+  // Check each child's state to determine if the inputs properly constrain the function and update this.state.allowCalc
+  childChanged = () => {
+    // fill an array with boolean values if child component has a valid value
+    var temp = [];
+    var clearAllBool = false;
+    var lenItems = this.items.length;
+    for (let i=0; i<lenItems; i++) {
+      let hasValue = this.child[i].getCanonicalValue() !== null;
+      temp.push(hasValue);
+      if (hasValue) clearAllBool = true;
+    }
+    // var temp = this.getChildBools();
 
     // compare the boolean array to the constraint patterns
-    for (let j=0; j<this.formulas.length; j++) {
-      let match = true;
-      for (let i=0; i<temp.length; i++) {
+    var match = true;
+    for (var j=0; (j<this.formulas.length); j++) {
+      match = true; 
+      for (var i=0; ((match === true) && (i<temp.length)); i++) {
         if (this.formulas[j].constraints[i] !== temp[i]) {
           match = false;
-          continue;
         }
       }
-      if (match == true) {
-        this.setState({allowCalc: true}); 
-        return;
-      } else { 
-        this.setState({allowCalc: false});
-      }
+      if (match) break;  //FIXME won't work in the outer for loop condition e.g. ((match) && (j<this.formulas.length))
     }
-
-    console.log("temp", temp)
-    console.log("this.state.allowCalc", this.state.allowCalc)
+    this.setState({allowCalc: match, allowClearAll: clearAllBool}); 
+    
+    console.log("******* match", match)
+    console.log("this.state.allowCalc", this.state.allowCalc);
+    console.log("this.state.allowClearAll", this.state.allowClearAll);
   }
 
   // Solve for the missing value using the formulas array: find the correct formula and call its function
   doTheMath = () => {
-    console.log("doTheMath()")
-    // console.log("this.formulas", this.formulas)
-
     // fill an array with boolean values if child component has a valid value
     // fill an array with canonicalValues if child component has a valid value
     let temp = [];
@@ -105,28 +132,37 @@ export class FormulaView extends React.Component {
 
   // Set all Childs' state.canonicalValue = null;
   clearAll = () => {
+    console.log("clearAll()")
+    
     for (let i=0; i<this.child.length; i++) {
       this.child[i].setCanonicalValue(null);
     }
+    // this.setState({allowClearAll: false});
   }
-
+  //FIXME: use this.disabled or this.state.allowCalc consistently 
   render() {
     let formulaItems = this.items.map((x, i) => {
       return <FormulaItem item={ this.items[i][Object.keys(this.items[i])] } ref={ref => (this.child[`${i}`] = ref)} childChanged={this.childChanged} />
-    })
+    });
     return(
       <View style={[styles.container, styles.color_background_primary]}>
         { formulaItems }
         <TouchableElement
-          style={[styles.btn, styles.color_btn_primary, this.state.allowCalc ? null : styles.color_btn_disabled]}
-          underlayColor={this.state.allowCalc ? "#ccc" : "none"}
-          activeOpacity={this.state.allowCalc ? 0.7 : 1}
-          onPress={ () => { if (this.state.allowCalc) {this.doTheMath()}} }
+          ref={ref => {this.calcBtn = ref}}
+          disabled={!this.state.allowCalc}
+          style={[styles.btn, styles.color_btn_primary, this.state.allowCalc ? null : styles.color_btn_disabled]} 
+          // style={[styles.btn, styles.color_btn_primary, !this.disabled ? null : styles.color_btn_disabled]} //doesn't work! - FIXME: use this.disabled or this.state.allowCalc consistently 
+          underlayColor={!this.disabled ? "#2cc" : "none"} //works - FIXME: use this.disabled or this.state.allowCalc consistently 
+          activeOpacity={!this.disabled ? 1 : 0.7} //works - FIXME: use this.disabled or this.state.allowCalc consistently 
+          // onPress={ () => {this.doTheMath()} }
+          onPress={ this.doTheMath }
         >
           <Text style={[styles.btn_text, styles.color_font_secondary]}>CALCULATE</Text>
         </TouchableElement>
         <TouchableElement
-          style={[styles.btn, styles.color_btn_primary]}
+          ref={ref => {this.clearAllBtn = ref}}
+          disabled={!this.state.allowClearAll}
+          style={[styles.btn, styles.color_btn_primary, this.state.allowClearAll ? null : styles.color_btn_disabled]} 
           underlayColor="#ccc"
           activeOpacity={0.7}
           onPress={ this.clearAll }

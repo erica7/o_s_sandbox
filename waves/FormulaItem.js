@@ -46,7 +46,7 @@ export class FormulaItem extends React.Component {
     //FIXME determine all possible conditions and refactor 
     if (!text) {  // !"" and !null both evaluate to true
       this.setState({canonicalValue: null}, () => { this.props.childChanged() });
-      console.log("!text text:", text)
+      // console.log("!text text:", text)
       return;
     }
 
