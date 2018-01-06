@@ -9,6 +9,8 @@ const Item = globals.Item;
 
 //NOTE: Arrow functions preserve the `this` binding. The `this` value of the enclosing execution context is used.
 
+//FIXME calculation not responding to other units
+
 export class FormulaView extends React.Component {
   constructor(props) {
     super(props); // extends the context (`this`) of the parent constructor 
@@ -21,124 +23,100 @@ export class FormulaView extends React.Component {
     const { params } = this.props.navigation.state;
     this.items = params.p.items;
     this.formulas = params.p.formulas;
-
+    // 
     this.child = [];
-    this.childChanged = this.childChanged.bind(this);
   }
 
-  // TODO DRY childChanged and doTheMath 
-
-  getChildBools = () => {
-    var temp = [];
-    var clearAllBool = false;
-    var lenItems = this.items.length;
-    for (let i=0; i<lenItems; i++) {
-      let hasValue = this.child[i].getCanonicalValue() !== null;
-      temp.push(hasValue);
-      if (hasValue) clearAllBool = true;
-    }
-    return temp;
-  }
-
-
-
+  // Fill an array with values of the child copmonents
   getChildValues = () => {
-    var temp = [];
-    var clearAllBool = false;
+    var values = [];
     var lenItems = this.items.length;
     for (let i=0; i<lenItems; i++) {
-      let val = this.child[i].getCanonicalValue();
-      temp.push(val);
-      if (val !== null) clearAllBool = true;
+      let value = this.child[i].getCanonicalValue();
+      values.push(value);
     }
-    this.setState({allowClearAll: clearAllBool});
-    return temp;
+    return values;
   }
 
-
-  // Notifier function
-  // Check each child's state to determine if the inputs properly constrain the function and update this.state.allowCalc
+  // Notifier function: Check each child's state to determine if the inputs properly constrain the function and update this.state.allowCalc
   childChanged = () => {
-    // fill an array with boolean values if child component has a valid value
-    var temp = [];
+    // console.log("this.child[0]", this.child[0])
+    var values = this.getChildValues();
     var clearAllBool = false;
-    var lenItems = this.items.length;
-    for (let i=0; i<lenItems; i++) {
-      let hasValue = this.child[i].getCanonicalValue() !== null;
-      temp.push(hasValue);
-      if (hasValue) clearAllBool = true;
-    }
-    // var temp = this.getChildBools();
 
     // compare the boolean array to the constraint patterns
-    var match = true;
-    for (var j=0; (j<this.formulas.length); j++) {
-      match = true; 
-      for (var i=0; ((match === true) && (i<temp.length)); i++) {
-        if (this.formulas[j].constraints[i] !== temp[i]) {
-          match = false;
+    var matchFound = true;
+    let len = this.formulas.length;
+    // loop through each constraint pattern
+    for (var j=0; j<len; j++) { 
+      //set matchFound to true for each constraint pattern
+      matchFound = true; 
+      //loop through values array
+      for (var i=0; i<len; i++) {  
+        // store the constraint pattern in a variable
+        let constraintPattern = this.formulas[j].constraints;
+        // if the value is null and the constraint is true, or if the value is not null and the constraint is false, the constraint pattern is not a matchFound
+        if ((values[i] === null && constraintPattern[i] !== false) || (values[i] !== null && constraintPattern[i] === false)) {
+          matchFound = false;
+        }
+        // if a value is not equal to null, clear all button should be live
+        if (values[i] !== null) {
+          clearAllBool = true;
         }
       }
-      if (match) break;  //FIXME won't work in the outer for loop condition e.g. ((match) && (j<this.formulas.length))
+      // if a matching constraint pattern is found, break out of the loop
+      //FIXME won't work in the outer for loop condition e.g. ((matchFound) && (j<this.formulas.length))
+      if (matchFound) break; 
     }
-    this.setState({allowCalc: match, allowClearAll: clearAllBool}); 
-    
-    console.log("******* match", match)
-    console.log("this.state.allowCalc", this.state.allowCalc);
-    console.log("this.state.allowClearAll", this.state.allowClearAll);
+
+    // update allowCalc and allowClearAll 
+    this.setState({allowCalc: matchFound, allowClearAll: clearAllBool}); 
   }
 
   // Solve for the missing value using the formulas array: find the correct formula and call its function
   doTheMath = () => {
-    // fill an array with boolean values if child component has a valid value
-    // fill an array with canonicalValues if child component has a valid value
-    let temp = [];
-    let tempValues = [];
-    for (let i=0; i<this.items.length; i++) {
-      let hasValue = this.child[i].getCanonicalValue() !== null;
-      temp.push(hasValue);
-      tempValues.push(this.child[i].getCanonicalValue());
-    }
-
-    // compare the boolean array to the constraint patterns
-    let emptyInd = -1;
-    let matchInd = -1;
-    for (let j=0; j<this.formulas.length; j++) {  // j iterates over the possible formulas 
-      let match = true;
-      for (let i=0; i<temp.length; i++) {  // i iterates over the constraint state (presence or absence of each variable)
-        if (this.formulas[j].constraints[i] !== temp[i]) {
-          match = false;
+    var values = this.getChildValues();
+    let solveForIndex = -1;
+    let matchIndex = -1;
+    let len = this.formulas.length;
+    // loop through each constraint pattern
+    for (let j=0; j<len; j++) {  
+      //set matchFound to true for each constraint pattern
+      let matchFound = true;
+      //loop through values array
+      for (let i=0; i<len; i++) { 
+        // store the constraint pattern in a variable
+        let constraintPattern = this.formulas[j].constraints;
+        // if the value is null and the constraint is true, or if the value is not null and the constraint is false, the constraint pattern is not a matchFound
+        if ((values[i] === null && constraintPattern[i] !== false) || (values[i] !== null && constraintPattern[i] === false)) {
+          matchFound = false;
         }
-        if (this.formulas[j].constraints[i] == false) {
-          emptyInd = i;
+        // mark the 'empty' variable in the constraint pattern to solve for
+        if (constraintPattern[i] == false) {
+          solveForIndex = i;
         }
       }
-      if (match == true) {
-        matchInd = j;
+      //if a matching constraint pattern is found, mark the index of the matching constraint pattern/formula and break out of the loop
+      if (matchFound) {
+        matchIndex = j;
         break;
       } 
     }
 
-    console.log("tempValues array", tempValues.join(", "))
-    console.log("emptyInd", emptyInd)
-    console.log("matchInd", matchInd)
-    
     // perform the calculation
-    let result = this.formulas[matchInd].formula(tempValues);
+    let result = this.formulas[matchIndex].formula(values);
 
     // set the result to the canonical value
-    this.child[emptyInd].setCanonicalValue(result.toString()); //NOTE setCanonicalValue will (_should_) call notifier method childChanged to update state.allowCalc
+    this.child[solveForIndex].setCanonicalValue(result.toString()); //NOTE setCanonicalValue will (_should_) call notifier method childChanged to update state.allowCalc
   }
 
   // Set all Childs' state.canonicalValue = null;
   clearAll = () => {
-    console.log("clearAll()")
-    
     for (let i=0; i<this.child.length; i++) {
       this.child[i].setCanonicalValue(null);
     }
-    // this.setState({allowClearAll: false});
   }
+
   //FIXME: use this.disabled or this.state.allowCalc consistently 
   render() {
     let formulaItems = this.items.map((x, i) => {
@@ -154,7 +132,6 @@ export class FormulaView extends React.Component {
           // style={[styles.btn, styles.color_btn_primary, !this.disabled ? null : styles.color_btn_disabled]} //doesn't work! - FIXME: use this.disabled or this.state.allowCalc consistently 
           underlayColor={!this.disabled ? "#2cc" : "none"} //works - FIXME: use this.disabled or this.state.allowCalc consistently 
           activeOpacity={!this.disabled ? 1 : 0.7} //works - FIXME: use this.disabled or this.state.allowCalc consistently 
-          // onPress={ () => {this.doTheMath()} }
           onPress={ this.doTheMath }
         >
           <Text style={[styles.btn_text, styles.color_font_secondary]}>CALCULATE</Text>

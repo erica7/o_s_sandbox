@@ -10,21 +10,24 @@ export class FormulaItem extends React.Component {
     super(props);
     this.state = {
       canonicalValue: null, 
-      displayUnit: props.item.getUnits()[0], 
+      displayUnit: props.item.getUnits()[0], // start with first unit in the array 
       modalVisible: false,
       decimal: false,
     }
-    this.setCanonicalValue = this.setCanonicalValue.bind(this);
   }
 
   // Return the conversion factor of a unit 
   getConversionFactor = () => {
     return this.state.displayUnit[1];
   }
+
+  getDisplayUnitText = () => {
+    return this.state.displayUnit[0].toUpperCase();
+  }
   
   // Return the displayValue based on the canonicalValue and the displayUnit
   displayValue = () => {
-    // console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
+    console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
     if (this.state.canonicalValue !== null && !Number.isNaN(this.state.canonicalValue)) {  // && this.state.canonicalValue * this.getConversionFactor() != 0)  {
       let val = (this.state.canonicalValue * this.getConversionFactor()).toLocaleString('en-US');
       if (this.state.decimal) {
@@ -42,11 +45,10 @@ export class FormulaItem extends React.Component {
   }
   
   // Update this.state.canonicalValue on user input 
-  setCanonicalValue(text) {
+  setCanonicalValue = (text) => {
     //FIXME determine all possible conditions and refactor 
     if (!text) {  // !"" and !null both evaluate to true
       this.setState({canonicalValue: null}, () => { this.props.childChanged() });
-      // console.log("!text text:", text)
       return;
     }
 
@@ -58,6 +60,11 @@ export class FormulaItem extends React.Component {
     // calculate the new canonical value and update state, notify the parent element that child changed 
     let newCanonicalValue = parseInt(text.replace(/,/g, "")) / this.getConversionFactor();
     this.setState({canonicalValue: newCanonicalValue}, () => { this.props.childChanged() }); 
+  }
+
+  changeUnit = (x) => {
+    console.log("x");
+    this.setState({displayUnit: x, modalVisible: false});
   }
 
   render() {
@@ -72,13 +79,16 @@ export class FormulaItem extends React.Component {
           >
           <View style={styles.modalView}>
             { 
-              item.getUnits().map((x,i) => (
-                <TouchableElement style={[styles.btn, styles.color_btn_primary]} onPress={() => {this.setState({displayUnit: x, modalVisible: false})}}>
-                  <Text style={[styles.btn_text, styles.color_font_secondary, this.state.displayUnit == x && styles.color_font_selected]}>
-                    { x[0].toUpperCase() } {this.state.displayUnit == x && "\u2713"}
-                  </Text>
-                </TouchableElement>
-              ))
+              item.getUnits().map(x => { 
+                return(
+                  // <TouchableElement style={[styles.btn, styles.color_btn_primary]} onPress={() => {this.setState({displayUnit: x, modalVisible: false})}}>
+                  <TouchableElement style={[styles.btn, styles.color_btn_primary]} onPress={() => {this.changeUnit(x)}}>
+                    <Text style={[styles.btn_text, styles.color_font_secondary, this.state.displayUnit == x && styles.color_font_selected]}>
+                      { x[0].toUpperCase() } {this.state.displayUnit == x && "\u2713"}
+                    </Text>
+                  </TouchableElement>
+                )
+              })
             }
           </View>
         </Modal>
@@ -87,7 +97,6 @@ export class FormulaItem extends React.Component {
           ref={this.props.reference}
           style={[styles.font, styles.textInput, styles.color_font_primary, styles.color_background_secondary, styles.flex_3, styles.font_bigger]}
           onChangeText={this.setCanonicalValue}
-          // onChangeText={this.props.notifierFunction.bind(this, "TEST")}
           autoCorrect={false}
           keyboardType="decimal-pad"  // TODO check docs for android compatibility 
           keyboardAppearance="dark"
@@ -101,7 +110,7 @@ export class FormulaItem extends React.Component {
           onPress={() => { if (item.getUnits().length > 1) { this.setState({modalVisible: true}) }}} 
           >
           <Text style={[styles.font, styles.btnSec_text, styles.color_font_primary, item.getUnits().length > 1 && styles.color_font_accent]}>
-            {this.state.displayUnit[0].toUpperCase()}
+            {this.getDisplayUnitText()}
           </Text>
         </TouchableElement>
       </View>
