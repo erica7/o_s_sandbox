@@ -16,7 +16,7 @@ const horsepower = formulas.horsepower;
 const unitArray = units.units;
 
 // NOTES - App structure:
-//  Globals and Formulas
+//  Globals, Formulas, Style
 //  App 
 //   |-- FormulaView (no values)
 //   |    |-- FormulaItem (values)
@@ -31,6 +31,7 @@ const unitArray = units.units;
 //  pre-populated common values such as number of plungers 
 //  styling
 //  add content
+//  proof formulas and conversion factors
 //  test; squash bugs and resolve issues
 //  document, comment 
 //  go live
@@ -60,7 +61,7 @@ class HomeScreen extends React.Component {
     title: 'WAVY'
   };
   render() {
-    //each screen receives a navigation prop from react-navigation; extract the navigate method
+    //each screen receives a navigation prop from react-navigation; extract the navigate method to pass as a parameter later
     const { navigate } = this.props.navigation;
     return (
       <View style={[styles.container, styles.color_background_primary]}>
@@ -68,8 +69,6 @@ class HomeScreen extends React.Component {
         { menuButton(navigate, 'FormulaView', 'Flowrate', flowrate) }
         { menuButton(navigate, 'FormulaView', 'Horsepower', horsepower) }
         { menuButton(navigate, 'UnitConverter', 'Unit Converter', unitArray) }
-        {/* { menuButton(navigate, 'Flowrate') }
-        { menuButton(navigate, 'Horsepower') } */}
       </View>
     );
   }
@@ -80,8 +79,6 @@ const CalcApp = StackNavigator({
   Home: { screen: HomeScreen },
   FormulaView: { screen: FormulaView },
   UnitConverter: { screen: UnitConverter },
-  // Horsepower: { screen: Horsepower },
-  // Flowrate: { screen: Flowrate },
 });
 
 export default App = CalcApp;

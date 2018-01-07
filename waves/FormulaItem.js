@@ -27,7 +27,7 @@ export class FormulaItem extends React.Component {
   
   // Return the displayValue based on the canonicalValue and the displayUnit
   displayValue = () => {
-    console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
+    // console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
     if (this.state.canonicalValue !== null && !Number.isNaN(this.state.canonicalValue)) {  // && this.state.canonicalValue * this.getConversionFactor() != 0)  {
       let val = (this.state.canonicalValue * this.getConversionFactor()).toLocaleString('en-US');
       if (this.state.decimal) {
@@ -46,24 +46,36 @@ export class FormulaItem extends React.Component {
   
   // Update this.state.canonicalValue on user input 
   setCanonicalValue = (text) => {
-    //FIXME determine all possible conditions and refactor 
     if (!text) {  // !"" and !null both evaluate to true
       this.setState({canonicalValue: null}, () => { this.props.childChanged() });
       return;
     }
 
-    // FIXME tag input of decimal point
-    if (text[text.length-1] == ".") {
-      this.setState({decimal: true});
+    // // FIXME tag input of decimal point
+    // if (text[text.length-1] == ".") {
+    //   this.setState({decimal: true});
+    // }
+
+    // calculate the new canonical value using the unit conversion factor 
+    let newCanonicalValue = parseInt(text.replace(/,/g, "")) / this.getConversionFactor();
+    // set state with new value, notify the parent element that child changed 
+    this.setState({canonicalValue: newCanonicalValue}, () => { this.props.childChanged() }); 
+  }
+
+  // Update this.state.canonicalValue upon calculation
+  setCanonicalValueAfterCalc = (text) => {
+    if (!text) {  // !"" and !null both evaluate to true
+      this.setState({canonicalValue: null}, () => { this.props.childChanged() });
+      return;
     }
 
-    // calculate the new canonical value and update state, notify the parent element that child changed 
-    let newCanonicalValue = parseInt(text.replace(/,/g, "")) / this.getConversionFactor();
+    // assign the new canonical value (sent directly, no unit conversion needed)  
+    let newCanonicalValue = parseInt(text.replace(/,/g, ""));
+    // set state with new value, notify the parent element that child changed 
     this.setState({canonicalValue: newCanonicalValue}, () => { this.props.childChanged() }); 
   }
 
   changeUnit = (x) => {
-    console.log("x");
     this.setState({displayUnit: x, modalVisible: false});
   }
 

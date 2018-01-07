@@ -9,8 +9,6 @@ const Item = globals.Item;
 
 //NOTE: Arrow functions preserve the `this` binding. The `this` value of the enclosing execution context is used.
 
-//FIXME calculation not responding to other units
-
 export class FormulaView extends React.Component {
   constructor(props) {
     super(props); // extends the context (`this`) of the parent constructor 
@@ -107,7 +105,7 @@ export class FormulaView extends React.Component {
     let result = this.formulas[matchIndex].formula(values);
 
     // set the result to the canonical value
-    this.child[solveForIndex].setCanonicalValue(result.toString()); //NOTE setCanonicalValue will (_should_) call notifier method childChanged to update state.allowCalc
+    this.child[solveForIndex].setCanonicalValueAfterCalc(result.toString()); //NOTE setCanonicalValue will (_should_) call notifier method childChanged to update state.allowCalc
   }
 
   // Set all Childs' state.canonicalValue = null;
@@ -117,7 +115,6 @@ export class FormulaView extends React.Component {
     }
   }
 
-  //FIXME: use this.disabled or this.state.allowCalc consistently 
   render() {
     let formulaItems = this.items.map((x, i) => {
       return <FormulaItem item={ this.items[i][Object.keys(this.items[i])] } ref={ref => (this.child[`${i}`] = ref)} childChanged={this.childChanged} />
@@ -129,9 +126,8 @@ export class FormulaView extends React.Component {
           ref={ref => {this.calcBtn = ref}}
           disabled={!this.state.allowCalc}
           style={[styles.btn, styles.color_btn_primary, this.state.allowCalc ? null : styles.color_btn_disabled]} 
-          // style={[styles.btn, styles.color_btn_primary, !this.disabled ? null : styles.color_btn_disabled]} //doesn't work! - FIXME: use this.disabled or this.state.allowCalc consistently 
-          underlayColor={!this.disabled ? "#2cc" : "none"} //works - FIXME: use this.disabled or this.state.allowCalc consistently 
-          activeOpacity={!this.disabled ? 1 : 0.7} //works - FIXME: use this.disabled or this.state.allowCalc consistently 
+          underlayColor={"#2cc"}
+          activeOpacity={0.7}
           onPress={ this.doTheMath }
         >
           <Text style={[styles.btn_text, styles.color_font_secondary]}>CALCULATE</Text>
@@ -140,7 +136,7 @@ export class FormulaView extends React.Component {
           ref={ref => {this.clearAllBtn = ref}}
           disabled={!this.state.allowClearAll}
           style={[styles.btn, styles.color_btn_primary, this.state.allowClearAll ? null : styles.color_btn_disabled]} 
-          underlayColor="#ccc"
+          underlayColor={"#2cc"}
           activeOpacity={0.7}
           onPress={ this.clearAll }
         >
