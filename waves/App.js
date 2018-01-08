@@ -2,8 +2,6 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 const styles = require('./Style.js');
-// const Horsepower = require('./nah/Horsepower.js');
-// const Flowrate = require('./nah/Flowrate.js');
 const UnitConverter = require('./UnitConverter.js');
 const FormulaView = require('./FormulaView.js');
 const globals = require('./Globals.js');
@@ -11,12 +9,9 @@ const formulas = require('./Formulas.js');
 const units = require('./Units.js');
 
 const TouchableElement = globals.TouchableElement;
-const flowrate = formulas.flowrate;
-const horsepower = formulas.horsepower;
-const unitArray = units.units;
 
 // NOTES - App structure:
-//  Globals, Formulas, Style
+//  Globals, Formulas, Units, Style
 //  App 
 //   |-- FormulaView (no values)
 //   |    |-- FormulaItem (values)
@@ -66,9 +61,10 @@ class HomeScreen extends React.Component {
     return (
       <View style={[styles.container, styles.color_background_primary]}>
         <Text style={[styles.font, styles.color_font_primary]}>WAVY</Text>
-        { menuButton(navigate, 'FormulaView', 'Flowrate', flowrate) }
-        { menuButton(navigate, 'FormulaView', 'Horsepower', horsepower) }
-        { menuButton(navigate, 'UnitConverter', 'Unit Converter', unitArray) }
+        { menuButton(navigate, 'FormulaView', 'Flowrate', formulas.flowrate) }
+        { menuButton(navigate, 'FormulaView', 'Horsepower', formulas.horsepower) }
+        { menuButton(navigate, 'FormulaView', 'Rodload', formulas.rodload) }
+        { menuButton(navigate, 'UnitConverter', 'Unit Converter', units.units) }
       </View>
     );
   }

@@ -7,15 +7,12 @@ globals = {
   Item: class Item {  //never stores value
     constructor(displayName, units) {
       this.displayName = displayName;
-      this.units = units; //array of possible inputs 
-      // this.conversion = conversion; //array of conversion factors
+      this.units = units; //array of possible units 
     }
     getDisplayName() {
-      // return displayName
       return this.displayName;
     }
     getUnits() {
-      // console.log("getUnits this.units", this.units)
       return this.units;
     }
   },
