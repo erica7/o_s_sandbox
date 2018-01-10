@@ -9,6 +9,21 @@ const styles = StyleSheet.create({
     padding: 9,
     paddingTop: 18,
   },
+  content: {
+    flex: 5,
+    width: '100%',
+  },
+  containerContent: {
+    alignItems: 'center',
+    width: '100%',
+  },
+  containerWithoutAlign: {
+    flex: 1,
+    flexDirection: 'column',
+    width: '100%',
+    padding: 9,
+    paddingTop: 18,
+  },
   //primary button (e.g. main menu, modal)
   btn: {
     marginTop: 12,
@@ -30,9 +45,9 @@ const styles = StyleSheet.create({
   //secondary button text (e.g. units)
   btnSec_text: {
     alignItems: 'center',
-    marginBottom: 7,  // is this going to look good on all screens? 
+    marginBottom: 7,  // is this going to look good on all screens?
   },
-  // 'list'/'row' item 
+  // 'list'/'row' item
   item: {
     flex: 1,
     flexDirection: 'row',
@@ -52,9 +67,9 @@ const styles = StyleSheet.create({
   // FONT SIZE
   font: { fontSize: 22, },
   font_bigger: { fontSize: 26, },
-  // FONT STYLE 
+  // FONT STYLE
   font_bold: {
-    fontWeigth: 'bold',
+    fontWeight: 'bold',
   },
   font_spaced: {
     letterSpacing: 50,
@@ -95,19 +110,20 @@ const styles = StyleSheet.create({
   // color_btn_disabled: { backgroundColor: '#777', },
   // color_background_primary: { backgroundColor: '#eee', },
   // color_background_secondary: { backgroundColor: '#fff', },
-  
+
   //FIXME - ensure compatibility with different devices / redesign
   //FormulaView
   spacing: {
-    height: 290,
-    marginTop: 9,
+    flex: 3,
+    // height: 290,
+    // marginTop: 9,
     // backgroundColor: '#444',
   },
 
 
 
 
-  // FIXME - eliminate class; refactor into separate classes 
+  // FIXME - eliminate class; refactor into separate classes
   //FormulaItem and UnitConverterItem
   parameter: {
     flex: 4,
@@ -115,7 +131,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     // textTransform: 'upper-case',
   },
-  // FIXME - eliminate class; refactor into separate classes 
+  // FIXME - eliminate class; refactor into separate classes
   modalView: {
     backgroundColor: '#333',
     justifyContent: 'center',
@@ -123,7 +139,7 @@ const styles = StyleSheet.create({
     padding: 44,
   },
   //UnitConverter
-  // FIXME - eliminate class; refactor into separate classes 
+  // FIXME - eliminate class; refactor into separate classes
   parameterName: {
     fontSize: 22,
     textAlign: 'center',

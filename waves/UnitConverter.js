@@ -14,11 +14,11 @@ class UnitConverter extends React.Component {
   }
   render() {
     let unitItems = this.units.map((x, i) => {
-      return <UnitConverterItem item={ this.units[i] } />
+      return <UnitConverterItem key={i} item={ this.units[i] } />
     })
     return (
       <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100} style={[styles.container, styles.color_background_primary]}>
-        <ScrollView style={[styles.container, styles.color_background_primary]}>
+        <ScrollView contentContainerStyle={styles.containerContent} style={[styles.containerWithoutAlign, styles.color_background_primary]}>
           { unitItems }
         </ScrollView>
       </KeyboardAvoidingView>

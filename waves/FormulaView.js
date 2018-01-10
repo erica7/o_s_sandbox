@@ -117,10 +117,11 @@ export class FormulaView extends React.Component {
 
   render() {
     let formulaItems = this.items.map((x, i) => {
-      return <FormulaItem item={ this.items[i][Object.keys(this.items[i])] } ref={ref => (this.child[`${i}`] = ref)} childChanged={this.childChanged} />
+      return <FormulaItem item={ this.items[i][Object.keys(this.items[i])] } ref={ref => (this.child[`${i}`] = ref)} key={i} childChanged={this.childChanged} />
     });
     return(
       <View style={[styles.container, styles.color_background_primary]}>
+        <View style={styles.content}>
         { formulaItems }
         <TouchableElement
           ref={ref => {this.calcBtn = ref}}
@@ -142,6 +143,7 @@ export class FormulaView extends React.Component {
         >
           <Text style={[styles.btn_text, styles.color_font_secondary]}>CLEAR ALL</Text>
         </TouchableElement>
+        </View>
         <View style={styles.spacing}></View>
       </View>
     );

@@ -63,7 +63,7 @@ class UnitConverterItem extends React.Component {
           <View style={styles.modalView}>
             { 
               this.props.item.getUnits().map((x,i) => (
-                <TouchableElement style={[styles.btn, styles.color_btn_primary]} onPress={() => { this.state.unit2Active ? this.setState({displayUnit2: x, modalVisible: false}) : this.setState({displayUnit: x, modalVisible: false}) }}>
+                <TouchableElement key={i} style={[styles.btn, styles.color_btn_primary]} onPress={() => { this.state.unit2Active ? this.setState({displayUnit2: x, modalVisible: false}) : this.setState({displayUnit: x, modalVisible: false}) }}>
                   <Text style={[styles.btn_text, styles.color_font_secondary,
                       this.state.unit2Active 
                         ? this.state.displayUnit2 == x && styles.color_font_selected

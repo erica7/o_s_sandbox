@@ -91,10 +91,10 @@ export class FormulaItem extends React.Component {
           >
           <View style={styles.modalView}>
             { 
-              item.getUnits().map(x => { 
+              item.getUnits().map((x, i) => { 
                 return(
                   // <TouchableElement style={[styles.btn, styles.color_btn_primary]} onPress={() => {this.setState({displayUnit: x, modalVisible: false})}}>
-                  <TouchableElement style={[styles.btn, styles.color_btn_primary]} onPress={() => {this.changeUnit(x)}}>
+                  <TouchableElement key={i.toString()} style={[styles.btn, styles.color_btn_primary]} onPress={() => {this.changeUnit(x)}}>
                     <Text style={[styles.btn_text, styles.color_font_secondary, this.state.displayUnit == x && styles.color_font_selected]}>
                       { x[0].toUpperCase() } {this.state.displayUnit == x && "\u2713"}
                     </Text>
@@ -117,7 +117,7 @@ export class FormulaItem extends React.Component {
         />
         <TouchableElement 
           style={[styles.btnSec, styles.flex_2]}
-          underlayColor={item.getUnits().length > 1 ? "#333" : "none"}
+          underlayColor={item.getUnits().length > 1 ? "#333" : null}
           activeOpacity={item.getUnits().length > 1 ? 0.7 : 1}
           onPress={() => { if (item.getUnits().length > 1) { this.setState({modalVisible: true}) }}} 
           >
