@@ -22,7 +22,7 @@ export class FormulaItem extends React.Component {
   }
 
   getDisplayUnitText = () => {
-    return this.state.displayUnit[0].toUpperCase();
+    return this.state.displayUnit[0];
   }
   
   // Return the displayValue based on the canonicalValue and the displayUnit
@@ -30,11 +30,7 @@ export class FormulaItem extends React.Component {
     // console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
     if (this.state.canonicalValue !== null && !Number.isNaN(this.state.canonicalValue)) {  // && this.state.canonicalValue * this.getConversionFactor() != 0)  {
       let val = (this.state.canonicalValue * this.getConversionFactor()).toLocaleString('en-US');
-      if (this.state.decimal) {
-        this.setState({decimal: false});
-        val += ".";  // FIXME - trailing decimal does not appear correctly
-      } 
-      return val;
+      return this.state.decimal ? val += "." : val;
     } else {
       return null;
     }
@@ -51,13 +47,12 @@ export class FormulaItem extends React.Component {
       return;
     }
 
-    // // FIXME tag input of decimal point
-    // if (text[text.length-1] == ".") {
-    //   this.setState({decimal: true});
-    // }
+    // detect and tag input of decimal point
+    text[text.length-1] == "." ? this.setState({decimal: true}) : this.setState({decimal: false});
 
     // calculate the new canonical value using the unit conversion factor 
-    let newCanonicalValue = parseInt(text.replace(/,/g, "")) / this.getConversionFactor();
+    let newCanonicalValue = parseFloat(text.replace(/,/g, "")) / this.getConversionFactor();
+
     // set state with new value, notify the parent element that child changed 
     this.setState({canonicalValue: newCanonicalValue}, () => { this.props.childChanged() }); 
   }
@@ -70,7 +65,8 @@ export class FormulaItem extends React.Component {
     }
 
     // assign the new canonical value (sent directly, no unit conversion needed)  
-    let newCanonicalValue = parseInt(text.replace(/,/g, ""));
+    let newCanonicalValue = parseFloat(text.replace(/,/g, ""));
+
     // set state with new value, notify the parent element that child changed 
     this.setState({canonicalValue: newCanonicalValue}, () => { this.props.childChanged() }); 
   }
@@ -96,7 +92,7 @@ export class FormulaItem extends React.Component {
                   // <TouchableElement style={[styles.btn, styles.color_btn_primary]} onPress={() => {this.setState({displayUnit: x, modalVisible: false})}}>
                   <TouchableElement key={i.toString()} style={[styles.btn, styles.color_btn_primary]} onPress={() => {this.changeUnit(x)}}>
                     <Text style={[styles.btn_text, styles.color_font_secondary, this.state.displayUnit == x && styles.color_font_selected]}>
-                      { x[0].toUpperCase() } {this.state.displayUnit == x && "\u2713"}
+                      { x[0] } {this.state.displayUnit == x && "\u2713"}
                     </Text>
                   </TouchableElement>
                 )

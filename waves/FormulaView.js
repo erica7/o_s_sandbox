@@ -10,6 +10,13 @@ const Item = globals.Item;
 //NOTE: Arrow functions preserve the `this` binding. The `this` value of the enclosing execution context is used.
 
 export class FormulaView extends React.Component {
+  static navigationOptions = {
+    //title: ' ',
+    headerStyle: {
+      backgroundColor: '#111',
+    },
+    headerTintColor: '#fff',
+  };
   constructor(props) {
     super(props); // extends the context (`this`) of the parent constructor 
     // console.log("FormulaView this.props", this.props);
@@ -63,7 +70,7 @@ export class FormulaView extends React.Component {
         }
       }
       // if a matching constraint pattern is found, break out of the loop
-      //FIXME won't work in the outer for loop condition e.g. ((matchFound) && (j<this.formulas.length))
+      //TODO refactor: won't work in the outer for loop condition e.g. ((matchFound) && (j<this.formulas.length))
       if (matchFound) break; 
     }
 
@@ -122,27 +129,27 @@ export class FormulaView extends React.Component {
     return(
       <View style={[styles.container, styles.color_background_primary]}>
         <View style={styles.content}>
-        { formulaItems }
-        <TouchableElement
-          ref={ref => {this.calcBtn = ref}}
-          disabled={!this.state.allowCalc}
-          style={[styles.btn, styles.color_btn_primary, this.state.allowCalc ? null : styles.color_btn_disabled]} 
-          underlayColor={"#2cc"}
-          activeOpacity={0.7}
-          onPress={ this.doTheMath }
-        >
-          <Text style={[styles.btn_text, styles.color_font_secondary]}>CALCULATE</Text>
-        </TouchableElement>
-        <TouchableElement
-          ref={ref => {this.clearAllBtn = ref}}
-          disabled={!this.state.allowClearAll}
-          style={[styles.btn, styles.color_btn_primary, this.state.allowClearAll ? null : styles.color_btn_disabled]} 
-          underlayColor={"#2cc"}
-          activeOpacity={0.7}
-          onPress={ this.clearAll }
-        >
-          <Text style={[styles.btn_text, styles.color_font_secondary]}>CLEAR ALL</Text>
-        </TouchableElement>
+          { formulaItems }
+          <TouchableElement
+            ref={ref => {this.calcBtn = ref}}
+            disabled={!this.state.allowCalc}
+            style={[styles.btn, styles.color_btn_primary, styles.width_full, this.state.allowCalc ? null : styles.color_btn_disabled]} 
+            underlayColor={"#2cc"}
+            activeOpacity={0.7}
+            onPress={ this.doTheMath }
+          >
+            <Text style={[styles.btn_text, styles.color_font_secondary, styles.text_center]}>CALCULATE</Text>
+          </TouchableElement>
+          <TouchableElement
+            ref={ref => {this.clearAllBtn = ref}}
+            disabled={!this.state.allowClearAll}
+            style={[styles.btn, styles.color_btn_primary, styles.width_full, this.state.allowClearAll ? null : styles.color_btn_disabled]} 
+            underlayColor={"#2cc"}
+            activeOpacity={0.7}
+            onPress={ this.clearAll }
+          >
+            <Text style={[styles.btn_text, styles.color_font_secondary, styles.text_center]}>CLEAR ALL</Text>
+          </TouchableElement>
         </View>
         <View style={styles.spacing}></View>
       </View>

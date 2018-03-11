@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 5,
+    alignItems: 'center',
     width: '100%',
   },
   containerContent: {
@@ -67,6 +68,7 @@ const styles = StyleSheet.create({
   // FONT SIZE
   font: { fontSize: 22, },
   font_bigger: { fontSize: 26, },
+  font_biggest: { fontSize: 36, },
   // FONT STYLE
   font_bold: {
     fontWeight: 'bold',
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
   // color_background_primary: { backgroundColor: '#eee', },
   // color_background_secondary: { backgroundColor: '#fff', },
 
-  //FIXME - ensure compatibility with different devices / redesign
+  //TODO - ensure compatibility with different devices / redesign
   //FormulaView
   spacing: {
     flex: 3,
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
 
 
 
-  // FIXME - eliminate class; refactor into separate classes
+  // TODO - eliminate class; refactor into separate classes
   //FormulaItem and UnitConverterItem
   parameter: {
     flex: 4,
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     // textTransform: 'upper-case',
   },
-  // FIXME - eliminate class; refactor into separate classes
+  // TODO - eliminate class; refactor into separate classes
   modalView: {
     backgroundColor: '#333',
     justifyContent: 'center',
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
     padding: 44,
   },
   //UnitConverter
-  // FIXME - eliminate class; refactor into separate classes
+  // TODO - eliminate class; refactor into separate classes
   parameterName: {
     fontSize: 22,
     textAlign: 'center',

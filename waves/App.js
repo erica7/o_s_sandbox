@@ -10,7 +10,7 @@ const units = require('./Units.js');
 
 const TouchableElement = globals.TouchableElement;
 
-// NOTES - App structure:
+// App Structure:
 //  Globals, Formulas, Units, Style
 //  App 
 //   |-- FormulaView (no values)
@@ -18,18 +18,11 @@ const TouchableElement = globals.TouchableElement;
 //   |-- UnitConverter
 //        |-- UnitConverterItem
 
-// FIXME
-//  decimal probs 
-
 // TODO
-//  consider if / how to clear individual fields on a single click
-//  pre-populated common values such as number of plungers 
-//  styling
-//  add content
-//  proof formulas and conversion factors
-//  test; squash bugs and resolve issues
-//  document, comment 
-//  go live
+//  clear individual fields on a single click
+//  quick select common values (e.g. number of plungers)
+//  verify formulas and conversion factors
+//  day & night modes
 
 function printState(obj) {
   console.log(obj.state);
@@ -53,17 +46,21 @@ const menuButton = (navigate, navName, navTitle = navName, p = null) => {
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: 'WAVY'
+    // title: ' ',
+    headerStyle: {
+      backgroundColor: '#111',
+    },
+    headerTintColor: '#fff',
   };
   render() {
     //each screen receives a navigation prop from react-navigation; extract the navigate method to pass as a parameter later
     const { navigate } = this.props.navigation;
     return (
       <View style={[styles.container, styles.color_background_primary]}>
-        <Text style={[styles.font, styles.color_font_primary]}>WAVY</Text>
+        <Text style={[styles.font, styles.color_font_primary, styles.font_biggest, styles.font_bold]}>THE OIL SPOT</Text>
         { menuButton(navigate, 'FormulaView', 'Flowrate', formulas.flowrate) }
         { menuButton(navigate, 'FormulaView', 'Horsepower', formulas.horsepower) }
-        { menuButton(navigate, 'FormulaView', 'Rodload', formulas.rodload) }
+        { menuButton(navigate, 'FormulaView', 'Rod Load', formulas.rodload) }
         { menuButton(navigate, 'UnitConverter', 'Unit Converter', units.units) }
       </View>
     );

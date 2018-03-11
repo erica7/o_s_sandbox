@@ -4,7 +4,7 @@ const Item = globals.Item;
 formulas = {
   flowrate: {
     items: [
-      {s: new Item("Speed", [["rpm", 1], ["rph", 60]])},
+      {s: new Item("Speed", [["rpm", 1], ["rph", 60], ["rps", 1/60]])},
       {n: new Item("Number of Plungers", [["qty", 1]])},
       {d: new Item("Plunger Diameter", [["in", 1], ["cm", 2.54]])},
       {l: new Item("Stroke", [["in", 1], ["cm", 2.54]])},
@@ -49,7 +49,6 @@ formulas = {
           return Math.ceil(q / (0.25 * Math.PI * Math.pow(d, 2) * s * l * n * 1 / 231));
         }
       },
-      //TODO double check formulas and constants
     ],
   },
   horsepower: {
@@ -81,7 +80,7 @@ formulas = {
   },
   rodload: {
     items: [
-      {f: new Item("Rodload", [["lb", 1]])},
+      {f: new Item("Rod Load", [["lb", 1], ["kg", 0.4535924], ["ton", 0.0005]])},
       {d: new Item("Plunger Diameter", [["in", 1], ["cm", 2.54]])},
       {p: new Item("Pressure", [["psi", 1], ["bar", 0.0689476], ["MPa", 0.00689476]])},
     ], 

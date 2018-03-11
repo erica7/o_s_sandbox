@@ -15,6 +15,7 @@ class UnitConverterItem extends React.Component {
       displayUnit2: props.item.getUnits()[1], 
       unit2Active: false,
       modalVisible: false,
+      decimal: false,
     }
   }
 
@@ -27,26 +28,35 @@ class UnitConverterItem extends React.Component {
   displayValue = (n) => {
     // console.log("displayValue(): canonicalValue", this.state.canonicalValue, "displayUnit", this.state.displayUnit);
     if (this.state.canonicalValue !== null && !Number.isNaN(this.state.canonicalValue)) {  // && this.state.canonicalValue * this.getConversionFactor() != 0)  {
-      return (this.state.canonicalValue * this.getConversionFactor(n)).toLocaleString('en-US', {maximumFractionDigits: 2});  
+      let val = (this.state.canonicalValue * this.getConversionFactor(n)).toLocaleString('en-US', {maximumFractionDigits: 2});
+      return (this.state.decimal ? val += "." : val);
     } else {
       return null;
     }
   }
 
   // Update this.state.canonicalValue on user input 
-  // FIXME - refactor 
+  // TODO - refactor 
   updateValue = (text) => {
     // console.log("updateValue text", text, "displayUnit", this.state.displayUnit);
-    let newCanonicalValue = parseInt(text.replace(/,/g, "")) / this.getConversionFactor(1);
+    
+    // detect and tag input of decimal point
+    text[text.length-1] == "." ? this.setState({decimal: true}) : this.setState({decimal: false});
+
+    let newCanonicalValue = parseFloat(text.replace(/,/g, "")) / this.getConversionFactor(1);
     this.setState({canonicalValue: newCanonicalValue});
     return null;
   }
   
   // Update this.state.canonicalValue on user input 
-  // FIXME - refactor 
+  // TODO - refactor 
   updateValue2 = (text) => {
     // console.log("updateValue text", text, "displayUnit", this.state.displayUnit);
-    let newCanonicalValue = parseInt(text.replace(/,/g, "")) / this.getConversionFactor(2);
+
+    // detect and tag input of decimal point
+    text[text.length-1] == "." ? this.setState({decimal: true}) : this.setState({decimal: false});
+
+    let newCanonicalValue = parseFloat(text.replace(/,/g, "")) / this.getConversionFactor(2);
     this.setState({canonicalValue: newCanonicalValue});
     return null;
   }
@@ -69,7 +79,7 @@ class UnitConverterItem extends React.Component {
                         ? this.state.displayUnit2 == x && styles.color_font_selected
                         : this.state.displayUnit == x && styles.color_font_selected 
                   ]}>
-                    { x[0].toUpperCase() } {this.state.unit2Active ? this.state.displayUnit2 == x && "\u2713" : this.state.displayUnit == x && "\u2713" }
+                    { x[0] } {this.state.unit2Active ? this.state.displayUnit2 == x && "\u2713" : this.state.displayUnit == x && "\u2713" }
                   </Text>
                 </TouchableElement>
               ))
@@ -94,7 +104,7 @@ class UnitConverterItem extends React.Component {
             onPress={() => { this.setState({unit2Active: false, modalVisible: true}) }} 
             >
             <Text style={[styles.font, styles.btnSec_text, styles.color_font_accent]}>
-              {this.state.displayUnit[0].toUpperCase()}
+              {this.state.displayUnit[0]}
             </Text>
           </TouchableElement>
 
@@ -117,7 +127,7 @@ class UnitConverterItem extends React.Component {
             onPress={() => { this.setState({unit2Active: true, modalVisible: true}) }} 
             >
             <Text style={[styles.font, styles.btnSec_text, styles.color_font_accent]}>
-              {this.state.displayUnit2[0].toUpperCase()}
+              {this.state.displayUnit2[0]}
             </Text>
           </TouchableElement>
         </View>

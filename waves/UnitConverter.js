@@ -7,6 +7,13 @@ const globals = require('./Globals.js');
 const TouchableElement = globals.TouchableElement;
 
 class UnitConverter extends React.Component {
+  static navigationOptions = {
+    //title: ' ',
+    headerStyle: {
+      backgroundColor: '#111',
+    },
+    headerTintColor: '#fff',
+  };
   constructor(props) {
     super(props);
     const { params } = this.props.navigation.state;
